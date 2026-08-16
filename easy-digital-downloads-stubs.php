@@ -1207,25 +1207,12 @@ namespace {
         {
         }
         /**
-         * Retrieve the customer counts.
+         * Retrieve the customer counts
          *
          * @since 3.0
-         * @since 3.6.7 Updated to pass search/filter args to edd_get_customer_counts().
-         *
          * @return void
          */
         public function get_counts()
-        {
-        }
-        /**
-         * Parse the query arguments for the customer list table.
-         *
-         * @since 3.6.7
-         *
-         * @param bool $paginate Whether to include pagination arguments.
-         * @return array
-         */
-        private function parse_args($paginate = \true)
         {
         }
         /**
@@ -1361,56 +1348,48 @@ namespace {
          * The file being imported
          *
          * @since 2.6
-         * @var string
          */
         public $file;
         /**
          * The parsed CSV file being imported
          *
          * @since 2.6
-         * @var array
          */
         public $csv;
         /**
          * Total rows in the CSV file
          *
          * @since 2.6
-         * @var int
          */
         public $total;
         /**
          * The current step being processed
          *
          * @since 2.6
-         * @var int
          */
         public $step;
         /**
          * The number of items to process per step
          *
          * @since 2.6
-         * @var int
          */
         public $per_step = 20;
         /**
          * The capability required to import data
          *
          * @since 2.6
-         * @var string
          */
         public $capability_type = 'manage_shop_settings';
         /**
          * Is the import file empty
          *
          * @since 2.6
-         * @var bool
          */
         public $is_empty = \false;
         /**
          * Map of CSV columns > database fields
          *
          * @since 2.6
-         * @var array
          */
         public $field_mapping = array();
         /**
@@ -1423,8 +1402,7 @@ namespace {
         /**
          * Get things started
          *
-         * @param string $_file The file to import.
-         * @param int    $_step The step to process.
+         * @param $_step int The step to process
          * @since 2.6
          */
         public function __construct($_file = '', $_step = 1)
@@ -1433,7 +1411,7 @@ namespace {
         /**
          * Sets up the CSV file for importing.
          *
-         * @param string $file The file to set up.
+         * @param [type] $file
          * @return void
          */
         public function set_up_csv($file)
@@ -1461,7 +1439,7 @@ namespace {
          * Parses the CSV from the file and returns the data as an array.
          *
          * @since 2.11.5
-         * @param string $file The file to parse.
+         * @param string $file
          *
          * @return array
          */
@@ -1519,6 +1497,7 @@ namespace {
          * Retrieve the URL to the list table for the import data type
          *
          * @since 2.6
+         * @return string
          */
         public function get_list_table_url()
         {
@@ -1527,6 +1506,7 @@ namespace {
          * Retrieve the label for the import type. Example: Payments
          *
          * @since 2.6
+         * @return string
          */
         public function get_import_type_label()
         {
@@ -1535,7 +1515,7 @@ namespace {
          * Convert a string containing delimiters to an array
          *
          * @since 2.6
-         * @param string $str Input string to convert to an array.
+         * @param $str Input string to convert to an array
          * @return array
          */
         public function str_to_array($str = '')
@@ -1547,7 +1527,7 @@ namespace {
          * This is identical to str_to_array() except it ignores all / characters.
          *
          * @since 2.9.20
-         * @param string $str Input string to convert to an array.
+         * @param $str Input string to convert to an array
          * @return array
          */
         public function convert_file_string_to_array($str = '')
@@ -1557,7 +1537,7 @@ namespace {
          * Trims a column value for preview
          *
          * @since 2.6
-         * @param string $str Input string to trim down.
+         * @param $str Input string to trim down
          * @return string
          */
         public function trim_preview($str = '')
@@ -1696,13 +1676,7 @@ namespace {
         public function create_payment($row = array())
         {
         }
-        /**
-         * Set the customer for the payment.
-         *
-         * @param array $row The row data.
-         * @return int The customer ID.
-         */
-        private function set_customer($row = array())
+        private function set_customer($row)
         {
         }
         /**
@@ -2070,13 +2044,6 @@ namespace {
          */
         protected $log_type = 'logs';
         /**
-         * Log types that support the download filter.
-         *
-         * @since 3.6.4
-         * @var array
-         */
-        protected $download_filter_log_types = array('file_downloads');
-        /**
          * Get things started
          *
          * @since 3.0
@@ -2209,15 +2176,6 @@ namespace {
          * @return void
          */
         public function log_views()
-        {
-        }
-        /**
-         * Check if the current log type supports the download filter.
-         *
-         * @since 3.6.4
-         * @return bool True if download filter should be shown, false otherwise.
-         */
-        protected function supports_download_filter()
         {
         }
         /**
@@ -3929,14 +3887,6 @@ namespace {
         private function get_tables_to_skip()
         {
         }
-        /**
-         * Reset per-download sales and earnings post meta.
-         *
-         * @since 3.6.7
-         */
-        private function reset_download_stats()
-        {
-        }
     }
     /**
      * EDD_File_Download_Log_Migration Class
@@ -5112,10 +5062,9 @@ namespace {
         /**
          * Sets the tax rate.
          *
-         * @param float|null $tax_rate The tax rate to set, or null to reset.
+         * @param float $tax_rate
          *
          * @since 3.0
-         * @since 3.6.5 Invalidate the cart cache when the tax rate is reset to null.
          */
         public function set_tax_rate($tax_rate)
         {
@@ -5142,7 +5091,6 @@ namespace {
          * Get Discounts.
          *
          * @since 2.7
-         * @since 3.6.6 Uses get_discounts_from_session() for normalization.
          * @return array $discounts The active discount codes
          */
         public function get_discounts()
@@ -5277,7 +5225,7 @@ namespace {
          * @since 2.7
          *
          * @param int   $download_id Download ID of the item to check.
-         * @param array $options      Cart item options.
+         * @param array $options
          * @return bool
          */
         public function is_item_in_cart($download_id = 0, $options = array())
@@ -5649,11 +5597,11 @@ namespace {
         {
         }
         /**
-         * Gets the discounts from the session.
+         * Populate the discounts with the data stored in the session.
          *
          * @since  2.7
-         * @since 3.6.6 Now returns an array of discounts.
-         * @return array The active discount codes.
+         * @deprecated 3.3.0
+         * @return void
          */
         public function get_discounts_from_session()
         {
@@ -6047,88 +5995,65 @@ namespace {
         {
         }
     }
-}
-namespace EDD\CLI\Traits {
-    // @codeCoverageIgnore
     /**
-     * Test Data Trait
+     * EDD_Cache_Helper class.
      *
-     * @since 3.6.5
+     * @since 1.7
      */
-    trait TestData
+    class EDD_Cache_Helper
     {
         /**
-         * Gets a random first name.
+         * Constructor.
          *
-         * @return string
+         * @since 1.7
          */
-        protected function get_fname()
+        public function __construct()
         {
         }
         /**
-         * Gets a random last name.
+         * Prevent caching on dynamic pages.
          *
-         * @return string
+         * @since 1.7
          */
-        protected function get_lname()
+        public function init()
         {
         }
         /**
-         * Gets a random domain.
+         * Set nocache constants and headers.
          *
-         * @return string
+         * @since 1.7
+         * @access private
          */
-        protected function get_domain()
+        private function nocache()
         {
         }
         /**
-         * Gets a random TLD.
+         * Admin notices.
          *
-         * @return string
+         * @since 1.7
          */
-        protected function get_tld()
+        public function notices()
         {
         }
         /**
-         * Generate a random IP address.
+         * Prevents W3TC from adding to the cache prior to modifying data.
          *
-         * @since 3.6.5
-         * @return string Random IP address.
+         * @since 1.7
+         * @since 3.0.4 Removed the cache suspend call.
          */
-        private function generate_random_ip()
+        public function w3tc_suspend_cache_addition_pre()
         {
         }
         /**
-         * Generate a random user agent string.
+         * Prevents W3TC from adding to the cache after modifying data.
          *
-         * @since 3.6.5
-         * @return string Random user agent.
+         * @since 1.7
+         * @since 3.0.4 Removed the cache suspend call.
          */
-        private function generate_random_user_agent()
-        {
-        }
-        /**
-         * Generate a random referrer URL.
-         *
-         * @since 3.6.5
-         * @return string Random referrer URL.
-         */
-        private function generate_random_referrer()
-        {
-        }
-        /**
-         * Generate a random email address.
-         *
-         * @since 3.6.5
-         * @return string Random email address.
-         */
-        private function generate_random_email()
+        public function w3tc_suspend_cache_addition_post()
         {
         }
     }
-}
-namespace {
-    // @codeCoverageIgnore
     /**
      * Work with EDD through WP-CLI
      *
@@ -6140,7 +6065,6 @@ namespace {
      */
     class EDD_CLI extends \WP_CLI_Command
     {
-        use \EDD\CLI\Traits\TestData;
         private $api;
         public function __construct()
         {
@@ -6258,14 +6182,6 @@ namespace {
          * --status=<status>: The status to create purchases as
          * --id=<product_id>: A specific product to create purchase data for
          * --price_id=<price_id>: A price ID of the specified product
-         * --gateway=<gateway>: The gateway to use for the purchase.
-         * --currency=<currency>: The currency to use for the purchase.
-         * --date=<date>: The date to use for the purchase.
-         * --range=<range>: The range to use for the purchase.
-         * --generate_users=<generate_users>: Whether to generate users for the purchase.
-         * --email=<email>: The email to use for the purchase.
-         * --fname=<fname>: The first name to use for the purchase.
-         * --lname=<lname>: The last name to use for the purchase.
          *
          * ## EXAMPLES
          *
@@ -6514,6 +6430,38 @@ namespace {
         {
         }
         /**
+         * Gets a random first name.
+         *
+         * @return string
+         */
+        protected function get_fname()
+        {
+        }
+        /**
+         * Gets a random last name.
+         *
+         * @return string
+         */
+        protected function get_lname()
+        {
+        }
+        /**
+         * Gets a random domain.
+         *
+         * @return string
+         */
+        protected function get_domain()
+        {
+        }
+        /**
+         * Gets a random TLD.
+         *
+         * @return string
+         */
+        protected function get_tld()
+        {
+        }
+        /**
          * Gets a time string for an order.
          *
          * @since 3.3.7
@@ -6522,20 +6470,6 @@ namespace {
          * @return false|string
          */
         private function get_order_timestring($date, $range)
-        {
-        }
-        /**
-         * Get the gateway from the arguments:
-         * - If no gateway is provided, return 'manual'.
-         * - If 'random' is provided, return a random gateway.
-         * - If the gateway is not in the list of available gateways, return 'manual'.
-         * The gateway does not have to be active.
-         *
-         * @since 3.6.7
-         * @param array $args The arguments.
-         * @return string The gateway.
-         */
-        private function get_gateway($args)
         {
         }
     }
@@ -7735,7 +7669,7 @@ namespace EDD\Database {
          *
          * @param array $items
          */
-        private function update_item_cache($items = array(), $bump_last_changed = true)
+        private function update_item_cache($items = array())
         {
         }
         /**
@@ -15901,6 +15835,80 @@ namespace EDD\API\WP {
         }
     }
 }
+namespace EDD\API\v3 {
+    /**
+     * Abstract class for API endpoints.
+     *
+     * @since 2.11.4
+     */
+    abstract class Endpoint
+    {
+        /**
+         * The namespace for the endpoint.
+         *
+         * @var string
+         */
+        public static $namespace = 'edd/v3';
+        /**
+         * Registers the endpoint(s).
+         *
+         * @since 2.11.4
+         *
+         * @return void
+         */
+        abstract public function register();
+    }
+    /**
+     * Notifications API Endpoint.
+     *
+     * @since 2.11.4
+     */
+    class Notifications extends \EDD\API\v3\Endpoint
+    {
+        /**
+         * Registers the endpoints.
+         *
+         * @since 2.11.4
+         */
+        public function register()
+        {
+        }
+        /**
+         * Whether the current user can view (and dismiss) notifications.
+         *
+         * @since 2.11.4
+         *
+         * @return bool
+         */
+        public function canViewNotification()
+        {
+        }
+        /**
+         * Returns a list of notifications.
+         *
+         * @since 2.11.4
+         *
+         * @param \WP_REST_Request $request The request object.
+         *
+         * @return \WP_REST_Response
+         */
+        public function listNotifications(\WP_REST_Request $request)
+        {
+        }
+        /**
+         * Dismisses a single notification.
+         *
+         * @since 2.11.4
+         *
+         * @param \WP_REST_Request $request The request object.
+         *
+         * @return \WP_REST_Response
+         */
+        public function dismissNotification(\WP_REST_Request $request)
+        {
+        }
+    }
+}
 namespace EDD {
     /**
      * Implements a base object to be extended by core objects.
@@ -16248,125 +16256,6 @@ namespace EDD\Admin\Assets {
          * @return array
          */
         private static function get_styles()
-        {
-        }
-    }
-}
-namespace EDD\Admin\CartRecovery {
-    /**
-     * Cart Recovery admin screen router.
-     *
-     * Routes between the welcome/setup screen and the full Pro feature set.
-     *
-     * @since 3.6.5
-     */
-    class Screen implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Returns subscribed events.
-         *
-         * @since 3.6.5
-         * @return array Event subscriptions.
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Handles form submission for enabling/disabling Cart Recovery.
-         *
-         * @since 3.6.5
-         */
-        public static function handle_form_submission()
-        {
-        }
-        /**
-         * Renders the admin screen.
-         *
-         * @since 3.6.5
-         */
-        public static function render()
-        {
-        }
-        /**
-         * Renders the welcome/setup screen.
-         *
-         * @since 3.6.5
-         */
-        private static function render_welcome()
-        {
-        }
-        /**
-         * Renders promotional content for Lite users.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_content()
-        {
-        }
-        /**
-         * Renders the hero section with personalized lost revenue data.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_hero()
-        {
-        }
-        /**
-         * Renders the key stats bar.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_stats()
-        {
-        }
-        /**
-         * Renders the feature cards section.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_features()
-        {
-        }
-        /**
-         * Renders the "How It Works" section.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_how_it_works()
-        {
-        }
-        /**
-         * Renders the bottom CTA section.
-         *
-         * @since 3.6.5
-         */
-        private static function render_promo_cta()
-        {
-        }
-        /**
-         * Gets data from pending and abandoned orders to show lost revenue.
-         *
-         * @since 3.6.5
-         *
-         * @return array Array with 'total' (float), 'count' (int), and 'customers' (int) keys.
-         */
-        private static function get_abandoned_order_data()
-        {
-        }
-        /**
-         * Renders enable content for Pro users.
-         *
-         * @since 3.6.5
-         */
-        private static function render_enable_content()
-        {
-        }
-        /**
-         * Enqueues assets for the welcome screen.
-         *
-         * @since 3.6.5
-         */
-        private static function enqueue_assets()
         {
         }
     }
@@ -19277,7 +19166,7 @@ namespace EDD\Admin\Emails {
          * Outputs the email description for the editor.
          *
          * @since 3.3.0
-         * @param \EDD\Emails\Templates\EmailTemplate $email The email.
+         * @param \EDD\Emails\Email $email The email.
          */
         public function description($email)
         {
@@ -19299,16 +19188,6 @@ namespace EDD\Admin\Emails {
          * @since 3.3.0
          */
         public function reset()
-        {
-        }
-        /**
-         * Adds the reset button to the email editor.
-         * The priority is 100 to ensure it is added after other media buttons.
-         *
-         * @since 3.6.6
-         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
-         */
-        public function add_reset_button($email)
         {
         }
         /**
@@ -19396,46 +19275,6 @@ namespace EDD\Admin\Emails {
         public function remove_sections($sections)
         {
         }
-        /**
-         * Modifies the email editor.
-         *
-         * @since 3.6.7
-         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
-         */
-        public function modify_email_editor($email)
-        {
-        }
-        /**
-         * Enqueues the scripts and styles.
-         *
-         * @since 3.6.7
-         * @param string $hook The current admin page hook.
-         * @return void
-         */
-        public function enqueue($hook = '')
-        {
-        }
-        /**
-         * Gets the required tags description.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
-         * @return string
-         */
-        private function get_required_tags_description($email): string
-        {
-        }
-        /**
-         * Checks if the required tags are missing from the email content.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Templates\EmailTemplate $email_template The email template.
-         * @param array                               $updated_data     The updated data.
-         * @return bool
-         */
-        private function required_tags_missing($email_template, $updated_data): bool
-        {
-        }
     }
     /**
      * Class Messages
@@ -19460,7 +19299,7 @@ namespace EDD\Admin\Emails {
          * @since 3.3.0
          * @return  void
          */
-        public function notices($email = null)
+        public function notices()
         {
         }
         /**
@@ -19499,16 +19338,6 @@ namespace EDD\Admin\Promos\Notices {
          * The capability required to view/dismiss the notice.
          */
         const CAPABILITY = 'manage_options';
-        /**
-         * Gets the border color for overlay modals.
-         * Return a hex color string to customize, or empty string to use default blue.
-         *
-         * @since 3.6.4
-         * @return string
-         */
-        public function get_border_color()
-        {
-        }
         /**
          * Displays the notice content.
          *
@@ -19610,11 +19439,11 @@ namespace EDD\Admin\Emails {
         /**
          * Action hook for displaying the notice.
          */
-        const DISPLAY_HOOK = 'edd_email_editor_form';
+        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-emails';
         /**
          * The priority for the display hook.
          */
-        const DISPLAY_PRIORITY = 100;
+        const DISPLAY_PRIORITY = 5;
         /**
          * Type of promotional notice.
          */
@@ -19670,14 +19499,14 @@ namespace EDD\Admin\Emails {
          *
          * @since 3.3.0
          */
-        public static function enqueue($hook = '')
+        private static function enqueue()
         {
         }
         /**
          * Renders the email editor.
          *
          * @since 3.3.0
-         * @throws Exception If the email ID is missing or invalid.
+         * @throws Exception
          */
         private static function render_email_editor()
         {
@@ -19715,118 +19544,6 @@ namespace EDD\Admin\Emails {
          * @return string|false
          */
         private static function get_current_tab()
-        {
-        }
-    }
-    /**
-     * Registers email editor style formats via a filter and renders a "Format" button
-     * above the editor that opens a modal. Also injects the same formats into TinyMCE.
-     *
-     * @since 3.6.5
-     * @package EDD\Admin\Emails
-     */
-    class Styles implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Current email object when on the email editor screen.
-         *
-         * @var \EDD\Emails\Templates\Base|null
-         */
-        private $current_email = null;
-        /**
-         * Gets the subscribed events.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Sets up the style format UI and TinyMCE when the email editor is shown.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Templates\Base $email The email object.
-         */
-        public function setup($email)
-        {
-        }
-        /**
-         * Adds the styleselect button to the TinyMCE toolbar when we have formats.
-         *
-         * @since 3.6.5
-         * @param array $buttons TinyMCE buttons row 2.
-         * @return array
-         */
-        public function add_style_button($buttons)
-        {
-        }
-        /**
-         * Injects style formats into TinyMCE init from the filter.
-         *
-         * @since 3.6.5
-         * @param array $init_array TinyMCE initialization settings.
-         * @return array
-         */
-        public function add_styles_tinymce($init_array)
-        {
-        }
-        /**
-         * Renders the "Format" button and modal above the editor when formats are registered.
-         *
-         * @since 3.6.5
-         */
-        public function render_button()
-        {
-        }
-        /**
-         * Outputs the modal dialog content listing format options (native dialog element, same pattern as Cart Recovery modal).
-         *
-         * @since 3.6.5
-         * @param array $formats Normalized format definitions (with name key).
-         */
-        private function render_modal(array $formats)
-        {
-        }
-        /**
-         * Gets style formats for the current email via the filter.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Templates\Base $email Email object.
-         * @return array List of format definitions (title, block or selector, classes, styles, etc.).
-         */
-        private function get_style_formats($email)
-        {
-        }
-        /**
-         * Gets normalized formats for the current email.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Templates\Base $email Email object.
-         * @return array List of format definitions (title, block or selector, classes, styles, etc.).
-         */
-        private function get_normalized_formats($email)
-        {
-        }
-        /**
-         * Normalizes format definitions for TinyMCE: ensures each has a stable "name" for formatter.apply().
-         *
-         * @since 3.6.5
-         * @param array $formats Raw format definitions from the filter.
-         * @return array Format definitions with "name" key added where missing.
-         */
-        private function normalize_formats_for_tinymce(array $formats)
-        {
-        }
-        /**
-         * Generates a stable format name from title or classes for TinyMCE formatter.
-         *
-         * @since 3.6.5
-         * @param array $format     Single format definition.
-         * @param array $used_names Names already assigned to avoid collisions.
-         * @return string Sanitized name unique among used names.
-         */
-        private function get_stable_format_name(array $format, array $used_names)
         {
         }
     }
@@ -21295,17 +21012,6 @@ namespace EDD\Admin\Exports\Exporters\Traits {
         {
         }
         /**
-         * Deletes any existing temp file so a new export starts clean.
-         *
-         * Call this on step 1 to prevent stale data from an interrupted previous run
-         * from being accumulated into the new export.
-         *
-         * @since 3.6.8
-         */
-        protected function reset_temp_file(): void
-        {
-        }
-        /**
          * Set up the temporary file location data.
          *
          * @since 3.3.8
@@ -22364,10 +22070,9 @@ namespace EDD\Admin\Extensions {
          * Registers the extension manager script and style.
          *
          * @since 2.11.4
-         * @param string $hook The current admin page hook.
          * @return void
          */
-        public function register_assets($hook = '')
+        public function register_assets()
         {
         }
         /**
@@ -22384,9 +22089,9 @@ namespace EDD\Admin\Extensions {
          *
          * @since 2.11.4
          * @param ProductData $product             The product data object.
-         * @param array       $inactive_parameters The array of information to build the button for an inactive/not installed plugin.
-         * @param array       $active_parameters   The array of information needed to build the link to configure an active plugin.
-         * @param array       $configuration       The optional array of data to override the product data retrieved from the API.
+         * @param array        $inactive_parameters The array of information to build the button for an inactive/not installed plugin.
+         * @param array        $active_parameters   The array of information needed to build the link to configure an active plugin.
+         * @param array        $configuration       The optional array of data to override the product data retrieved from the API.
          * @return void
          */
         public function do_extension_card(\EDD\Admin\Extensions\ProductData $product, $inactive_parameters, $active_parameters, $configuration = array())
@@ -23369,18 +23074,6 @@ namespace EDD\Admin\Menu {
         {
         }
         /**
-         * Gets the Cart Recovery page definition.
-         *
-         * Returns null if the user has chosen to hide the menu item.
-         *
-         * @since 3.6.5
-         *
-         * @return array|null Page definition or null to exclude.
-         */
-        private static function get_cart_recovery_page()
-        {
-        }
-        /**
          * Registers the hidden upgrades page.
          *
          * @since 3.3.0
@@ -23412,16 +23105,6 @@ namespace EDD\Admin\Menu {
          * @return string
          */
         private static function mark_new($title)
-        {
-        }
-        /**
-         * Adds an indicator to mark a Pro menu item.
-         *
-         * @since 3.6.5
-         * @param string $title The menu title.
-         * @return string
-         */
-        private static function mark_pro($title)
         {
         }
     }
@@ -23549,83 +23232,6 @@ namespace EDD\Admin\Menu {
          * @return string
          */
         private function get_tab_name($data)
-        {
-        }
-    }
-    /**
-     * Class SubNav
-     *
-     * Renders a secondary navigation menu using the edd-sub-nav pattern.
-     *
-     * @since 3.6.4
-     */
-    class SubNav
-    {
-        /**
-         * The tabs.
-         *
-         * @since 3.6.4
-         * @var array
-         */
-        private $tabs;
-        /**
-         * The current tab.
-         *
-         * @since 3.6.4
-         * @var string
-         */
-        private $current;
-        /**
-         * Configuration arguments.
-         *
-         * @since 3.6.4
-         * @var array
-         */
-        private $args;
-        /**
-         * SubNav constructor.
-         *
-         * @since 3.6.4
-         * @param array $args Arguments for the sub-navigation.
-         */
-        public function __construct(array $args = array())
-        {
-        }
-        /**
-         * Gets the default arguments for the sub-navigation.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        private function get_defaults(): array
-        {
-        }
-        /**
-         * Renders the sub-navigation HTML.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function render(): void
-        {
-        }
-        /**
-         * Gets the URL for a specific tab.
-         *
-         * @since 3.6.4
-         * @param string $tab_id The tab identifier.
-         * @return string The URL for the tab.
-         */
-        private function get_tab_url(string $tab_id): string
-        {
-        }
-        /**
-         * Gets the wrapper style attribute if set.
-         *
-         * @since 3.6.4
-         * @return string The style attribute or empty string.
-         */
-        private function get_wrapper_style(): string
         {
         }
     }
@@ -25623,86 +25229,6 @@ namespace EDD\Admin\Promos\Notices {
     }
     // @codeCoverageIgnore
     /**
-     * Log Pruning Confirmation Modal.
-     *
-     * @since 3.6.4
-     */
-    class LogPruningConfirmModal extends \EDD\Admin\Promos\Notices\Notice
-    {
-        /**
-         * Action hook for displaying the notice.
-         */
-        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-tools';
-        /**
-         * Type of promotional notice.
-         */
-        const TYPE = 'overlay';
-        /**
-         * Capability required to dismiss the notice.
-         */
-        const CAPABILITY = 'manage_shop_settings';
-        /**
-         * Duration (in seconds) that the notice is dismissed for.
-         * `0` means it's dismissed permanently.
-         *
-         * @since 3.6.4
-         *
-         * @return int
-         */
-        public static function dismiss_duration()
-        {
-        }
-        /**
-         * Gets the border color for the modal.
-         * Returns warning yellow color.
-         *
-         * @since 3.6.4
-         * @return string
-         */
-        public function get_border_color()
-        {
-        }
-        /**
-         * Gets the notice content for AJAX requests.
-         *
-         * @since 3.6.4
-         *
-         * @return string
-         */
-        public function get_ajax_content()
-        {
-        }
-        /**
-         * Renders the dismiss button for the notice.
-         * This is intentionally left blank as the dismiss button is rendered in the AJAX content.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function dismiss_button()
-        {
-        }
-        /**
-         * Displays the notice content.
-         * This is intentionally left blank as the content is rendered in the AJAX content.
-         *
-         * @return void
-         */
-        protected function _display()
-        {
-        }
-        /**
-         * Determines if the notice should be displayed on render.
-         *
-         * @since 3.6.4
-         * @return bool
-         */
-        protected function _should_display(): bool
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
      * Class PriceChanges
      *
      * @since 3.3.6
@@ -25953,7 +25479,7 @@ namespace EDD\Admin\Promos {
          *
          * @var string[]
          */
-        protected $notices = array('\EDD\Admin\Promos\Notices\License_Upgrade_Notice', '\EDD\Admin\Promos\Notices\Five_Star_Review_Dashboard', '\EDD\Admin\Promos\Notices\Five_Star_Review_Settings', '\EDD\Admin\Promos\Notices\Lite', '\EDD\Admin\Onboarding\Notice', '\EDD\Admin\Promos\Notices\Emails', '\EDD\Admin\Emails\Reset', '\EDD\Admin\Promos\Notices\Recurring', '\EDD\Admin\Promos\Notices\PriceChanges', '\EDD\Admin\Promos\Notices\SquareWebhooksModal', '\EDD\Admin\Promos\Notices\LogPruningConfirmModal', '\EDD\Admin\Promos\Notices\EmptyCartBehavior', '\EDD\Admin\Promos\Notices\VATHandling');
+        protected $notices = array('\EDD\Admin\Promos\Notices\License_Upgrade_Notice', '\EDD\Admin\Promos\Notices\Five_Star_Review_Dashboard', '\EDD\Admin\Promos\Notices\Five_Star_Review_Settings', '\EDD\Admin\Promos\Notices\Lite', '\EDD\Admin\Onboarding\Notice', '\EDD\Admin\Promos\Notices\Emails', '\EDD\Admin\Emails\Reset', '\EDD\Admin\Promos\Notices\Recurring', '\EDD\Admin\Promos\Notices\PriceChanges', '\EDD\Admin\Promos\Notices\SquareWebhooksModal', '\EDD\Admin\Promos\Notices\EmptyCartBehavior', '\EDD\Admin\Promos\Notices\VATHandling');
         /**
          * Notices constructor.
          */
@@ -26782,25 +26308,6 @@ namespace EDD\Admin\Settings {
         {
         }
         /**
-         * Add the settings fields to the settings page.
-         *
-         * @since 3.6.5
-         * @param array $edd_settings The EDD settings.
-         * @return void
-         */
-        public static function add_settings_fields(array $edd_settings): void
-        {
-        }
-        /**
-         * Get the default settings.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        public static function get_default_setting_args(): array
-        {
-        }
-        /**
          * Register the settings.
          *
          * @since 3.1.4
@@ -27340,7 +26847,6 @@ namespace EDD\Admin\Settings {
          * Output the secondary options page navigation
          *
          * @since 3.3.0
-         * @since 3.6.4 Refactored to use SubNav HTML helper.
          *
          * @param string $active_tab The active tab.
          * @param string $section    The active section.
@@ -27627,15 +27133,6 @@ namespace EDD\Admin\Settings\Tabs {
          * @return string The trigger URL.
          */
         private function get_trigger_url()
-        {
-        }
-        /**
-         * Gets the webhook configuration instructions.
-         *
-         * @since 3.6.5
-         * @return string HTML instructions for webhook configuration.
-         */
-        private function get_webhook_instructions(): string
         {
         }
     }
@@ -27925,18 +27422,6 @@ namespace EDD\Admin\Settings\Tabs {
          * @return array
          */
         public function sanitize($input)
-        {
-        }
-        /**
-         * Gets the hide cart recovery setting.
-         *
-         * Pro users can only hide the menu item when Cart Recovery is disabled.
-         *
-         * @since 3.6.5
-         *
-         * @return array
-         */
-        private function get_hide_cart_recovery_setting()
         {
         }
         /**
@@ -28326,25 +27811,6 @@ namespace EDD\Admin\SiteHealth {
          * @return array
          */
         private function get_data()
-        {
-        }
-        /**
-         * Gets the cron system information.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        private function get_system_info()
-        {
-        }
-        /**
-         * Format the scheduler name for display.
-         *
-         * @since 3.6.5
-         * @param string $scheduler The scheduler name.
-         * @return string
-         */
-        private function format_scheduler_name($scheduler)
         {
         }
         /**
@@ -29060,13 +28526,6 @@ namespace EDD\EventManagement {
          */
         protected static $hook = 'plugins_loaded';
         /**
-         * The priority to subscribe to.
-         *
-         * @since 3.6.5
-         * @var int
-         */
-        protected static $priority = 10;
-        /**
          * Track which classes have already added their events.
          *
          * @since 3.5.0
@@ -29115,699 +28574,6 @@ namespace EDD\Admin\Tools {
          * @return array
          */
         protected function get_event_classes(): array
-        {
-        }
-    }
-    /**
-     * Log Settings tab.
-     *
-     * @since 3.6.4
-     */
-    class LogSettings implements \EDD\EventManagement\SubscriberInterface
-    {
-        use \EDD\Admin\Settings\Traits\AjaxToggle;
-        /**
-         * Get the subscribed events.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Filter the flyout docs link when on the log settings page.
-         *
-         * @since 3.6.4
-         *
-         * @param string $url The default docs URL.
-         * @return string The filtered URL.
-         */
-        public function filter_flyout_docs_link(string $url): string
-        {
-        }
-        /**
-         * Check if we're on the log settings page.
-         *
-         * @since 3.6.4
-         * @return bool
-         */
-        private function is_log_settings_page(): bool
-        {
-        }
-        /**
-         * Get the list of settings that this handler allows to be toggled via AJAX.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public static function get_allowed_ajax_settings(): array
-        {
-        }
-        /**
-         * Handle the AJAX toggle request for log pruning settings.
-         *
-         * Overrides the trait method to handle nested log type storage.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public static function ajax_toggle_setting(): void
-        {
-        }
-        /**
-         * Handle AJAX request to update number settings (batch_size and days).
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function ajax_update_number(): void
-        {
-        }
-        /**
-         * Render the secondary navigation for logs views.
-         *
-         * @since 3.6.4
-         *
-         * @param string $active_view The currently active view.
-         * @return void
-         */
-        public function render_navigation(string $active_view = 'file_downloads'): void
-        {
-        }
-        /**
-         * Render the sub-navigation with correct styling.
-         *
-         * Uses the edd-sub-nav pattern to match the Settings page secondary navigation.
-         *
-         * @since 3.6.4
-         *
-         * @param string $active_view The currently active view.
-         * @return void
-         */
-        private function render_sub_nav(string $active_view): void
-        {
-        }
-        /**
-         * Render the log pruning settings page.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function render(): void
-        {
-        }
-        /**
-         * Enqueue JavaScript for log pruning.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        private function enqueue_scripts(): void
-        {
-        }
-        /**
-         * Get the record count for a log type.
-         *
-         * @since 3.6.4
-         *
-         * @param array $type_config Log type configuration.
-         * @return int Record count.
-         */
-        private function get_log_type_count(array $type_config): int
-        {
-        }
-        /**
-         * Prepare data for the registered log types table.
-         *
-         * @since 3.6.4
-         *
-         * @param array $log_types Registered log types from the registry.
-         * @param array $settings  The pruning settings array.
-         * @param bool  $enabled   Whether pruning is enabled globally.
-         * @return array Prepared items for the list table.
-         */
-        private function prepare_log_types_data(array $log_types, array $settings, bool $enabled): array
-        {
-        }
-        /**
-         * Prepare data for the additional (unregistered) log types table.
-         *
-         * @since 3.6.4
-         *
-         * @param array $additional_types Additional log types from the database.
-         * @param array $settings         The pruning settings array.
-         * @param bool  $enabled          Whether pruning is enabled globally.
-         * @return array Prepared items for the list table.
-         */
-        private function prepare_additional_log_types_data(array $additional_types, array $settings, bool $enabled): array
-        {
-        }
-        /**
-         * Get the next pruning text for a log type.
-         *
-         * @since 3.6.4
-         *
-         * @param bool   $enabled      Whether pruning is enabled globally.
-         * @param bool   $type_enabled Whether pruning is enabled for this log type.
-         * @param string $type_id      The log type ID.
-         * @return string Next pruning text.
-         */
-        private function get_next_pruning_text(bool $enabled, bool $type_enabled, string $type_id): string
-        {
-        }
-    }
-    /**
-     * Logs class.
-     *
-     * @since 3.6.4
-     */
-    class Logs implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Get the subscribed events.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Setup the logs view.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type Log type.
-         * @return bool True if setup successful, false otherwise.
-         */
-        public static function setup($type = ''): bool
-        {
-        }
-        /**
-         * Output the log page.
-         *
-         * @since 3.6.4
-         *
-         * @param \EDD_Base_Log_List_Table $logs_table List table class to work with.
-         * @param string                   $tag        Type of log to view.
-         * @return void
-         */
-        public static function render_page($logs_table, string $tag = ''): void
-        {
-        }
-        /**
-         * Get default log views.
-         *
-         * @since 3.6.4
-         * @return array Log views.
-         */
-        public static function get_default_views(): array
-        {
-        }
-        /**
-         * Render file downloads log view.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function render_file_downloads(): void
-        {
-        }
-        /**
-         * Render gateway errors log view.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function render_gateway_errors(): void
-        {
-        }
-        /**
-         * Render API requests log view.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function render_api_requests(): void
-        {
-        }
-    }
-}
-namespace EDD\Admin\Tools\Logs {
-    /**
-     * Log Storage Calculator class.
-     *
-     * @since 3.6.4
-     */
-    class LogStorageCalculator
-    {
-        /**
-         * Cache TTL in seconds.
-         *
-         * @since 3.6.4
-         */
-        private const CACHE_TTL = HOUR_IN_SECONDS;
-        /**
-         * Cache key prefix.
-         *
-         * @since 3.6.4
-         */
-        private const CACHE_PREFIX = 'edd_log_storage_';
-        /**
-         * Get the storage size in bytes for a log type.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id     The log type identifier.
-         * @param array  $type_config The log type configuration.
-         * @return int Storage size in bytes.
-         */
-        public static function get_storage(string $type_id, array $type_config): int
-        {
-        }
-        /**
-         * Get the formatted storage size for display.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id     The log type identifier.
-         * @param array  $type_config The log type configuration.
-         * @return string Human-readable storage size (e.g., "1.5 MB").
-         */
-        public static function get_formatted_storage(string $type_id, array $type_config): string
-        {
-        }
-        /**
-         * Invalidate the cache for a specific log type or all log types.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id Optional. The log type identifier. If empty, clears all caches.
-         */
-        public static function invalidate_cache(string $type_id = ''): void
-        {
-        }
-        /**
-         * Calculate the storage size for a log type.
-         *
-         * Uses row-based estimation for maximum compatibility across all hosting environments.
-         * Includes both main table and meta table storage if configured.
-         *
-         * @since 3.6.4
-         *
-         * @param array $type_config The log type configuration.
-         * @return int Estimated storage size in bytes.
-         */
-        private static function calculate_storage(array $type_config): int
-        {
-        }
-        /**
-         * Calculate the meta table storage size for a log type.
-         *
-         * @since 3.6.4
-         *
-         * @param array $type_config The log type configuration.
-         * @return int Estimated meta storage size in bytes.
-         */
-        private static function calculate_meta_storage(array $type_config): int
-        {
-        }
-        /**
-         * Get the columns for a specific log table.
-         *
-         * @since 3.6.4
-         *
-         * @param string $table The table name without prefix.
-         * @param array  $type_config The log type configuration.
-         * @return array Array of column names.
-         */
-        private static function get_table_columns(string $table, array $type_config): array
-        {
-        }
-        /**
-         * Get the component from the table name.
-         *
-         * @since 3.6.5
-         *
-         * @param string $table The table name.
-         * @return string The component name.
-         */
-        private static function get_component_from_table(string $table): string
-        {
-        }
-    }
-    /**
-     * Log Types List Table Class.
-     *
-     * Renders the log types table for the log pruning settings.
-     *
-     * @since 3.6.4
-     */
-    class LogTypesListTable extends \EDD\Admin\List_Table
-    {
-        /**
-         * The log types data.
-         *
-         * @since 3.6.4
-         * @var array
-         */
-        private $log_types = array();
-        /**
-         * The pruning settings.
-         *
-         * @since 3.6.4
-         * @var array
-         */
-        private $settings = array();
-        /**
-         * Whether pruning is enabled globally.
-         *
-         * @since 3.6.4
-         * @var bool
-         */
-        private $pruning_enabled = false;
-        /**
-         * Whether this is the additional (unregistered) types table.
-         *
-         * @since 3.6.4
-         * @var bool
-         */
-        private $is_additional = false;
-        /**
-         * Constructor.
-         *
-         * @since 3.6.4
-         *
-         * @param array $args {
-         *     Optional. Arguments for configuring the list table.
-         *
-         *     @type array $log_types       Array of log type configurations.
-         *     @type array $settings        The pruning settings array.
-         *     @type bool  $pruning_enabled Whether pruning is enabled globally.
-         *     @type bool  $is_additional   Whether this is the additional types table.
-         * }
-         */
-        public function __construct($args = array())
-        {
-        }
-        /**
-         * Get the columns for the table.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public function get_columns()
-        {
-        }
-        /**
-         * Gets the name of the primary column.
-         *
-         * @since 3.6.4
-         * @return string Name of the primary column.
-         */
-        protected function get_primary_column_name()
-        {
-        }
-        /**
-         * Retrieves the data for the table.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public function get_data()
-        {
-        }
-        /**
-         * Prepare items for display.
-         *
-         * @since 3.6.4
-         */
-        public function prepare_items()
-        {
-        }
-        /**
-         * Default column output.
-         *
-         * @since 3.6.4
-         *
-         * @param array  $item        The current item.
-         * @param string $column_name The column name.
-         * @return string
-         */
-        public function column_default($item, $column_name)
-        {
-        }
-        /**
-         * Render the Log Type column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_log_type($item)
-        {
-        }
-        /**
-         * Render the Records column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_records($item)
-        {
-        }
-        /**
-         * Render the Database Storage column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_storage($item)
-        {
-        }
-        /**
-         * Render the Enable Pruning column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_enable_pruning($item)
-        {
-        }
-        /**
-         * Render the Days to Keep column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_days_to_keep($item)
-        {
-        }
-        /**
-         * Render the Next Pruning column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_next_pruning($item)
-        {
-        }
-        /**
-         * Render the Manual Pruning column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_manual_pruning($item)
-        {
-        }
-        /**
-         * Render the Status column.
-         *
-         * @since 3.6.4
-         *
-         * @param array $item The current item.
-         * @return string
-         */
-        public function column_status($item)
-        {
-        }
-        /**
-         * Message to be displayed when there are no items.
-         *
-         * @since 3.6.4
-         */
-        public function no_items()
-        {
-        }
-        /**
-         * Generate the table navigation.
-         *
-         * Override to hide bulk actions and pagination since this is a settings table.
-         *
-         * @since 3.6.4
-         *
-         * @param string $which The location of the tablenav: 'top' or 'bottom'.
-         */
-        protected function display_tablenav($which)
-        {
-        }
-        /**
-         * Display the table.
-         *
-         * Override to remove the table footer since this is a compact settings table.
-         *
-         * @since 3.6.4
-         */
-        public function display()
-        {
-        }
-        /**
-         * Get bulk actions.
-         *
-         * Override to return empty array since this is a settings table.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public function get_bulk_actions()
-        {
-        }
-    }
-}
-namespace EDD\Admin\Tools {
-    /**
-     * Scheduled Actions tab.
-     *
-     * @since 3.6.5
-     */
-    class ScheduledActions implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Get the subscribed events.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Render the scheduled actions tab.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        public function render(): void
-        {
-        }
-        /**
-         * Render message when Action Scheduler is not available.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        private function render_not_available(): void
-        {
-        }
-        /**
-         * Render the scheduled actions table.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        private function render_actions_table(): void
-        {
-        }
-        /**
-         * Render a single action row.
-         *
-         * @since 3.6.5
-         *
-         * @param int    $action_id The action ID.
-         * @param object $action    The action object.
-         * @return void
-         */
-        private function render_action_row(int $action_id, $action): void
-        {
-        }
-        /**
-         * Get the recurrence display for an action.
-         *
-         * @since 3.6.5
-         *
-         * @param object $action The action object.
-         * @return string The recurrence display string.
-         */
-        private function get_recurrence($action): string
-        {
-        }
-        /**
-         * Get the schedule display string for an action.
-         *
-         * @since 3.6.5
-         *
-         * @param object|null $schedule The schedule object.
-         * @return string The schedule display string.
-         */
-        private function get_schedule_display($schedule): string
-        {
-        }
-        /**
-         * Convert an interval of seconds into a human-friendly string.
-         *
-         * @since 3.6.5
-         *
-         * @param int $interval A interval in seconds.
-         * @return string A human friendly string representation of the interval.
-         */
-        private function human_interval(int $interval): string
-        {
-        }
-        /**
-         * Format a value for display.
-         *
-         * @since 3.6.5
-         *
-         * @param mixed $value The value to format.
-         * @return string The formatted value.
-         */
-        private function format_value($value): string
-        {
-        }
-        /**
-         * Get EDD actions from Action Scheduler.
-         *
-         * @since 3.6.5
-         *
-         * @param int $per_page Number of actions to retrieve.
-         * @return array Array of action objects.
-         */
-        private function get_edd_actions(int $per_page = 1000): array
-        {
-        }
-        /**
-         * Get status labels from Action Scheduler.
-         *
-         * @since 3.6.5
-         *
-         * @return array Status labels.
-         */
-        private function get_status_labels(): array
         {
         }
     }
@@ -30518,61 +29284,6 @@ namespace EDD\Admin\Upgrades\v3 {
     }
 }
 namespace EDD\Admin\Utils {
-    // @codeCoverageIgnore
-    /**
-     * Class NoItems
-     *
-     * @since 3.6.5
-     */
-    class NoItems
-    {
-        /**
-         * The heading for the NoItems class.
-         *
-         * @var string
-         */
-        private $heading;
-        /**
-         * The text property for the NoItems class.
-         *
-         * @var string
-         */
-        private $text;
-        /**
-         * The actions array for the NoItems class.
-         *
-         * @var array
-         */
-        private $actions;
-        /**
-         * NoItems constructor.
-         *
-         * @param string $heading The heading for the NoItems class.
-         * @param string $text The text property for the NoItems class.
-         * @param array  $actions The actions array for the NoItems class.
-         */
-        public function __construct(string $heading, string $text = '', array $actions = array())
-        {
-        }
-        /**
-         * Displays a message when there are no items to show.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        public function render()
-        {
-        }
-        /**
-         * Renders the actions for the NoItems class.
-         *
-         * @access private
-         * @return void
-         */
-        private function render_actions()
-        {
-        }
-    }
     /**
      * Class Page
      *
@@ -31216,46 +29927,6 @@ namespace EDD\Blocks\Checkout\Elements {
         }
     }
 }
-namespace EDD\Blocks\Forms {
-    /**
-     * Profile Editor block registration and rendering.
-     *
-     * @since 3.6.7
-     */
-    class ProfileEditor implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Get the subscribed events.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Register the profile editor block type.
-         *
-         * EDD_BLOCKS_DIR is defined by the blocks plugin at plugins_loaded priority 500,
-         * which always runs before init.
-         *
-         * @since 3.6.7
-         */
-        public static function register(): void
-        {
-        }
-        /**
-         * Render the profile editor block.
-         *
-         * @since 3.6.7
-         * @param array $block_attributes The block attributes.
-         * @return string
-         */
-        public static function render(array $block_attributes = array()): string
-        {
-        }
-    }
-}
 namespace EDD\Blocks {
     /**
      * Class Loader
@@ -31341,211 +30012,6 @@ namespace EDD\CLI\Migration {
          * @return void
          */
         public function migrate_missing()
-        {
-        }
-    }
-}
-namespace EDD\EventManagement {
-    /**
-     * Class Subscriber
-     *
-     * @since 3.3.0
-     * @package EDD\EventManagement
-     */
-    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * The instance of this class.
-         *
-         * @var Subscriber
-         */
-        public static $instance;
-        /**
-         * Gets the instance of this class.
-         *
-         * @since 3.3.0
-         * @return Subscriber
-         */
-        public static function get_instance()
-        {
-        }
-    }
-}
-namespace EDD\Cache {
-    /**
-     * Cache Handler subscriber.
-     *
-     * @since 3.6.7
-     */
-    class Handler extends \EDD\EventManagement\Subscriber
-    {
-        /**
-         * Transient key used to store excluded page URIs.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        const TRANSIENT = 'edd_cache_excluded_ids';
-        /**
-         * Returns the events this subscriber listens to.
-         *
-         * @since 3.6.7
-         *
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Prevents caching on the checkout and success pages.
-         * Sets no-cache headers on EDD dynamic pages using template tags and page ID matching.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function check_request(): void
-        {
-        }
-        /**
-         * Displays an admin notice if W3 Total Cache database caching is misconfigured.
-         *
-         * EDD stores session data in the custom edd_sessions table. If W3 Total Cache
-         * database caching is enabled without excluding edd_sessions queries, cached
-         * SELECT results may serve stale cart or checkout session data.
-         *
-         * @since 1.7
-         * @since 3.6.7 Updated to check for edd_sessions instead of the deprecated _wp_session_ option key.
-         *
-         * @return void
-         */
-        public static function notices(): void
-        {
-        }
-        /**
-         * Deletes the cached page ID list.
-         *
-         * Hooked to settings updates and permalink structure changes so the list
-         * is rebuilt on the next request with current page ids.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public static function flush_page_ids(): void
-        {
-        }
-        /**
-         * Flushes the cached page ID list when a relevant post is saved.
-         *
-         * Only fires when the saved post is the configured checkout or success page,
-         * so slug edits are reflected immediately.
-         *
-         * @since 3.6.7
-         *
-         * @param int $post_id The ID of the post being saved.
-         * @return void
-         */
-        public function maybe_flush_page_ids(int $post_id): void
-        {
-        }
-        /**
-         * Retrieves the dynamic page IDs.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        private function get_dynamic_page_ids(): array
-        {
-        }
-        /**
-         * Initializes the cache handler.
-         *
-         * @since 1.7
-         * @since 3.6.7 Deprecated.
-         * @return void
-         */
-        public function init(): void
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * NoCache class.
-     *
-     * @since 3.6.7
-     */
-    class NoCache
-    {
-        /**
-         * Default headers added to every nocache_headers call.
-         *
-         * @since 3.6.7
-         * @var array<string,string>
-         */
-        private const DEFAULTS = array('Referrer-Policy' => 'no-referrer', 'X-LiteSpeed-Cache-Control' => 'no-store');
-        /**
-         * The single nocache_headers filter callback registered for this request.
-         *
-         * Tracked so subsequent set_headers() calls can remove it before registering
-         * a replacement that carries the merged accumulated state.
-         *
-         * @since 3.6.7
-         * @var \Closure|null
-         */
-        private static ?\Closure $filter_callback = null;
-        /**
-         * Accumulated extra-header overrides from all set_headers() calls this request.
-         *
-         * Merged across calls via array_merge so an earlier empty-string suppression
-         * is preserved when a subsequent call passes no overrides.
-         *
-         * @since 3.6.7
-         * @var array<string,string>
-         */
-        private static array $accumulated_extra = array();
-        /**
-         * Sets no-cache headers for the current request.
-         *
-         * Defines DONOTCACHEPAGE, hooks nocache_headers to inject Referrer-Policy
-         * and X-LiteSpeed-Cache-Control, and calls nocache_headers().
-         *
-         * Callers may pass $extra to add headers or suppress a default by passing
-         * an empty string as the value. Multiple calls within the same request
-         * accumulate their overrides; a suppression set by an earlier call is
-         * preserved even when a later call passes no overrides.
-         *
-         * @since 3.6.7
-         *
-         * @param array<string,string> $extra Additional headers to merge. An empty-string
-         *                                    value removes the corresponding default header.
-         * @return void
-         */
-        public static function set_headers(array $extra = array()): void
-        {
-        }
-        /**
-         * Resets the class state for the current request.
-         *
-         * Removes the registered nocache_headers filter and clears the accumulated
-         * extra-header overrides. Should be called in test tearDown methods to
-         * prevent state from bleeding between tests.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public static function reset(): void
-        {
-        }
-        /**
-         * Sanitizes header names and values to prevent header injection.
-         *
-         * @since 3.6.7
-         *
-         * @param array<string,string> $headers Raw caller-supplied headers.
-         * @return array<string,string>
-         */
-        private static function sanitize_headers(array $headers): array
         {
         }
     }
@@ -32235,70 +30701,6 @@ namespace EDD\Cart\Preview {
 }
 namespace EDD\Checkout {
     /**
-     * Accessibility class.
-     *
-     * Provides accessibility improvements for checkout and other EDD forms
-     * to meet WCAG 3.3.2 compliance requirements.
-     *
-     * @since 3.6.5
-     */
-    class Accessibility extends \EDD\EventManagement\Subscriber
-    {
-        /**
-         * Whether the required fields notice has been rendered.
-         *
-         * @since 3.6.5
-         * @var bool
-         */
-        private static $rendered = false;
-        /**
-         * Gets the events this subscriber should be subscribed to.
-         *
-         * Hooks into multiple early hooks to display the required fields notice
-         * as close to the top of the checkout form as possible. The notice only
-         * renders once per page load regardless of how many hooks fire.
-         *
-         * The edd_checkout_form_top hook uses priority 0 to ensure the notice
-         * renders before the UserDetails block element (priority 1) on the
-         * checkout block, while still appearing after the discount field (priority -1).
-         *
-         * Note: edd_purchase_form_top is intentionally excluded because its content
-         * is loaded via AJAX (edd_load_ajax_gateway), creating a separate PHP request
-         * where the static $rendered flag resets. This would cause the notice to
-         * appear twice on the checkout block.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Renders the required fields notice for accessibility (WCAG 3.3.2).
-         *
-         * Displays a notice explaining that fields marked with an asterisk (*) are required.
-         * This helps users understand the meaning of the required field indicator.
-         *
-         * The notice is controlled by the 'show_required_fields_notice' admin setting
-         * (Settings > Payments > Checkout) and is disabled by default.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        public function render_required_fields_notice()
-        {
-        }
-        /**
-         * Resets the rendered flag for testing purposes.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        public static function reset_rendered_flag()
-        {
-        }
-    }
-    /**
      * Address class.
      */
     class Address
@@ -32320,7 +30722,7 @@ namespace EDD\Checkout {
          *
          * @var array
          */
-        private $customer = array('address' => array('line1' => '', 'line2' => '', 'city' => '', 'zip' => '', 'state' => '', 'country' => '', 'company' => '', 'phone' => ''));
+        private $customer = array('address' => array('line1' => '', 'line2' => '', 'city' => '', 'zip' => '', 'state' => '', 'country' => '', 'phone' => ''));
         /**
          * Get the fields to display.
          *
@@ -32405,6 +30807,34 @@ namespace EDD\Checkout {
         {
         }
     }
+}
+namespace EDD\EventManagement {
+    /**
+     * Class Subscriber
+     *
+     * @since 3.3.0
+     * @package EDD\EventManagement
+     */
+    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The instance of this class.
+         *
+         * @var Subscriber
+         */
+        public static $instance;
+        /**
+         * Gets the instance of this class.
+         *
+         * @since 3.3.0
+         * @return Subscriber
+         */
+        public static function get_instance()
+        {
+        }
+    }
+}
+namespace EDD\Checkout {
     /**
      * Class AutoRegister
      *
@@ -32720,15 +31150,6 @@ namespace EDD\Checkout {
          * @return bool
          */
         public static function has_block($post_id = null)
-        {
-        }
-        /**
-         * Gets the checkout type for the purchase page.
-         *
-         * @since 3.6.6
-         * @return string The checkout type: 'elementor', 'block', 'shortcode', 'undetermined', or 'unknown'.
-         */
-        public static function get_checkout_type($post_id = null): string
         {
         }
         /**
@@ -34263,8 +32684,6 @@ namespace EDD\Cron\Traits {
         /**
          * Clear the scheduled event.
          *
-         * Clears from the active scheduler.
-         *
          * @since 3.3.0
          *
          * @param string $hook The hook name.
@@ -34466,99 +32885,6 @@ namespace EDD\Cron\Components {
          * @return void
          */
         public function clean_exports()
-        {
-        }
-    }
-    /**
-     * LogPruning Component Class
-     *
-     * @since 3.6.4
-     */
-    class LogPruning extends \EDD\Cron\Components\Component
-    {
-        /**
-         * The unique identifier for this component.
-         *
-         * @since 3.6.4
-         * @var string
-         */
-        protected static $id = 'log_pruning';
-        /**
-         * Gets the array of subscribed events.
-         *
-         * Registers an init hook to dynamically add hooks for enabled log types.
-         * This avoids loading translations too early (before text domains are loaded).
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Register pruning hooks for enabled log types.
-         *
-         * Called on `init` to ensure text domains are loaded and settings are available.
-         * Only registers hooks for log types that have pruning enabled.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function register_pruning_hooks()
-        {
-        }
-        /**
-         * Prune logs for a single log type.
-         *
-         * Called by the individual cron event for this log type.
-         * Automatically detects which log type to prune based on the hook name.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function prune_single_log_type()
-        {
-        }
-        /**
-         * Builds the date_created_query array for pruning queries.
-         *
-         * @since 3.6.4
-         *
-         * @param \DateTime $cutoff_date The cutoff date for pruning.
-         * @return array The date query configuration.
-         */
-        private static function build_date_query(\DateTime $cutoff_date): array
-        {
-        }
-        /**
-         * Prune logs of a specific type.
-         *
-         * This method is public and static so it can be called from both the cron
-         * and the AJAX handler for manual pruning.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id     Log type ID.
-         * @param array  $type_config Log type configuration.
-         * @param int    $days        Number of days to keep logs.
-         * @param int    $batch_size  Number of logs to delete per batch. Default 250.
-         * @return int Number of logs deleted.
-         */
-        public static function prune_log_type($type_id, $type_config, $days, $batch_size = 250): int
-        {
-        }
-        /**
-         * Get count of logs that would be pruned for a specific type.
-         *
-         * This method is public and static so it can be called from the AJAX handler.
-         *
-         * @since 3.6.4
-         *
-         * @param array $type_config Log type configuration.
-         * @param int   $days        Number of days to keep logs.
-         * @return int Number of logs that would be deleted.
-         */
-        public static function get_prune_count($type_config, $days): int
         {
         }
     }
@@ -34799,11 +33125,7 @@ namespace EDD\Cron\Traits {
         /**
          * Get the timestamp of the next scheduled event.
          *
-         * Uses the active scheduler.
-         *
          * @since 3.3.0
-         * @since 3.6.5 Uses the appropriate scheduler (Action Scheduler or WP-Cron) to check
-         * if an event is already scheduled.
          *
          * @param string $hook The hook name.
          * @param array  $args The arguments to pass to the hook.
@@ -34864,39 +33186,11 @@ namespace EDD\Cron\Events {
          */
         public $valid;
         /**
-         * Accessible properties.
-         *
-         * The properties that are accessible to the event.
-         *
-         * @var array
-         */
-        private $accessible_properties = array('hook', 'schedule', 'args', 'first_run');
-        /**
          * Event constructor.
          *
          * @since 3.3.0
          */
         public function __construct()
-        {
-        }
-        /**
-         * Magic getter.
-         *
-         * @since 3.6.5
-         *
-         * @param string $property The property to get.
-         * @return mixed
-         */
-        public function __get($property)
-        {
-        }
-        /**
-         * Reset the event.
-         *
-         * @since 3.6.5
-         * @return void
-         */
-        public function reset()
         {
         }
         /**
@@ -34944,11 +33238,9 @@ namespace EDD\Cron\Events {
         /**
          * Schedule an event.
          *
-         * Uses the active scheduler (Action Scheduler or WP-Cron).
-         *
          * @since 3.3.0
          *
-         * @return bool True if successfully scheduled, false otherwise.
+         * @return void
          */
         public function schedule()
         {
@@ -34986,109 +33278,6 @@ namespace EDD\Cron\Events {
          * @var string
          */
         protected $schedule = 'daily';
-    }
-    /**
-     * LogPruning Event Class
-     *
-     * Schedules separate daily cron events for each log type at randomized times
-     * throughout the day to avoid database strain from simultaneous operations.
-     *
-     * @since 3.6.4
-     */
-    class LogPruning extends \EDD\Cron\Events\Event
-    {
-        use \EDD\Cron\Traits\Clear;
-        /**
-         * Hook name.
-         *
-         * This is a base hook - individual log types will have their own hooks.
-         *
-         * @since 3.6.4
-         * @var string
-         */
-        protected $hook = 'edd_prune_logs';
-        /**
-         * First Run Time.
-         *
-         * Not used directly - calculated per log type.
-         *
-         * @since 3.6.4
-         * @var int
-         */
-        protected $first_run = 0;
-        /**
-         * Schedule.
-         *
-         * The registered WP Cron schedule to use.
-         *
-         * @since 3.6.4
-         * @var string
-         */
-        protected $schedule = 'daily';
-        /**
-         * Schedule events for all enabled log types.
-         *
-         * Overrides the parent schedule() method to create separate events
-         * for each log type at staggered times.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function schedule()
-        {
-        }
-        /**
-         * Clean up orphaned cron events.
-         *
-         * Removes cron events for log types that are no longer enabled or registered.
-         *
-         * @since 3.6.4
-         *
-         * @param array $valid_type_ids Array of type IDs that should have cron events.
-         * @return void
-         */
-        private function cleanup_orphaned_events(array $valid_type_ids)
-        {
-        }
-        /**
-         * Schedule a single log type's cron event.
-         *
-         * Uses the active scheduler (Action Scheduler or WP-Cron).
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id     Log type ID.
-         * @param int    $base_time   Base timestamp for scheduling.
-         * @param int    $time_offset Offset in seconds from base time.
-         * @return void
-         */
-        private function schedule_single_type($type_id, $base_time, $time_offset)
-        {
-        }
-        /**
-         * Calculate the base time for scheduling.
-         *
-         * Returns a random time between 1-6 AM UTC tomorrow. The base time is cached
-         * in a transient to prevent schedule drift when events are rescheduled.
-         *
-         * @since 3.6.4
-         * @return int Unix timestamp.
-         */
-        private function calculate_base_time(): int
-        {
-        }
-        /**
-         * Get a random time offset in seconds.
-         *
-         * @since 3.6.4
-         *
-         * @param int $min Minimum offset in seconds.
-         * @param int $max Maximum offset in seconds.
-         * @return int Random offset in seconds.
-         */
-        private function get_random_offset($min = 900, $max = 2700): int
-        {
-        }
     }
     /**
      * Session Cleanup Event
@@ -35187,8 +33376,8 @@ namespace EDD\Cron\Events {
          *
          * @since 3.3.7
          *
-         * @param string $hook  The hook name.
-         * @param array  $args  The arguments to pass to the hook.
+         * @param string $hook The hook name.
+         * @param array  $args The arguments to pass to the hook.
          *
          * @return void
          */
@@ -35210,8 +33399,6 @@ namespace EDD\Cron\Events {
         /**
          * Schedule the event.
          *
-         * Uses the active scheduler (Action Scheduler or WP-Cron).
-         *
          * @since 3.3.0
          *
          * @return void
@@ -35221,8 +33408,6 @@ namespace EDD\Cron\Events {
         }
         /**
          * Unschedule the event.
-         *
-         * Unschedules from the active scheduler.
          *
          * @since 3.3.7
          *
@@ -35318,52 +33503,23 @@ namespace EDD\Cron {
         /**
          * Add our custom schedules to the cron schedules.
          *
-         * When Action Scheduler is available, EDD schedules are not added here; interval
-         * lookup is done via Handler::get_schedule_interval() and the edd_cron_schedules filter.
-         *
          * @since 3.3.0
          *
-         * @param array $schedules Existing cron schedules.
          * @return array
          */
         public function load_schedules($schedules)
         {
         }
         /**
-         * The transient key used to track whether cron events have been registered.
-         *
-         * @since 3.6.6
-         * @var string
-         */
-        const EVENTS_REGISTERED_TRANSIENT = 'edd_cron_events_registered';
-        /**
          * Load any cron events we need to.
          *
          * Cron Events are the 'do_action' events that are fired by WordPress, on a defined schedule.
-         *
-         * Uses a transient to avoid checking schedule status on every page load.
-         * When using Action Scheduler, each check requires database queries against
-         * the actionscheduler_actions table. The transient ensures we only run these
-         * checks periodically rather than on every request.
          *
          * @since 3.3.0
          *
          * @return void
          */
         public function load_events()
-        {
-        }
-        /**
-         * Clear the events registered transient.
-         *
-         * Call this when events need to be re-registered, such as after
-         * plugin activation, deactivation, or upgrade.
-         *
-         * @since 3.6.6
-         *
-         * @return void
-         */
-        public static function clear_events_transient()
         {
         }
         /**
@@ -35377,26 +33533,6 @@ namespace EDD\Cron {
         {
         }
         /**
-         * Get the registered events.
-         *
-         * @since 3.3.0
-         *
-         * @return array
-         */
-        public static function get_registered_events()
-        {
-        }
-        /**
-         * Get the registered components.
-         *
-         * @since 3.3.0
-         *
-         * @return array
-         */
-        public static function get_registered_components()
-        {
-        }
-        /**
          * Get the registered schedules.
          *
          * @since 3.3.0
@@ -35407,566 +33543,23 @@ namespace EDD\Cron {
         {
         }
         /**
-         * Maybe migrate cron events to Action Scheduler.
+         * Get the registered events.
          *
-         * Runs on 'init' hook at priority 999 to ensure cron events are loaded first.
+         * @since 3.3.0
          *
-         * @since 3.6.5
+         * @return array
          */
-        public function maybe_migrate_to_action_scheduler()
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Cron Migrator Class
-     *
-     * Migrates scheduled cron events between WP-Cron and Action Scheduler.
-     * Uses registered events from the Loader to ensure only EDD-managed
-     * cron events are migrated.
-     *
-     * @since 3.6.5
-     */
-    class Migrator
-    {
-        /**
-         * Migrate from WP-Cron to Action Scheduler.
-         *
-         * Clears all registered EDD events from WP-Cron and re-schedules
-         * them using Action Scheduler.
-         *
-         * @since 3.6.5
-         *
-         * @return bool True if migration was performed, false otherwise.
-         */
-        public static function migrate_to_action_scheduler(): bool
+        private function get_registered_events()
         {
         }
         /**
-         * Migrate from Action Scheduler to WP-Cron.
+         * Get the registered components.
          *
-         * Clears all registered EDD events from Action Scheduler and re-schedules
-         * them using WP-Cron.
+         * @since 3.3.0
          *
-         * @since 3.6.5
-         *
-         * @return bool True if migration was performed, false otherwise.
+         * @return array
          */
-        public static function migrate_to_wp_cron(): bool
-        {
-        }
-    }
-}
-namespace EDD\Cron\Schedulers {
-    /**
-     * Scheduler Interface
-     *
-     * Provides a unified interface for different cron scheduling systems.
-     *
-     * @since 3.6.5
-     */
-    interface Scheduler
-    {
-        /**
-         * Schedule a recurring event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp The first time the event should run.
-         * @param int    $interval  How often the event should recur (in seconds).
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier.
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool;
-        /**
-         * Schedule a single event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp When the event should run.
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier.
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool;
-        /**
-         * Get the next scheduled time for an event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to check.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier.
-         * @return int|false The next scheduled timestamp, or false if not scheduled.
-         */
-        public function next_scheduled(string $hook, array $args = array(), string $group = '');
-        /**
-         * Unschedule a specific event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to unschedule.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier.
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule(string $hook, array $args = array(), string $group = ''): bool;
-        /**
-         * Unschedule all events matching the criteria.
-         *
-         * @since 3.6.5
-         *
-         * @param string|null $hook  Optional hook name to filter by.
-         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
-         * @param string      $group Optional group identifier.
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool;
-        /**
-         * Get all scheduled hooks, optionally filtered by prefix.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
-         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
-         * @param string $group       Optional group identifier.
-         * @return array Array of hook names (strings).
-         */
-        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array;
-        /**
-         * Check if an action is scheduled.
-         *
-         * More efficient than next_scheduled() when you only need to know
-         * if an event exists, not when it will run.
-         *
-         * @since 3.6.6
-         *
-         * @param string $hook  The hook name to check.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier.
-         * @return bool True if a matching action is pending or in-progress, false otherwise.
-         */
-        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool;
-        /**
-         * Search for scheduled actions.
-         *
-         * @since 3.6.5
-         *
-         * @param array  $args         Query arguments. See implementation for supported args.
-         * @param string $return_format Return format: 'ids', 'objects', or 'OBJECT'. Default 'objects'.
-         * @return array Array of action IDs or objects.
-         */
-        public function search(array $args = array(), string $return_format = 'objects'): array;
-        /**
-         * Check if this scheduler is available.
-         *
-         * @since 3.6.5
-         *
-         * @return bool True if the scheduler is available, false otherwise.
-         */
-        public static function is_available(): bool;
-    }
-    // @codeCoverageIgnore
-    /**
-     * ActionScheduler Class
-     *
-     * Implements the Scheduler interface using Action Scheduler.
-     *
-     * @since 3.6.5
-     */
-    class ActionScheduler implements \EDD\Cron\Schedulers\Scheduler
-    {
-        /**
-         * The group identifier for EDD actions.
-         *
-         * @var string
-         */
-        const GROUP = 'edd';
-        /**
-         * Check if Action Scheduler is available and initialized.
-         *
-         * Action Scheduler is loaded early in the main plugin file and initializes
-         * on the plugins_loaded hook, so it should be available by the time this is called.
-         *
-         * @since 3.6.5
-         *
-         * @return bool
-         */
-        public static function is_available(): bool
-        {
-        }
-        /**
-         * Schedule a recurring event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp The first time the event should run.
-         * @param int    $interval  How often the event should recur (in seconds).
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier. Default 'edd'.
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Schedule a single event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp When the event should run.
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier. Default 'edd'.
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Get the next scheduled time for an event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to check.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier. Default 'edd'.
-         * @return int|false The next scheduled timestamp, or false if not scheduled.
-         */
-        public function next_scheduled(string $hook, array $args = array(), string $group = '')
-        {
-        }
-        /**
-         * Unschedule a specific event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to unschedule.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier. Default 'edd'.
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule(string $hook, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Unschedule all events matching the criteria.
-         *
-         * @since 3.6.5
-         *
-         * @param string|null $hook  Optional hook name to filter by.
-         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
-         * @param string      $group Optional group identifier. Default 'edd'.
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool
-        {
-        }
-        /**
-         * Check if an action is scheduled (more efficient than next_scheduled).
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook of the action.
-         * @param array  $args  Optional. Args that have been passed to the action. Default empty array.
-         * @param string $group Optional. The group the action is assigned to. Default 'edd'.
-         *
-         * @return bool True if a matching action is pending or in-progress, false otherwise.
-         */
-        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Get all scheduled hooks, optionally filtered by prefix.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
-         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
-         * @param string $group       Optional group identifier. Default 'edd'.
-         * @return array Array of hook names (strings).
-         */
-        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array
-        {
-        }
-        /**
-         * Get all scheduled actions for a group.
-         *
-         * @since 3.6.5
-         *
-         * @param string $group   Optional. The group to get actions for. Default 'edd'.
-         * @param int    $per_page Optional. Number of results to return. Default 100.
-         *
-         * @return array Array of action objects.
-         */
-        public static function get_actions(string $group = self::GROUP, int $per_page = 100): array
-        {
-        }
-        /**
-         * Search for scheduled actions.
-         *
-         * @since 3.6.5
-         *
-         * @param array  $args         Possible arguments, with their default values:
-         *        'hook' => '' - the name of the action that will be triggered
-         *        'args' => null - the args array that will be passed with the action
-         *        'date' => null - the scheduled date of the action. Expects a DateTime object, a unix timestamp, or a string that can parsed with strtotime(). Used in UTC timezone.
-         *        'date_compare' => '<=' - operator for testing "date". accepted values are '!=', '>', '>=', '<', '<=', '='
-         *        'modified' => null - the date the action was last updated. Expects a DateTime object, a unix timestamp, or a string that can parsed with strtotime(). Used in UTC timezone.
-         *        'modified_compare' => '<=' - operator for testing "modified". accepted values are '!=', '>', '>=', '<', '<=', '='
-         *        'group' => '' - the group the action belongs to
-         *        'status' => '' - ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
-         *        'claimed' => null - TRUE to find claimed actions, FALSE to find unclaimed actions, a string to find a specific claim ID
-         *        'per_page' => 5 - Number of results to return
-         *        'offset' => 0
-         *        'orderby' => 'date' - accepted values are 'hook', 'group', 'modified', or 'date'
-         *        'order' => 'ASC'.
-         * @param string $return_format Return format: 'ids' for IDs only, 'objects' or OBJECT for full objects. Default 'objects'.
-         * @return array Array of action IDs or objects based on return format.
-         */
-        public function search(array $args = array(), string $return_format = 'objects'): array
-        {
-        }
-    }
-    /**
-     * Handler Class
-     *
-     * Factory for creating and managing scheduler instances.
-     *
-     * @since 3.6.5
-     */
-    class Handler
-    {
-        /**
-         * Cached scheduler instance.
-         *
-         * @since 3.6.5
-         * @var Scheduler|null
-         */
-        private static $scheduler = null;
-        /**
-         * Get the active scheduler instance.
-         *
-         * @since 3.6.5
-         *
-         * @return Scheduler The active scheduler instance.
-         */
-        public static function get_scheduler(): \EDD\Cron\Schedulers\Scheduler
-        {
-        }
-        /**
-         * Create the appropriate scheduler instance.
-         *
-         * @since 3.6.5
-         *
-         * @return Scheduler The scheduler instance.
-         */
-        private static function create_scheduler(): \EDD\Cron\Schedulers\Scheduler
-        {
-        }
-        /**
-         * Determine if Action Scheduler should be used.
-         *
-         * @since 3.6.5
-         *
-         * @return bool True if Action Scheduler should be used, false otherwise.
-         */
-        private static function should_use_action_scheduler(): bool
-        {
-        }
-        /**
-         * Get the name of the active scheduler.
-         *
-         * @since 3.6.5
-         *
-         * @return string 'action-scheduler' or 'wp-cron'.
-         */
-        public static function get_active_scheduler_name(): string
-        {
-        }
-        /**
-         * Check if Action Scheduler is the active scheduler.
-         *
-         * @since 3.6.5
-         *
-         * @return bool True if Action Scheduler is active, false otherwise.
-         */
-        public static function is_using_action_scheduler(): bool
-        {
-        }
-        /**
-         * Reset the cached scheduler instance.
-         *
-         * Useful for testing or when switching schedulers.
-         *
-         * @since 3.6.5
-         *
-         * @return void
-         */
-        public static function reset(): void
-        {
-        }
-        /**
-         * Get the interval in seconds for a named schedule.
-         *
-         * Uses wp_get_schedules() first (core and any added via cron_schedules when using
-         * WP-Cron), then the edd_cron_schedules filter for EDD custom schedules (e.g. when
-         * using Action Scheduler and EDD schedules are not added to cron_schedules).
-         *
-         * @since 3.6.5
-         *
-         * @param string $schedule The schedule name (e.g. 'daily', 'edd_acr_sched_detection').
-         * @return int|false The interval in seconds, or false if not found.
-         */
-        public static function get_schedule_interval(string $schedule)
-        {
-        }
-    }
-    /**
-     * WP-Cron Scheduler Class
-     *
-     * Provides a unified interface for WordPress's native cron system.
-     *
-     * @since 3.6.5
-     */
-    class WPCronScheduler implements \EDD\Cron\Schedulers\Scheduler
-    {
-        /**
-         * Schedule a recurring event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp The first time the event should run.
-         * @param int    $interval  How often the event should recur (in seconds).
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier (unused in WP-Cron).
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Schedule a single event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook      The hook name to execute.
-         * @param int    $timestamp When the event should run.
-         * @param array  $args      Optional arguments to pass to the hook.
-         * @param string $group     Optional group identifier (unused in WP-Cron).
-         * @return bool True if successfully scheduled, false otherwise.
-         */
-        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Get the next scheduled time for an event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to check.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier (unused in WP-Cron).
-         * @return int|false The next scheduled timestamp, or false if not scheduled.
-         */
-        public function next_scheduled(string $hook, array $args = array(), string $group = '')
-        {
-        }
-        /**
-         * Unschedule a specific event.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook  The hook name to unschedule.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier (unused in WP-Cron).
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule(string $hook, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Unschedule all events matching the criteria.
-         *
-         * @since 3.6.5
-         *
-         * @param string|null $hook  Optional hook name to filter by.
-         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
-         * @param string      $group Optional group identifier (unused in WP-Cron).
-         * @return bool True if successfully unscheduled, false otherwise.
-         */
-        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool
-        {
-        }
-        /**
-         * Check if an action is scheduled.
-         *
-         * @since 3.6.6
-         *
-         * @param string $hook  The hook name to check.
-         * @param array  $args  Optional arguments to match.
-         * @param string $group Optional group identifier (unused in WP-Cron).
-         * @return bool True if a matching action is pending or in-progress, false otherwise.
-         */
-        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool
-        {
-        }
-        /**
-         * Get all scheduled hooks, optionally filtered by prefix.
-         *
-         * @since 3.6.5
-         *
-         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
-         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
-         * @param string $group       Optional group identifier (unused in WP-Cron).
-         * @return array Array of hook names (strings).
-         */
-        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array
-        {
-        }
-        /**
-         * Search for scheduled actions.
-         *
-         * Note: WP-Cron has limited search capabilities compared to Action Scheduler.
-         * Only 'hook', 'per_page', and 'status' (pending only) are supported.
-         *
-         * @since 3.6.5
-         *
-         * @param array  $args         Query arguments. Supported args:
-         *        'hook' => '' - Filter by hook name (required for meaningful results)
-         *        'per_page' => 100 - Maximum number of results to return
-         *        Other arguments are ignored as WP-Cron doesn't support advanced querying.
-         * @param string $return_format Return format: 'ids' or 'objects'. Default 'objects'.
-         *                              Note: WP-Cron returns simplified objects with limited data.
-         * @return array Array of action data based on return format.
-         */
-        public function search(array $args = array(), string $return_format = 'objects'): array
-        {
-        }
-        /**
-         * Check if WP-Cron is available.
-         *
-         * @since 3.6.5
-         *
-         * @return bool Always returns true as WP-Cron is always available in WordPress.
-         */
-        public static function is_available(): bool
-        {
-        }
-        /**
-         * Get or create a schedule name for a given interval.
-         *
-         * @since 3.6.5
-         *
-         * @param int $interval The interval in seconds.
-         * @return string The schedule name.
-         */
-        private function get_schedule_for_interval(int $interval): string
+        private function get_registered_components()
         {
         }
     }
@@ -37118,13 +34711,6 @@ namespace EDD\Database {
     class NotificationsDB
     {
         /**
-         * Date format used for UTC date comparisons.
-         *
-         * @since 3.6.6
-         * @var string
-         */
-        const DATETIME_FORMAT = 'Y-m-d H:i:s';
-        /**
          * Constructor
          */
         public function __construct()
@@ -37138,6 +34724,14 @@ namespace EDD\Database {
          * @return void
          */
         public function enqueue($hook_suffix = '')
+        {
+        }
+        /**
+         * Add `defer` to the AlpineJS script tag.
+         *
+         * @since 3.2.4
+         */
+        public function defer_alpine($url)
         {
         }
         /**
@@ -37242,38 +34836,6 @@ namespace EDD\Database {
          * @return string
          */
         private function getActiveQuery($conditionsOnly = false)
-        {
-        }
-        /**
-         * Returns notifications filtered by the provided arguments.
-         *
-         * When dismissed=0 (default), applies date range checks and EnvironmentChecker conditions.
-         * When dismissed=1, returns dismissed notifications without date/condition filtering.
-         *
-         * @since 3.6.6
-         *
-         * @param array $args {
-         *     Optional. Arguments to filter notifications.
-         *
-         *     @type int    $dismissed Whether to return dismissed (1) or active (0) notifications. Default 0.
-         *     @type string $source    Filter by notification source.
-         *     @type string $type      Filter by notification type.
-         * }
-         * @return Notification[]
-         */
-        public function getNotifications($args = array())
-        {
-        }
-        /**
-         * Returns dismissed notifications.
-         *
-         * Convenience wrapper around getNotifications() for dismissed notifications.
-         *
-         * @since 3.6.6
-         *
-         * @return Notification[]
-         */
-        public function getDismissedNotifications()
         {
         }
         /**
@@ -38669,40 +36231,9 @@ namespace EDD\Database\Queries {
          *     @type string       $order                How to order results. Accepts 'ASC', 'DESC'. Default 'DESC'.
          *     @type string       $search               Search term(s) to retrieve matching notes for. Default empty.
          *     @type bool         $update_cache         Whether to prime the cache for found notes. Default false.
-         *     @type int          $customer_id          A customer ID to return all notes for that customer, including
-         *                                              manual order notes from their orders. Default empty.
          * }
          */
         public function __construct($query = array())
-        {
-        }
-        /**
-         * Override the query method to support the customer_id parameter.
-         *
-         * When customer_id is passed, the WHERE clause is replaced with an OR condition
-         * that returns both customer notes and manual order notes for that customer's orders.
-         *
-         * @since 3.6.7
-         *
-         * @param string|array $query Query arguments.
-         * @return array|int Array of Note objects or count.
-         */
-        public function query($query = array())
-        {
-        }
-        /**
-         * Filter the query clauses to return all notes for a customer.
-         *
-         * Replaces the default WHERE clause with an OR condition that returns:
-         * - Customer notes (object_type = 'customer' AND object_id = customer_id)
-         * - Manual order notes (object_type = 'order' AND user_id != 0 AND object_id belongs to customer)
-         *
-         * @since 3.6.7
-         *
-         * @param array $clauses The query clauses.
-         * @return array Modified query clauses.
-         */
-        public function query_by_customer($clauses)
         {
         }
     }
@@ -42923,7 +40454,7 @@ namespace EDD\Database\Tables {
          * @since  3.0
          * @var    int
          */
-        protected $version = 202605080;
+        protected $version = 202307111;
         /**
          * Array of upgrade versions and methods.
          *
@@ -42931,7 +40462,7 @@ namespace EDD\Database\Tables {
          * @since  3.0
          * @var    array
          */
-        protected $upgrades = array('201901111' => 201901111, '202002141' => 202002141, '202012041' => 202012041, '202102161' => 202102161, '202103261' => 202103261, '202105221' => 202105221, '202108041' => 202108041, '202302241' => 202302241, '202307111' => 202307111, '202605080' => 202605080);
+        protected $upgrades = array('201901111' => 201901111, '202002141' => 202002141, '202012041' => 202012041, '202102161' => 202102161, '202103261' => 202103261, '202105221' => 202105221, '202108041' => 202108041, '202302241' => 202302241, '202307111' => 202307111);
         /**
          * Setup the database schema.
          *
@@ -43037,17 +40568,6 @@ namespace EDD\Database\Tables {
         {
         }
         protected function __202307111()
-        {
-        }
-        /**
-         * Upgrade to version 202605080
-         * - Add a composite index on (parent, type) to support child-order lookups without full-table scans.
-         *
-         * @since 3.6.8
-         *
-         * @return boolean
-         */
-        protected function __202605080()
         {
         }
     }
@@ -43644,17 +41164,6 @@ namespace EDD\Downloads {
          * @return array
          */
         private function get_status()
-        {
-        }
-        /**
-         * Sorts results by relevance, prioritizing exact title matches.
-         *
-         * @since 3.6.5
-         * @param array  $items       The items to sort.
-         * @param string $search_term The search term.
-         * @return array
-         */
-        private function sort_by_relevance($items, $search_term)
         {
         }
         /**
@@ -44994,13 +42503,6 @@ namespace EDD\Emails {
          */
         private $heading = '';
         /**
-         * The Email object using this processor.
-         *
-         * @since 3.6.5
-         * @var \EDD\Emails\Types\Email|null
-         */
-        private $email_object;
-        /**
          * Get things going
          *
          * @since 2.1
@@ -45092,25 +42594,6 @@ namespace EDD\Emails {
          * @since 2.1
          */
         public function get_heading()
-        {
-        }
-        /**
-         * Set the Email object using this processor.
-         *
-         * @since 3.6.5
-         * @param \EDD\Emails\Types\Email $email The Email object.
-         * @return void
-         */
-        public function set_email_object($email)
-        {
-        }
-        /**
-         * Get the Email object using this processor.
-         *
-         * @since 3.6.5
-         * @return \EDD\Emails\Types\Email|null
-         */
-        public function get_email_object()
         {
         }
         /**
@@ -45453,301 +42936,6 @@ namespace EDD\Emails {
          */
         protected $uuid;
     }
-}
-namespace EDD\Emails\Providers {
-    // @codeCoverageIgnore
-    /**
-     * Email Provider Interface.
-     *
-     * @since 3.6.6
-     */
-    interface ProviderInterface
-    {
-        /**
-         * Get the provider ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id(): string;
-        /**
-         * Get the provider name.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_name(): string;
-        /**
-         * Detect whether a payload belongs to this provider's bounce format.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return bool
-         */
-        public function can_handle_bounce(array $payload): bool;
-        /**
-         * Parse a bounce payload into a standardized format.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
-         */
-        public function parse_bounce(array $payload): ?array;
-    }
-    // @codeCoverageIgnore
-    /**
-     * Abstract Email Provider class.
-     *
-     * @since 3.6.6
-     */
-    abstract class Provider implements \EDD\Emails\Providers\ProviderInterface
-    {
-        /**
-         * Cached provider instances.
-         *
-         * @since 3.6.6
-         * @var array
-         */
-        private static $providers = array();
-        /**
-         * Get all available email service providers.
-         *
-         * @since 3.6.6
-         * @return array Array of provider instances keyed by ID.
-         */
-        public static function get_available_providers(): array
-        {
-        }
-        /**
-         * Get a specific provider by ID.
-         *
-         * @since 3.6.6
-         * @param string $id The provider ID.
-         * @return ProviderInterface|null The provider instance or null if not found.
-         */
-        public static function get_provider_by_id(string $id): ?\EDD\Emails\Providers\ProviderInterface
-        {
-        }
-        /**
-         * Get the provider that can handle a given bounce payload.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return ProviderInterface|null The matching provider or null.
-         */
-        public static function get_provider_for_bounce(array $payload): ?\EDD\Emails\Providers\ProviderInterface
-        {
-        }
-        /**
-         * Find an email log ID by recipient email address.
-         *
-         * @since 3.6.6
-         * @param string $recipient_email The recipient email address.
-         * @return int|null The email log ID if found, null otherwise.
-         */
-        protected function find_email_by_recipient(string $recipient_email): ?int
-        {
-        }
-        /**
-         * Reset the static provider cache.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        public static function reset(): void
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Mailgun Email Provider class.
-     *
-     * @since 3.6.6
-     */
-    class Mailgun extends \EDD\Emails\Providers\Provider
-    {
-        /**
-         * Get the provider ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the provider name.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_name(): string
-        {
-        }
-        /**
-         * Detect whether a payload belongs to Mailgun's bounce format.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return bool
-         */
-        public function can_handle_bounce(array $payload): bool
-        {
-        }
-        /**
-         * Parse a Mailgun bounce payload.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
-         */
-        public function parse_bounce(array $payload): ?array
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * AWS SES Email Provider class.
-     *
-     * @since 3.6.6
-     */
-    class SES extends \EDD\Emails\Providers\Provider
-    {
-        /**
-         * Get the provider ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the provider name.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_name(): string
-        {
-        }
-        /**
-         * Detect whether a payload belongs to AWS SES's bounce format (via SNS).
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return bool
-         */
-        public function can_handle_bounce(array $payload): bool
-        {
-        }
-        /**
-         * Parse an AWS SES bounce payload.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
-         */
-        public function parse_bounce(array $payload): ?array
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * SendGrid Email Provider class.
-     *
-     * @since 3.6.6
-     */
-    class SendGrid extends \EDD\Emails\Providers\Provider
-    {
-        /**
-         * Get the provider ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the provider name.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_name(): string
-        {
-        }
-        /**
-         * Detect whether a payload belongs to SendGrid's bounce format.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return bool
-         */
-        public function can_handle_bounce(array $payload): bool
-        {
-        }
-        /**
-         * Parse a SendGrid bounce payload.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
-         */
-        public function parse_bounce(array $payload): ?array
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * SendLayer Email Provider class.
-     *
-     * @since 3.6.6
-     */
-    class SendLayer extends \EDD\Emails\Providers\Provider
-    {
-        /**
-         * Get the provider ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the provider name.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_name(): string
-        {
-        }
-        /**
-         * Detect whether a payload belongs to SendLayer's bounce format.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return bool
-         */
-        public function can_handle_bounce(array $payload): bool
-        {
-        }
-        /**
-         * Parse a SendLayer bounce payload.
-         *
-         * @since 3.6.6
-         * @param array $payload The webhook payload.
-         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
-         */
-        public function parse_bounce(array $payload): ?array
-        {
-        }
-    }
-}
-namespace EDD\Emails {
     final class Registry
     {
         /**
@@ -46156,19 +43344,6 @@ namespace EDD\Emails\Tags {
          * @return string
          */
         public function phone($object_id, $email_object = null, $context = null)
-        {
-        }
-        /**
-         * Renders the company name email tag.
-         *
-         * @since 3.6.7
-         *
-         * @param int    $object_id    The object ID.
-         * @param mixed  $email_object The email object.
-         * @param string $context      The context.
-         * @return string
-         */
-        public function company($object_id, $email_object = null, $context = null)
         {
         }
         /**
@@ -46838,131 +44013,6 @@ namespace EDD\Emails\Templates {
          * @return string
          */
         private function get_default_content()
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * One-Time Login Link Email Template Class
-     *
-     * @since 3.6.7
-     */
-    class LoginLink extends \EDD\Emails\Templates\EmailTemplate
-    {
-        /**
-         * Whether the email can be previewed.
-         *
-         * @since 3.6.7
-         * @var bool
-         */
-        protected $can_preview = true;
-        /**
-         * Unique identifier for this template.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        protected $email_id = 'login_link';
-        /**
-         * The email recipient.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        protected $recipient = 'user';
-        /**
-         * The email context.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        protected $context = 'user';
-        /**
-         * The required tag.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        protected $required_tag = 'login_link_url';
-        /**
-         * Name of the template.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_name()
-        {
-        }
-        /**
-         * Description of the email.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description()
-        {
-        }
-        /**
-         * Retrieves the default email properties.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public function defaults(): array
-        {
-        }
-        /**
-         * Gets the content for the status tooltip, if needed.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public function get_status_tooltip(): array
-        {
-        }
-        /**
-         * This email cannot be activated if the login link feature is not enabled.
-         *
-         * @since 3.6.7
-         * @return bool
-         */
-        public function are_base_requirements_met(): bool
-        {
-        }
-        /**
-         * Gets the required tag parameters for the email editor.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_required_tag_parameters()
-        {
-        }
-        /**
-         * Retrieves the preview data for this email.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_preview_data()
-        {
-        }
-        /**
-         * The email properties that can be edited.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_editable_properties(): array
-        {
-        }
-        /**
-         * The default email body.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        private function get_body_default()
         {
         }
     }
@@ -47970,17 +45020,6 @@ namespace EDD\Emails\Traits {
         {
         }
         /**
-         * Gets the redirect arguments for the test email.
-         *
-         * @since 3.6.5
-         * @param bool  $sent Whether the email was sent.
-         * @param array $data The $_POST data.
-         * @return array
-         */
-        private function get_test_email_redirect_args($sent, $data)
-        {
-        }
-        /**
          * Send the test purchase confirmation email.
          *
          * This does the work of verifying the nonce and checking the capabilities.
@@ -48823,97 +45862,6 @@ namespace EDD\Emails\Types {
          * @return void
          */
         protected function set_message()
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * The One-Time Login Link email class.
-     *
-     * This is sent to users when they request a login link to sign in without a password.
-     *
-     * @since 3.6.7
-     */
-    class LoginLink extends \EDD\Emails\Types\Email
-    {
-        /**
-         * The email ID.
-         *
-         * @var string
-         * @since 3.6.7
-         */
-        protected $id = 'login_link';
-        /**
-         * The email context.
-         *
-         * @var string
-         * @since 3.6.7
-         */
-        protected $context = 'user';
-        /**
-         * The email recipient type.
-         *
-         * @var string
-         * @since 3.6.7
-         */
-        protected $recipient_type = 'user';
-        /**
-         * The user ID.
-         *
-         * @var int
-         * @since 3.6.7
-         */
-        protected $user_id;
-        /**
-         * The user data.
-         *
-         * @var \WP_User
-         * @since 3.6.7
-         */
-        protected $user_data;
-        /**
-         * The login link token.
-         *
-         * @var string
-         * @since 3.6.7
-         */
-        protected $token;
-        /**
-         * The class constructor.
-         *
-         * @since 3.6.7
-         * @param int   $user_id    The user ID.
-         * @param array $token_data Token data containing 'token' and 'expires_at'.
-         */
-        public function __construct($user_id, $token_data = array())
-        {
-        }
-        /**
-         * Set the email message.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        protected function set_message()
-        {
-        }
-        /**
-         * Set the email to address.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        protected function set_to_email()
-        {
-        }
-        /**
-         * Parses the {login_link_url} tag.
-         *
-         * @since 3.6.7
-         * @param string $content The content to parse.
-         * @return string
-         */
-        private function parse_tag(string $content): string
         {
         }
     }
@@ -50693,59 +47641,6 @@ namespace EDD\Forms\Checkout {
     }
     // @codeCoverageIgnore
     /**
-     * The company name field.
-     *
-     * @since 3.6.7
-     */
-    class Company extends \EDD\Forms\Checkout\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
      * The country field.
      *
      * @since 3.3.8
@@ -51791,904 +48686,6 @@ namespace EDD\Forms\Register {
          * @return array
          */
         protected function get_form_group_classes(): array
-        {
-        }
-    }
-}
-namespace EDD\Forms\User {
-    /**
-     * User profile billing city field.
-     *
-     * @since 3.6.7
-     */
-    class City extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile company name field.
-     *
-     * @since 3.6.7
-     */
-    class Company extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile billing country field.
-     *
-     * @since 3.6.7
-     */
-    class Country extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile display name field.
-     *
-     * @since 3.6.7
-     */
-    class DisplayName extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-        /**
-         * Build the list of display name options for the current user.
-         *
-         * @since 3.6.7
-         * @param \WP_User|null $user The current user.
-         * @return array<string, string> Map of option value => label.
-         */
-        private function get_display_name_options(?\WP_User $user): array
-        {
-        }
-    }
-    /**
-     * User profile primary email field.
-     *
-     * Renders a text input when the customer has a single email address,
-     * or a select dropdown when they have multiple.
-     *
-     * @since 3.6.7
-     */
-    class Email extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * Renders a select if the customer has multiple email addresses,
-         * otherwise renders a plain email input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Checks if the field is required.
-         *
-         * @since 3.6.7
-         * @return bool
-         */
-        protected function is_required(): bool
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-        /**
-         * Render a text input for a single email address.
-         *
-         * @since 3.6.7
-         * @param \EDD_Customer|null $customer The customer object.
-         * @param \WP_User|null      $user     The current user.
-         */
-        private function do_email_input(?\EDD_Customer $customer, ?\WP_User $user): void
-        {
-        }
-        /**
-         * Render a select for multiple email addresses.
-         *
-         * @since 3.6.7
-         * @param \EDD_Customer $customer The customer object.
-         */
-        private function do_email_select(\EDD_Customer $customer): void
-        {
-        }
-    }
-    /**
-     * User profile first name field.
-     *
-     * @since 3.6.7
-     */
-    class FirstName extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile last name field.
-     *
-     * @since 3.6.7
-     */
-    class LastName extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile billing address line 1 field.
-     *
-     * @since 3.6.7
-     */
-    class Line1 extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile billing address line 2 field.
-     *
-     * @since 3.6.7
-     */
-    class Line2 extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile new password field.
-     *
-     * Not required — password change is optional on the profile editor form.
-     * Includes the WP password strength indicator and show/hide toggle.
-     *
-     * @since 3.6.7
-     */
-    class Password extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Override the label to point to the aliased input ID.
-         *
-         * @since 3.6.7
-         */
-        protected function do_label(): void
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * The input ID is set to "pass1" so WP's user-profile.js picks it up for
-         * strength checking. The name remains "edd_new_user_pass1" for server-side
-         * processing. data-reveal is intentionally omitted — unlike the registration
-         * form, the profile editor password field should start empty.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-        /**
-         * Get the form group classes.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_form_group_classes(): array
-        {
-        }
-    }
-    /**
-     * User profile confirm new password field.
-     *
-     * Not required — password change is optional on the profile editor form.
-     *
-     * @since 3.6.7
-     */
-    class PasswordConfirm extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Override the label to point to the aliased input ID.
-         *
-         * @since 3.6.7
-         */
-        protected function do_label(): void
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * The input ID is set to "pass2" so WP's user-profile.js can sync its value
-         * to the password field on form submit. The name remains "edd_new_user_pass2"
-         * for server-side processing.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-        /**
-         * Get the form group classes.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_form_group_classes(): array
-        {
-        }
-    }
-    /**
-     * User profile weak password confirmation checkbox.
-     *
-     * Shown by the WP password strength JS when the chosen password is weak,
-     * requiring the user to acknowledge the use of a weak password.
-     *
-     * @since 3.6.7
-     */
-    class PasswordWeak extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the field.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function render(): void
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the form group classes.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_form_group_classes(): array
-        {
-        }
-    }
-    /**
-     * User profile phone number field.
-     *
-     * @since 3.6.7
-     */
-    class Phone extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile billing postal/ZIP code field.
-     *
-     * @since 3.6.7
-     */
-    class PostalCode extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-    }
-    /**
-     * User profile billing state/province field.
-     *
-     * Renders a select dropdown when states are available for the selected country,
-     * or a text input otherwise.
-     *
-     * @since 3.6.7
-     */
-    class State extends \EDD\Forms\Fields\Field
-    {
-        /**
-         * Get the field ID.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_id(): string
-        {
-        }
-        /**
-         * Get the field label.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_label(): string
-        {
-        }
-        /**
-         * Render the input.
-         *
-         * @since 3.6.7
-         */
-        public function do_input(): void
-        {
-        }
-        /**
-         * Get the description.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get_description(): string
-        {
-        }
-        /**
-         * Get the field key.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        protected function get_key(): string
-        {
-        }
-        /**
-         * Get the field classes.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_field_classes(): array
         {
         }
     }
@@ -56702,6 +52699,15 @@ namespace EDD\Gateways\Stripe\Checkout {
     class Address extends \EDD\Checkout\Address
     {
         /**
+         * Gets the fields to display.
+         *
+         * @since 3.3.8
+         * @return array
+         */
+        public function get_fields()
+        {
+        }
+        /**
          * Sets up the customer data.
          *
          * @since 3.3.8
@@ -56755,20 +52761,6 @@ namespace EDD\Gateways\Stripe\Checkout {
          * @return void
          */
         public static function mark_complete_from_charge($order, $charge)
-        {
-        }
-        /**
-         * Get the expected price for validation.
-         *
-         * If an order already exists (via intent metadata), returns the order total.
-         * Otherwise returns the session purchase data price.
-         *
-         * @since 3.6.6
-         *
-         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent The Stripe Intent object.
-         * @return float The expected price.
-         */
-        private function get_expected_price($intent)
         {
         }
         /**
@@ -57096,96 +53088,6 @@ namespace EDD\Gateways\Stripe\Checkout {
          * @return false|string
          */
         private static function get_custom_payment_method($charge, $order)
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Validation class.
-     *
-     * Consolidates common Stripe checkout validation checks.
-     *
-     * @since 3.6.6
-     */
-    class Validation
-    {
-        /**
-         * Validate that an intent has an acceptable status.
-         *
-         * @since 3.6.6
-         *
-         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent         The Stripe Intent object.
-         * @param array                                     $valid_statuses Acceptable statuses.
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If the intent status is invalid.
-         */
-        public static function intent_status($intent, $valid_statuses = array('succeeded', 'requires_capture'))
-        {
-        }
-        /**
-         * Validate that the intent amount matches the expected price.
-         *
-         * Skips validation for SetupIntents which have no amount.
-         *
-         * @since 3.6.6
-         *
-         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent         The Stripe Intent object.
-         * @param float|string                              $expected_price The expected price in standard currency units.
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
-         */
-        public static function intent_amount($intent, $expected_price)
-        {
-        }
-        /**
-         * Validate that a charge amount matches the expected price.
-         *
-         * @since 3.6.6
-         *
-         * @param \Stripe\Charge $charge         The Stripe Charge object.
-         * @param float|string   $expected_price The expected price in standard currency units.
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
-         */
-        public static function charge_amount($charge, $expected_price)
-        {
-        }
-        /**
-         * Validate that purchase data is present and non-empty.
-         *
-         * @since 3.6.6
-         *
-         * @param mixed $purchase_data The purchase data to validate.
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If purchase data is empty.
-         */
-        public static function purchase_data($purchase_data)
-        {
-        }
-        /**
-         * Validate that an intent object or array has an ID.
-         *
-         * @since 3.6.6
-         *
-         * @param mixed $intent The intent data (object or array).
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If the intent has no ID.
-         */
-        public static function intent_exists($intent)
-        {
-        }
-        /**
-         * Verify that a Stripe amount (in smallest currency unit) matches the expected price.
-         *
-         * @since 3.6.6
-         *
-         * @param int          $actual_amount The amount from Stripe in smallest currency unit (e.g. cents).
-         * @param float|string $expected_price The expected price in standard currency units (e.g. dollars).
-         * @param string       $reference_id   The Stripe object ID for logging.
-         * @return void
-         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
-         */
-        private static function verify_amount($actual_amount, $expected_price, $reference_id)
         {
         }
     }
@@ -58198,19 +54100,6 @@ namespace EDD\Gateways\Stripe {
         {
         }
         /**
-         * Retrieves the list of legacy/deprecated payment methods.
-         *
-         * These payment methods have been deprecated by Stripe but may still
-         * exist in historical order data. This method is public to allow
-         * reports to include historical transactions made with these methods.
-         *
-         * @since 3.6.5
-         * @return array Array of legacy payment method types and their labels.
-         */
-        public static function get_legacy_methods()
-        {
-        }
-        /**
          * Retrieves a list of Stripe payment methods.
          *
          * @since 3.3.5
@@ -58257,6 +54146,15 @@ namespace EDD\Gateways\Stripe {
         {
         }
         /**
+         * Retrieves the supported payment methods.
+         *
+         * @since 3.3.5
+         * @return array The supported payment methods.
+         */
+        private static function get_registered_methods()
+        {
+        }
+        /**
          * Retrieves the class name for the specified payment method.
          *
          * @since 3.3.5
@@ -58272,28 +54170,6 @@ namespace EDD\Gateways\Stripe {
          * @since 3.3.5
          */
         public static function reset()
-        {
-        }
-        /**
-         * Retrieves the label for legacy/deprecated payment methods.
-         *
-         * These payment methods have been deprecated by Stripe but may still
-         * exist in historical order data.
-         *
-         * @since 3.6.5
-         * @param string $type The type of payment method.
-         * @return string|false The legacy label if found, false otherwise.
-         */
-        private static function get_legacy_label($type)
-        {
-        }
-        /**
-         * Retrieves the supported payment methods.
-         *
-         * @since 3.3.5
-         * @return array The supported payment methods.
-         */
-        private static function get_registered_methods()
         {
         }
         /**
@@ -58756,52 +54632,6 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          * Gets the icon for the payment method.
          *
          * @since 3.3.5
-         * @return string
-         */
-        public static function get_icon(): string
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Blik class.
-     */
-    class Blik extends \EDD\Gateways\Stripe\PaymentMethods\Method
-    {
-        /**
-         * The ID of the payment method.
-         *
-         * @since 3.6.8
-         * @var string
-         */
-        protected static $id = 'blik';
-        /**
-         * The supported currencies for the payment method.
-         *
-         * @since 3.6.8
-         * @var array
-         */
-        public static $currencies = array('PLN');
-        /**
-         * The supported countries for the payment method.
-         *
-         * @since 3.6.8
-         * @var array
-         */
-        public static $countries = array('at', 'be', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu', 'is', 'ie', 'it', 'lv', 'li', 'lt', 'lu', 'mt', 'nl', 'no', 'pl', 'pt', 'ro', 'sk', 'si', 'es', 'se');
-        /**
-         * Gets the label for the payment method.
-         *
-         * @since 3.6.8
-         * @return string
-         */
-        public static function get_label()
-        {
-        }
-        /**
-         * Gets the icon for the payment method.
-         *
-         * @since 3.6.8
          * @return string
          */
         public static function get_icon(): string
@@ -59482,6 +55312,45 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          * @var array
          */
         public static $countries = array('au', 'at', 'be', 'bu', 'ca', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gi', 'gr', 'hk', 'hu', 'ie', 'it', 'jp', 'lv', 'li', 'lt', 'lu', 'mt', 'mx', 'nl', 'nz', 'no', 'pl', 'pt', 'ro', 'sg', 'sk', 'si', 'es', 'se', 'ch', 'gb', 'us');
+        /**
+         * Gets the label for the payment method.
+         *
+         * @since 3.3.5
+         * @return string
+         */
+        public static function get_label()
+        {
+        }
+        /**
+         * Gets the icon for the payment method.
+         *
+         * @since 3.3.5
+         * @return string
+         */
+        public static function get_icon(): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Sofort class.
+     */
+    class Sofort extends \EDD\Gateways\Stripe\PaymentMethods\Method
+    {
+        /**
+         * The ID of the payment method.
+         *
+         * @since 3.3.5
+         * @var string
+         */
+        protected static $id = 'sofort';
+        /**
+         * The supported currencies for the payment method.
+         *
+         * @since 3.3.5
+         * @var array
+         */
+        public static $currencies = array('EUR');
         /**
          * Gets the label for the payment method.
          *
@@ -60285,52 +56154,11 @@ namespace EDD\HTML {
         /**
          * Parses the arguments for the element.
          *
-         * Performs a shallow merge via wp_parse_args, then recursively merges any
-         * keys whose default value is an array so that partial overrides (e.g. a
-         * subset of `data` attributes) don't silently discard the remaining defaults.
-         *
          * @since 3.2.8
          * @param array $args The arguments for the element.
          * @return array
          */
         private function parse_args(array $args)
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Class AmountType
-     *
-     * @since 3.6.5
-     * @package EDD\HTML
-     */
-    class AmountType extends \EDD\HTML\Base
-    {
-        /**
-         * Gets the HTML for the element.
-         *
-         * @since 3.6.5
-         * @return string Element HTML.
-         */
-        public function get(): string
-        {
-        }
-        /**
-         * Gets the default arguments for the element.
-         *
-         * @since 3.6.5
-         * @return array Default arguments.
-         */
-        public function defaults(): array
-        {
-        }
-        /**
-         * Gets the input element.
-         *
-         * @since 3.6.5
-         * @return Base Input element.
-         */
-        private function get_input(): \EDD\HTML\Base
         {
         }
     }
@@ -60648,8 +56476,9 @@ namespace EDD\HTML {
          * Renders an HTML Dropdown of all the Users
          *
          * @since 2.6.9
-         * @since 3.6.7 This is now just a wrapper for UserSelect.
+         *
          * @param array $args Arguments for the dropdown.
+         *
          * @return string $output User dropdown
          */
         public function user_dropdown($args = array())
@@ -60797,9 +56626,10 @@ namespace EDD\HTML {
          * Renders an ajax user search field
          *
          * @since 2.0
-         * @since 3.6.7 This is now just a wrapper for UserSelect.
+         *
          * @param array $args Arguments for the field.
-         * @return string User select HTML.
+         *
+         * @return string text field with ajax search
          */
         public function ajax_user_search($args = array())
         {
@@ -60887,19 +56717,6 @@ namespace EDD\HTML {
          * @param array $data The data for the tooltip.
          */
         private function do_tooltip($data)
-        {
-        }
-        /**
-         * Gets the label for a multicheck option.
-         *
-         * Ensures the label is always a string to avoid fatal errors when passing
-         * to wp_kses_post(). Falls back to legacy string-option support, then empty string.
-         *
-         * @since 3.6.7
-         * @param mixed $data The option data.
-         * @return string
-         */
-        private function get_label($data): string
         {
         }
         /**
@@ -61367,64 +57184,6 @@ namespace EDD\HTML {
         {
         }
     }
-    /**
-     * Class UserSelect
-     *
-     * Renders a user-search-powered select element backed by TomSelect (chosen).
-     * On initial render only the pre-selected user (or the current logged-in user)
-     * is included as an option; all other lookups are performed via the
-     * `edd_user_search` AJAX action as the admin types.
-     *
-     * @since 3.6.7
-     * @package EDD\HTML
-     */
-    class UserSelect extends \EDD\HTML\Select
-    {
-        /**
-         * Gets the HTML for the user select.
-         *
-         * Populates the initial option list with only the selected user(s) or,
-         * when nothing is selected, the currently logged-in user. This keeps the
-         * initial HTML payload small and delegates all search lookups to AJAX.
-         *
-         * @since 3.6.7
-         * @return string
-         */
-        public function get()
-        {
-        }
-        /**
-         * Gets the default arguments for the user select.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function defaults()
-        {
-        }
-        /**
-         * Gets the base CSS classes for the user select element.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_base_classes(): array
-        {
-        }
-        /**
-         * Builds the initial options array for the select element.
-         *
-         * Returns only the pre-selected user(s). When no user is selected, falls
-         * back to the current logged-in user so the dropdown is never completely
-         * empty on first render.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        private function get_initial_options(): array
-        {
-        }
-    }
 }
 namespace EDD\Integrations {
     /**
@@ -61479,15 +57238,6 @@ namespace EDD\Integrations {
          * @since 3.6.0
          */
         public function load_elementor()
-        {
-        }
-        /**
-         * Check if Elementor is available.
-         *
-         * @since 3.6.6
-         * @return bool
-         */
-        public static function checkout_is_elementor($post_id = null): bool
         {
         }
     }
@@ -62213,43 +57963,6 @@ namespace EDD\Licensing {
         }
     }
 }
-namespace EDD\Lite\Admin\Emails {
-    /**
-     * Class Handler
-     *
-     * @since 3.6.6
-     */
-    class Handler implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Gets the events to subscribe to.
-         *
-         * @since 3.6.6
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Displays the conditional email tags button.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        public function conditional_email_tags()
-        {
-        }
-        /**
-         * Renders the conditional email tags button.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        public function render_button()
-        {
-        }
-    }
-}
 namespace EDD\Lite\Admin {
     class Menu implements \EDD\EventManagement\SubscriberInterface
     {
@@ -62436,73 +58149,6 @@ namespace EDD\Lite\Admin\Promos\Notices {
         }
     }
     /**
-     * Conditional Email Tags Upgrade Notice class.
-     *
-     * @since 3.6.6
-     */
-    class ConditionalEmailTags extends \EDD\Admin\Promos\Notices\Notice
-    {
-        /**
-         * Action hook for displaying the notice.
-         */
-        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-emails';
-        /**
-         * Type of promotional notice.
-         */
-        const TYPE = 'overlay';
-        /**
-         * Capability required to dismiss the notice.
-         */
-        const CAPABILITY = 'manage_shop_settings';
-        /**
-         * Duration (in seconds) that the notice is dismissed for.
-         * `0` means it's dismissed permanently.
-         *
-         * @since 3.6.6
-         * @return int
-         */
-        public static function dismiss_duration()
-        {
-        }
-        /**
-         * Renders the dismiss button for the notice.
-         * This is intentionally left blank as the dismiss button is rendered in the content.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        public function dismiss_button()
-        {
-        }
-        /**
-         * Gets the notice ID.
-         *
-         * @since 3.6.6
-         * @return string
-         */
-        public function get_id()
-        {
-        }
-        /**
-         * Displays the notice content.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        protected function _display()
-        {
-        }
-        /**
-         * Determines if the notice should be displayed.
-         *
-         * @since 3.6.6
-         * @return bool
-         */
-        protected function _should_display(): bool
-        {
-        }
-    }
-    /**
      * Featured Downloads Upgrade Notice class.
      *
      * @since 3.5.0
@@ -62646,7 +58292,7 @@ namespace EDD\Lite\Admin\Promos {
          *
          * @var array
          */
-        protected $lite_notices = array('\EDD\Lite\Admin\Promos\Notices\FeaturedDownloads', '\EDD\Lite\Admin\Promos\Notices\PreviewRecommendations', '\EDD\Lite\Admin\Promos\Notices\CampaignTracker', '\EDD\Lite\Admin\Promos\Notices\ConditionalEmailTags');
+        protected $lite_notices = array('\EDD\Lite\Admin\Promos\Notices\FeaturedDownloads', '\EDD\Lite\Admin\Promos\Notices\PreviewRecommendations', '\EDD\Lite\Admin\Promos\Notices\CampaignTracker');
         /**
          * Gets the notices.
          * This method overrides the parent method if an inactive pro install is detected.
@@ -63295,161 +58941,6 @@ namespace EDD\Logs {
          */
         protected $date_modified;
     }
-    /**
-     * Log Type Registry class.
-     *
-     * @since 3.6.4
-     */
-    final class Registry
-    {
-        /**
-         * Cached log types array.
-         *
-         * @since 3.6.4
-         * @var array|null
-         */
-        private static $cached_types = null;
-        /**
-         * Reset the cached log types.
-         *
-         * This is primarily useful for testing, when filters need to be
-         * applied after the cache has already been populated.
-         *
-         * @since 3.6.4
-         *
-         * @return void
-         */
-        public static function reset_cache()
-        {
-        }
-        /**
-         * Get all registered log types with their metadata.
-         *
-         * @since 3.6.4
-         *
-         * @return array Array of log types with configuration.
-         */
-        public static function get_types(): array
-        {
-        }
-        /**
-         * Check if the file download limit setting is enabled.
-         *
-         * @since 3.6.4
-         *
-         * @return bool True if file download limit is enabled, false otherwise.
-         */
-        private static function is_file_download_limit_enabled(): bool
-        {
-        }
-        /**
-         * Get active extensions that may depend on file download logs.
-         *
-         * Returns untranslated extension identifiers to avoid loading
-         * text domains too early. Use get_extension_labels() to get
-         * translated names for display purposes.
-         *
-         * @since 3.6.4
-         *
-         * @return array Array of active extension identifiers.
-         */
-        private static function get_active_file_download_extensions(): array
-        {
-        }
-        /**
-         * Get translated labels for extension identifiers.
-         *
-         * @since 3.6.4
-         *
-         * @return array Mapping of extension identifiers to translated names.
-         */
-        private static function get_extension_labels(): array
-        {
-        }
-        /**
-         * Check if file download logs should show a pruning warning.
-         *
-         * Automatically detects if certain extensions are active that may require
-         * file download logs depending on their settings.
-         *
-         * @since 3.6.4
-         *
-         * @return bool True if a warning should be shown, false otherwise.
-         */
-        public static function should_warn_file_downloads(): bool
-        {
-        }
-        /**
-         * Get the pruning warning message for a log type.
-         *
-         * @since 3.6.4
-         *
-         * @param string $log_type_id Log type ID.
-         * @return string Warning message or empty string if no warning.
-         */
-        public static function get_pruning_warning($log_type_id): string
-        {
-        }
-        /**
-         * Builds configuration for an unregistered log type.
-         *
-         * Unregistered log types are those found in the database but not formally
-         * registered via the edd_registered_log_types filter.
-         *
-         * @since 3.6.4
-         *
-         * @param string $type_id The type ID (with or without 'unregistered_' prefix).
-         * @param array  $extra   Optional extra fields to merge (e.g., 'description', 'count').
-         * @return array|null Config array or null if empty type value.
-         */
-        public static function get_unregistered_type_config(string $type_id, array $extra = array()): ?array
-        {
-        }
-        /**
-         * Gets additional (unregistered) log types from the database.
-         *
-         * Queries the edd_logs table for distinct type values that are not
-         * part of the registered log types.
-         *
-         * @since 3.6.4
-         *
-         * @param bool $include_counts Whether to include record counts (slower query).
-         * @param bool $use_cache      Whether to use transient caching.
-         * @return array Array of unregistered log type configurations.
-         */
-        public static function get_additional_log_types(bool $include_counts = false, bool $use_cache = true): array
-        {
-        }
-        /**
-         * Merge legacy log types from the edd_log_views filter.
-         *
-         * Provides backwards compatibility for extensions that register log types
-         * via the edd_log_views filter before updating to use edd_registered_log_types.
-         *
-         * @since 3.6.4
-         *
-         * @param array $log_types Current registered log types.
-         * @return array Merged log types array.
-         */
-        private static function merge_legacy_log_views(array $log_types): array
-        {
-        }
-        /**
-         * Format a list of items with proper grammar using "or".
-         *
-         * - 1 item: "Item1"
-         * - 2 items: "Item1 or Item2"
-         * - 3+ items: "Item1, Item2, or Item3"
-         *
-         * @since 3.6.4
-         *
-         * @param array $items Array of items to format.
-         * @return string Formatted list string.
-         */
-        private static function format_list_with_or(array $items): string
-        {
-        }
-    }
 }
 namespace EDD\Models {
     // @codeCoverageIgnore
@@ -63584,12 +59075,6 @@ namespace EDD\Models {
          *               and not via the remote import.
          */
         public $remote_id = null;
-        /**
-         * @var string Source of the notification, e.g. `api` or `local`.
-         *
-         * @since 3.6.6
-         */
-        public $source = 'api';
         /**
          * @var string Title of the notification.
          */
@@ -65709,56 +61194,6 @@ namespace EDD\Profiler {
 }
 namespace EDD\REST\Controllers {
     /**
-     * Bounce Webhook controller class.
-     *
-     * @since 3.6.5
-     */
-    final class BounceWebhook
-    {
-        /**
-         * Handles bounce webhook notifications.
-         *
-         * @since 3.6.5
-         * @param \WP_REST_Request $request Request object.
-         * @return \WP_REST_Response Response object.
-         */
-        public function handle_bounce(\WP_REST_Request $request): \WP_REST_Response
-        {
-        }
-        /**
-         * Verifies webhook permission via secret key.
-         *
-         * @since 3.6.5
-         * @param \WP_REST_Request $request Request object.
-         * @return bool True if authorized.
-         */
-        public function verify_webhook_permission(\WP_REST_Request $request): bool
-        {
-        }
-        /**
-         * Generates the webhook secret.
-         *
-         * Static method to allow access from settings/admin screens.
-         *
-         * @since 3.6.5
-         * @return string Webhook secret key.
-         */
-        public static function generate_webhook_secret(): string
-        {
-        }
-        /**
-         * Parses bounce webhook payload from various email service providers.
-         *
-         * @since 3.6.5
-         * @param array            $body    The webhook payload.
-         * @param \WP_REST_Request $request The request object.
-         * @return array|null Parsed bounce data with email_id and reason, or null on failure.
-         */
-        private function parse_bounce_webhook(array $body, \WP_REST_Request $request): ?array
-        {
-        }
-    }
-    /**
      * Cart controller class.
      *
      * Handles cart operations via REST API.
@@ -65870,52 +61305,6 @@ namespace EDD\REST\Controllers {
         {
         }
     }
-    /**
-     * LogPruning Controller class
-     *
-     * @since 3.6.4
-     */
-    class LogPruning
-    {
-        /**
-         * Prune logs of a specific type.
-         *
-         * @since 3.6.4
-         * @param \WP_REST_Request $request Request object.
-         * @return \WP_REST_Response|\WP_Error
-         */
-        public function prune($request)
-        {
-        }
-    }
-    /**
-     * Notifications Controller class
-     *
-     * @since 3.6.6
-     */
-    class Notifications
-    {
-        /**
-         * List notifications with optional filtering.
-         *
-         * @since 3.6.6
-         * @param \WP_REST_Request $request Request object.
-         * @return \WP_REST_Response
-         */
-        public function list_notifications($request)
-        {
-        }
-        /**
-         * Dismiss a single notification.
-         *
-         * @since 3.6.6
-         * @param \WP_REST_Request $request Request object.
-         * @return \WP_REST_Response
-         */
-        public function dismiss_notification($request)
-        {
-        }
-    }
 }
 namespace EDD\REST {
     /**
@@ -65957,6 +61346,7 @@ namespace EDD\REST {
     }
 }
 namespace EDD\REST\Routes {
+    // @codeCoverageIgnore
     /**
      * Route class
      *
@@ -65975,57 +61365,12 @@ namespace EDD\REST\Routes {
          */
         public static $version = 'v3';
         /**
-         * Controller instance.
-         *
-         * @since 3.6.5
-         * @var Controller
-         */
-        protected $controller;
-        /**
-         * Security instance.
-         *
-         * @since 3.6.5
-         * @var Security
-         */
-        protected $security;
-        /**
          * Register the routes.
          *
          * @since 3.6.2
          * @return void
          */
         abstract public function register();
-    }
-    /**
-     * Bounce Webhook route class.
-     *
-     * @since 3.6.5
-     */
-    final class BounceWebhook extends \EDD\REST\Routes\Route
-    {
-        /**
-         * REST API base.
-         *
-         * @since 3.6.5
-         * @var string
-         */
-        const BASE = 'webhooks/bounce';
-        /**
-         * Constructor.
-         *
-         * @since 3.6.5
-         */
-        public function __construct()
-        {
-        }
-        /**
-         * Register REST routes.
-         *
-         * @since 3.6.5
-         */
-        public function register(): void
-        {
-        }
     }
     /**
      * Cart class
@@ -66044,6 +61389,20 @@ namespace EDD\REST\Routes {
          */
         const BASE = 'cart';
         /**
+         * Cart controller instance.
+         *
+         * @since 3.6.2
+         * @var Controller
+         */
+        private $controller;
+        /**
+         * Security instance.
+         *
+         * @since 3.6.2
+         * @var Security
+         */
+        private $security;
+        /**
          * Constructor.
          *
          * @since 3.6.2
@@ -66058,112 +61417,6 @@ namespace EDD\REST\Routes {
          * @return void
          */
         public function register()
-        {
-        }
-    }
-    /**
-     * LogPruning class
-     *
-     * Handles REST API route registration for log pruning operations.
-     *
-     * @since 3.6.4
-     */
-    class LogPruning extends \EDD\REST\Routes\Route
-    {
-        /**
-         * REST API base.
-         *
-         * @since 3.6.4
-         * @var string
-         */
-        const BASE = 'logs/prune';
-        /**
-         * Constructor.
-         *
-         * @since 3.6.4
-         */
-        public function __construct()
-        {
-        }
-        /**
-         * Register routes.
-         *
-         * @since 3.6.4
-         * @return void
-         */
-        public function register()
-        {
-        }
-        /**
-         * Check permission for log pruning.
-         *
-         * Uses standard WordPress REST authentication (cookies + nonce).
-         *
-         * @since 3.6.4
-         * @param \WP_REST_Request $request Request object.
-         * @return bool|\WP_Error
-         */
-        public function check_permission($request)
-        {
-        }
-    }
-    /**
-     * Notifications class
-     *
-     * Handles REST API route registration for notification operations.
-     *
-     * @since 3.6.6
-     */
-    class Notifications extends \EDD\REST\Routes\Route
-    {
-        /**
-         * REST API base.
-         *
-         * @since 3.6.6
-         * @var string
-         */
-        const BASE = 'notifications';
-        /**
-         * Allowed notification sources for filtering.
-         *
-         * @since 3.6.6
-         * @var string[]
-         */
-        const ALLOWED_SOURCES = array('api', 'local');
-        /**
-         * Allowed notification types for filtering.
-         *
-         * @since 3.6.6
-         * @var string[]
-         */
-        const ALLOWED_TYPES = array('success', 'warning', 'error', 'info');
-        /**
-         * Constructor.
-         *
-         * @since 3.6.6
-         */
-        public function __construct()
-        {
-        }
-        /**
-         * Register routes.
-         *
-         * @since 3.6.6
-         * @return void
-         */
-        public function register()
-        {
-        }
-        /**
-         * Check permission for notification operations.
-         *
-         * Uses standard WordPress REST authentication (cookies + nonce).
-         *
-         * @since 3.6.6
-         * @param \WP_REST_Request $request Request object.
-         * @return bool|\WP_Error
-         */
-        public function check_permission($request)
         {
         }
     }
@@ -67104,19 +62357,6 @@ namespace EDD\Reports\Data\Charts\v2 {
          * @var   array
          */
         protected $fields = array('borderSkipped', 'hoverBackgroundColor', 'hoverBorderColor', 'hoverBorderWidth');
-        /**
-         * Parses the dataset data for output via JS.
-         *
-         * Overrides parent to handle both time-based and static bar charts.
-         *
-         * @since 3.6.5
-         *
-         * @param array $data Dataset data.
-         * @return array Processed data.
-         */
-        public function parse_data_for_output($data)
-        {
-        }
     }
     /**
      * Represents a manifestation of a ChartJS v2 line chart dataset in PHP form.
@@ -68575,18 +63815,6 @@ namespace EDD\Reports\Data\Gateways {
         {
         }
         /**
-         * Retrieves all payment methods including legacy/deprecated ones.
-         *
-         * This ensures historical transactions using deprecated payment methods
-         * (like Sofort) are still included in reports.
-         *
-         * @since 3.6.5
-         * @return array Array of payment method types and their labels.
-         */
-        private function get_all_payment_methods()
-        {
-        }
-        /**
          * Setup the final data for the table
          *
          * @since 3.3.5
@@ -69471,13 +64699,6 @@ namespace EDD\Reports\Endpoints {
          */
         protected $date_column = 'date_created';
         /**
-         * The SQL clauses for the query.
-         *
-         * @since 3.6.5
-         * @var array
-         */
-        protected $sql_clauses;
-        /**
          * Constructor.
          *
          * @since 3.5.1
@@ -69648,224 +64869,6 @@ namespace EDD\Reports\Endpoints\Traits {
     }
 }
 namespace EDD\Reports\Endpoints\Charts {
-    /**
-     * Abstract base class for EDD Reports Bar Chart builders.
-     *
-     * Provides common functionality for bar chart data building patterns,
-     * particularly for charts that show multiple datasets over time periods.
-     *
-     * @since 3.6.5
-     */
-    abstract class Bar extends \EDD\Reports\Endpoints\Endpoint
-    {
-        use \EDD\Reports\Endpoints\Traits\Colors;
-        /**
-         * The chart type (always 'bar').
-         *
-         * @since 3.6.5
-         * @var string
-         */
-        protected $chart_type = 'bar';
-        /**
-         * Whether the bar chart should be stacked.
-         *
-         * @since 3.6.5
-         * @var bool
-         */
-        protected $stacked = false;
-        /**
-         * Date range for the chart display.
-         *
-         * @since 3.6.5
-         * @var array
-         */
-        protected $chart_dates;
-        /**
-         * The graph period (hour, day, month).
-         *
-         * @since 3.6.5
-         * @var string
-         */
-        protected $period;
-        /**
-         * The column to query for amounts.
-         *
-         * @since 3.6.5
-         * @var string
-         */
-        protected $column;
-        /**
-         * SQL clauses for the query.
-         *
-         * @since 3.6.5
-         * @var array
-         */
-        protected $sql_clauses;
-        /**
-         * True if using day-by-day period.
-         *
-         * @since 3.6.5
-         * @var bool
-         */
-        protected $day_by_day;
-        /**
-         * True if using hour-by-hour period.
-         *
-         * @since 3.6.5
-         * @var bool
-         */
-        protected $hour_by_hour;
-        /**
-         * The chart data array.
-         *
-         * @since 3.6.5
-         * @var array
-         */
-        protected $data = array();
-        /**
-         * Registers this chart with the reports system.
-         *
-         * @since 3.6.5
-         */
-        protected function register(): void
-        {
-        }
-        /**
-         * Gets chart data formatted for the callback system.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        public function get_data_for_callback(): array
-        {
-        }
-        /**
-         * Gets the chart data by building it from query results.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        protected function get_data(): array
-        {
-        }
-        /**
-         * Gets the heading for the chart.
-         *
-         * @since 3.6.5
-         * @return string
-         */
-        protected function get_heading(): string
-        {
-        }
-        /**
-         * Gets the query results that will be used to build the chart.
-         * This method should return an array or associative array of database result objects.
-         *
-         * For single dataset bar charts, return a simple array.
-         * For multiple dataset bar charts, return an associative array with keys for each dataset.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        abstract protected function get_query_results(): array;
-        /**
-         * Gets the chart datasets configuration.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        abstract protected function get_datasets(): array;
-        /**
-         * Initializes the data for a specific timestamp.
-         * Child classes should override this to set up their specific dataset structure.
-         *
-         * @since 3.6.5
-         * @param int    $timestamp     Unix timestamp.
-         * @param object $date_on_chart Current chart date.
-         */
-        abstract protected function initialize_timestamp_data($timestamp, $date_on_chart): void;
-        /**
-         * Processes query results for a specific timestamp.
-         * Child classes should override this to handle their specific data processing logic.
-         *
-         * @since 3.6.5
-         * @param array  $query_results All query results.
-         * @param int    $timestamp     Unix timestamp.
-         * @param object $date_on_chart Current chart date.
-         */
-        abstract protected function process_query_results(array $query_results, $timestamp, $date_on_chart): void;
-        /**
-         * Formats the data for output.
-         * Child classes should override this to format their data structure for the chart.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        abstract protected function format_data(): array;
-        /**
-         * Gets the chart options for the bar chart.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        protected function get_chart_options(): array
-        {
-        }
-        /**
-         * Gets the scales configuration for the bar chart.
-         * Child classes can override this to customize the scales.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        protected function get_scales(): array
-        {
-        }
-        /**
-         * Gets the time period to use for the bar chart axes.
-         *
-         * @since 3.6.5
-         * @return array
-         */
-        protected function get_time_for_axes(): array
-        {
-        }
-        /**
-         * Sets up common properties used by all chart types.
-         *
-         * @since 3.6.5
-         */
-        protected function initialize_properties(): void
-        {
-        }
-        /**
-         * Checks if a database result date matches the current chart date.
-         *
-         * @since 3.6.5
-         * @param object $result        Database result object.
-         * @param object $date_on_chart Current chart date.
-         * @return bool
-         */
-        protected function dates_match($result, $date_on_chart): bool
-        {
-        }
-        /**
-         * Increments the chart date to the next period.
-         *
-         * @since 3.6.5
-         */
-        protected function increment_chart_date(): void
-        {
-        }
-        /**
-         * Initializes the chart data structure.
-         *
-         * @since 3.6.5
-         */
-        protected function initialize_data(): void
-        {
-        }
-    }
     /**
      * Abstract base class for simple EDD Reports Chart builders.
      *
@@ -70831,7 +65834,7 @@ namespace EDD\Reports\Endpoints\Pies {
          * @since 3.5.3
          * @return int
          */
-        protected function get_max_pieces(): int
+        private function get_max_pieces(): int
         {
         }
     }
@@ -70993,49 +65996,6 @@ namespace EDD\Reports\Endpoints\Pies {
         {
         }
     }
-}
-namespace EDD\Reports\Endpoints\Pies\Traits {
-    /**
-     * Trait Gateway
-     *
-     * @since 3.6.4
-     */
-    trait Gateway
-    {
-        /**
-         * Formats a breakdown label for display in tooltips.
-         *
-         * @since 3.6.4
-         * @param string $piece The original piece identifier (gateway slug).
-         * @return string The formatted label.
-         */
-        protected function format_breakdown_label(string $piece): string
-        {
-        }
-        /**
-         * Gets the labels for the pie chart.
-         *
-         * @since 3.6.4
-         * @return array
-         */
-        protected function get_labels(): array
-        {
-        }
-        /**
-         * Processes the query results to populate the data and labels arrays.
-         *
-         * Only includes gateways that have actual sales or earnings data.
-         *
-         * @since 3.6.4
-         * @param array $query_results Database query results.
-         * @return array
-         */
-        protected function process_results(array $query_results): array
-        {
-        }
-    }
-}
-namespace EDD\Reports\Endpoints\Pies {
     /**
      * Gateway Earnings Breakdown Pie Chart class.
      *
@@ -71045,7 +66005,6 @@ namespace EDD\Reports\Endpoints\Pies {
      */
     class GatewayEarnings extends \EDD\Reports\Endpoints\Pies\Pie
     {
-        use \EDD\Reports\Endpoints\Pies\Traits\Gateway;
         /**
          * The key for the dataset.
          *
@@ -71080,6 +66039,34 @@ namespace EDD\Reports\Endpoints\Pies {
         protected function get_query_results(): array
         {
         }
+        /**
+         * Gets the labels for the pie chart.
+         *
+         * @since 3.5.1
+         * @return array
+         */
+        protected function get_labels(): array
+        {
+        }
+        /**
+         * Gets the pieces for the pie chart.
+         *
+         * @since 3.5.1
+         * @return array
+         */
+        protected function get_pieces(): array
+        {
+        }
+        /**
+         * Processes the query results to populate the data and labels arrays.
+         *
+         * @since 3.5.1
+         * @param array $query_results Database query results.
+         * @return array
+         */
+        protected function process_results(array $query_results): array
+        {
+        }
     }
     /**
      * Gateway Sales Breakdown Pie Chart class.
@@ -71090,7 +66077,6 @@ namespace EDD\Reports\Endpoints\Pies {
      */
     class GatewaySales extends \EDD\Reports\Endpoints\Pies\Pie
     {
-        use \EDD\Reports\Endpoints\Pies\Traits\Gateway;
         /**
          * The key for the dataset.
          *
@@ -71123,6 +66109,33 @@ namespace EDD\Reports\Endpoints\Pies {
          * @return array
          */
         protected function get_query_results(): array
+        {
+        }
+        /**
+         * Gets the labels for the pie chart.
+         *
+         * @since 3.5.1
+         * @return array
+         */
+        protected function get_labels(): array
+        {
+        }
+        /**
+         * Gets the pieces for the pie chart.
+         *
+         * @since 3.5.1
+         * @return array
+         */
+        protected function get_pieces(): array
+        {
+        }
+        /**
+         * Processes the query results to populate the data and labels arrays.
+         *
+         * @since 3.5.1
+         * @param array $query_results Database query results.
+         */
+        protected function process_results(array $query_results): array
         {
         }
     }
@@ -71570,17 +66583,6 @@ namespace EDD\Reports\Endpoints\Tiles {
          * @return array
          */
         protected function get_display_args(): array
-        {
-        }
-        /**
-         * Gets the tooltip content for the tile.
-         *
-         * Override this method in child classes to provide a tooltip.
-         *
-         * @since 3.6.5
-         * @return string
-         */
-        protected function get_tooltip(): string
         {
         }
         /**
@@ -73073,63 +68075,6 @@ namespace EDD\Reports {
         }
     }
 }
-namespace EDD\Reports\Utilities {
-    /**
-     * Database Utilities.
-     *
-     * @since 3.6.5
-     */
-    class Database
-    {
-        /**
-         * Gets the SQL clauses.
-         * The result of this function should be run through $wpdb->prepare().
-         *
-         * @since 3.6.5
-         * @param string $period The period for the query.
-         * @param string $column The column to query.
-         * @return array
-         */
-        public static function get_sql_clauses(string $period, string $column = 'date_created'): array
-        {
-        }
-        /**
-         * Parses start and end dates for database queries.
-         *
-         * Accepts dates in various formats (strings, DateTimeInterface, EDD\Utils\Date)
-         * and returns UTC-converted MySQL datetime strings ready for WHERE clauses.
-         *
-         * @since 3.6.5
-         * @param string|\DateTimeInterface $start Start date in store timezone.
-         * @param string|\DateTimeInterface $end   End date in store timezone.
-         * @return array{start: string, end: string, period: string} UTC datetime strings and recommended period.
-         */
-        public static function parse_date_range_for_query($start, $end): array
-        {
-        }
-        /**
-         * Determines the appropriate grouping period based on date range span.
-         *
-         * @since 3.6.5
-         * @param \DateTimeInterface $start Start date.
-         * @param \DateTimeInterface $end   End date.
-         * @return string 'hour', 'day', or 'month'.
-         */
-        public static function get_period_for_date_range(\DateTimeInterface $start, \DateTimeInterface $end): string
-        {
-        }
-        /**
-         * Retrieves the column conversion for the given date column.
-         *
-         * @since 3.6.5
-         * @param string $column The column to convert.
-         * @return string
-         */
-        public static function get_column_conversion(string $column = 'date_created'): string
-        {
-        }
-    }
-}
 namespace EDD {
     /**
      * Requirements Check
@@ -73392,7 +68337,6 @@ namespace EDD\Sessions {
          * Gets the cart discounts.
          *
          * @since 3.3.0
-         * @since 3.6.6 Normalizes the discounts to an array.
          */
         public function get_discounts()
         {
@@ -75849,16 +70793,6 @@ namespace EDD\Telemetry {
         public function get()
         {
         }
-        /**
-         * Gets the telemetry collector instances.
-         *
-         * @since 3.6.8
-         *
-         * @return array
-         */
-        protected function get_collectors(): array
-        {
-        }
     }
     /**
      * Class Environment
@@ -76364,11 +71298,10 @@ namespace EDD\Telemetry {
         /**
          * Setup the data that is going to be tracked.
          *
-         * @since 3.1.1
-         *
+         * @access private
          * @return void
          */
-        protected function setup_data()
+        private function setup_data()
         {
         }
         /**
@@ -76902,13 +71835,6 @@ namespace EDD\Upgrades {
     class Loader extends \EDD\EventManagement\MiniManager
     {
         /**
-         * The priority to subscribe to.
-         *
-         * @since 3.6.5
-         * @var int
-         */
-        protected static $priority = 100;
-        /**
          * Get the event classes.
          *
          * @since 3.2.10
@@ -76964,21 +71890,6 @@ namespace EDD\Upgrades\Orders {
          * @since  3.2
          */
         public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Conditionally registers the shutdown hook for the background update when Action Scheduler is active.
-         *
-         * This method is hooked onto action_scheduler_init, which fires after Action Scheduler has fully
-         * initialized. At that point next_scheduled() is reliable, so we can safely skip adding the
-         * shutdown callback when the cron event is already pending — avoiding unnecessary work on every
-         * page's shutdown for the duration of the migration.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public function maybe_add_shutdown_hook()
         {
         }
         /**
@@ -77109,660 +72020,7 @@ namespace EDD\Upgrades\Utilities {
         }
     }
 }
-namespace EDD\Users\LoginLink {
-    /**
-     * Assets class.
-     *
-     * Registers front-end scripts and styles for the login link feature
-     * and renders the login link prompt in various form contexts.
-     *
-     * @since 3.6.7
-     */
-    class Assets implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Returns an array of events that this subscriber wants to listen to.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Performs the actual script and style registration.
-         *
-         * Called from the `wp_enqueue_scripts` hook and on-demand from
-         * `enqueue()` when a prompt renders before that hook fires.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public static function do_register_assets()
-        {
-        }
-        /**
-         * Enqueues login link assets when a prompt is rendered.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public static function enqueue()
-        {
-        }
-        /**
-         * Renders the login link prompt for the checkout-login context.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function render_checkout_prompt()
-        {
-        }
-        /**
-         * Renders the login link prompt for the checkout-email context.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function render_email_prompt()
-        {
-        }
-        /**
-         * Outputs the login link prompt markup.
-         *
-         * @since 3.6.7
-         * @param string $context Context for the prompt.
-         * @param string $message Prompt message.
-         * @param bool   $hidden  Whether the prompt should be hidden by default.
-         * @return void
-         */
-        private static function prompt($context, $message = '', $hidden = null)
-        {
-        }
-    }
-    /**
-     * Loader class.
-     *
-     * Extends MiniManager to register one-time login link event classes.
-     *
-     * @since 3.6.7
-     */
-    class Loader extends \EDD\EventManagement\MiniManager
-    {
-        /**
-         * Gets the event classes to register.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        protected function get_event_classes(): array
-        {
-        }
-    }
-}
-namespace EDD\Users\LoginLink\Send {
-    /**
-     * Handler class.
-     *
-     * Processes the front-end AJAX request to generate and email
-     * a one-time login link URL to the user.
-     *
-     * @since 3.6.7
-     */
-    class Handler implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Returns an array of events that this subscriber wants to listen to.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Handles the AJAX request to send a login link email.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function send_login_link()
-        {
-        }
-        /**
-         * Sends an ambiguous success response.
-         *
-         * Always returns the same message regardless of whether the user
-         * exists or the email was actually sent, preventing user enumeration.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        private function send_generic_success()
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Validate class.
-     *
-     * @since 3.6.7
-     */
-    class Validate
-    {
-        /**
-         * Cooldown period in seconds between requests for the same user.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const COOLDOWN_SECONDS = 120;
-        /**
-         * Maximum number of one-time login link emails that can be sent to a single user.
-         *
-         * Once reached, no more emails are sent until the window expires.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const MAX_EMAILS = 3;
-        /**
-         * Maximum number of one-time login link requests per IP within the window.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const IP_LIMIT = 3;
-        /**
-         * Sliding window in seconds for per-IP request counting.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const IP_WINDOW = HOUR_IN_SECONDS;
-        /**
-         * Sliding window in seconds for per-user email log lookups.
-         *
-         * Kept separate from IP_WINDOW so each can be tuned independently.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const USER_WINDOW = HOUR_IN_SECONDS;
-        /**
-         * Checks per-user rate limits (cooldown and max emails).
-         *
-         * @since 3.6.7
-         *
-         * @param int $user_id User ID.
-         * @return true|\WP_Error True if allowed, WP_Error if rate-limited.
-         */
-        public static function check_user(int $user_id)
-        {
-        }
-        /**
-         * Checks per-IP sliding-window rate limits.
-         *
-         * @since 3.6.7
-         *
-         * @return true|\WP_Error True if allowed, WP_Error if rate-limited.
-         */
-        public static function check_ip()
-        {
-        }
-        /**
-         * Records a successful one-time login link send for rate limiting.
-         *
-         * Appends the current timestamp to the per-IP request log.
-         * Per-user rate limiting is derived from email log entries
-         * created by the Email class on send.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public static function record(): void
-        {
-        }
-        /**
-         * Retrieves recent login link email log entries for a user.
-         *
-         * Returns entries within the USER_WINDOW, ordered newest first.
-         * The result is used for both cooldown and max-email checks.
-         *
-         * @since 3.6.7
-         *
-         * @param int $user_id User ID.
-         * @return array Array of log entry objects.
-         */
-        private static function get_recent_logs(int $user_id): array
-        {
-        }
-    }
-}
-namespace EDD\Users\LoginLink {
-    // @codeCoverageIgnore
-    /**
-     * Token class.
-     *
-     * Provides static helpers for issuing, hashing, resolving, and
-     * invalidating login link tokens.
-     *
-     * @since 3.6.7
-     */
-    class Token
-    {
-        /**
-         * Token time-to-live in seconds.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const TTL = 10 * MINUTE_IN_SECONDS;
-        /**
-         * User meta key for login link token data.
-         *
-         * @since 3.6.7
-         * @var string
-         */
-        const META_KEY = 'edd_login_link';
-        /**
-         * Issues a new login link token for a user.
-         *
-         * Generates a random token, stores its hash and associated metadata
-         * in user meta, and creates a transient index for fast token-to-user
-         * lookups. Only one active token per user is stored; a new request
-         * overwrites the previous token.
-         *
-         * @since 3.6.7
-         *
-         * @param int $user_id User ID.
-         * @return array {
-         *     Token data on success, empty array on failure.
-         *
-         *     @type string $token      Raw token string.
-         *     @type int    $expires_at Unix timestamp when the token expires.
-         * }
-         */
-        public static function issue(int $user_id): array
-        {
-        }
-        /**
-         * Generates a cryptographically secure random token string.
-         *
-         * @since 3.6.7
-         *
-         * @return string 64-character hex string.
-         */
-        public static function generate(): string
-        {
-        }
-        /**
-         * Hashes a token for secure storage and comparison.
-         *
-         * @since 3.6.7
-         *
-         * @param string $token Raw token value.
-         * @return string HMAC-SHA256 hash of the token.
-         */
-        public static function hash(string $token): string
-        {
-        }
-        /**
-         * Resolves a user ID from a token via the transient index.
-         *
-         * @since 3.6.7
-         *
-         * @param string $token Raw login link token.
-         * @return int User ID, or 0 if not found.
-         */
-        public static function resolve_user_id(string $token): int
-        {
-        }
-        /**
-         * Generates a login link URL for a user.
-         *
-         * @since 3.6.7
-         *
-         * @param int    $user_id User ID.
-         * @param string $token   Raw login link token.
-         * @return string|false URL, or false on invalid input.
-         */
-        public static function generate_url(int $user_id, string $token)
-        {
-        }
-        /**
-         * Invalidates a token by marking it as used and cleaning up.
-         *
-         * Sets the used_at timestamp in user meta, deletes the transient
-         * index, and removes the user meta entry.
-         *
-         * @since 3.6.7
-         *
-         * @param int    $user_id User ID.
-         * @param string $token   Raw login link token.
-         * @return void
-         */
-        public static function invalidate(int $user_id, string $token): void
-        {
-        }
-        /**
-         * Gets the transient key used to map a token to a user ID.
-         *
-         * @since 3.6.7
-         *
-         * @param string $token Raw login link token.
-         * @return string Transient key.
-         */
-        private static function get_index_key(string $token): string
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Utility class.
-     *
-     * @since 3.6.7
-     */
-    class Utility
-    {
-        /**
-         * Determines if login link is enabled.
-         *
-         * @since 3.6.7
-         * @return bool
-         */
-        public static function enabled(): bool
-        {
-        }
-        /**
-         * Determines if login link is available for the current visitor.
-         *
-         * Returns true only when the feature is enabled AND the
-         * current user is not logged in.
-         *
-         * @since 3.6.7
-         * @return bool
-         */
-        public static function is_available(): bool
-        {
-        }
-        /**
-         * Gets the centralized policy for login link visibility and messaging.
-         *
-         * @since 3.6.7
-         * @return array Policy array.
-         */
-        public static function get_policy(): array
-        {
-        }
-        /**
-         * Gets the login link policy for a single context.
-         *
-         * @since 3.6.7
-         * @param string $context Login link context.
-         * @return array Context policy array.
-         */
-        public static function get_context_policy(string $context): array
-        {
-        }
-        /**
-         * Checks if a login link context is enabled.
-         *
-         * @since 3.6.7
-         * @param string $context Login link context.
-         * @return bool
-         */
-        public static function context_enabled(string $context): bool
-        {
-        }
-        /**
-         * Gets the configured message for a login link context.
-         *
-         * @since 3.6.7
-         * @param string $context Login link context.
-         * @return string
-         */
-        public static function get_context_message(string $context): string
-        {
-        }
-        /**
-         * Determines whether a user is allowed to log in via login link.
-         *
-         * By default, users with administrative capabilities are excluded because
-         * the login link bypasses the password and could be used to silently
-         * authenticate as a high-privilege user if their email is compromised.
-         *
-         * Both manage_options (WordPress administrators) and manage_shop_settings
-         * (EDD shop managers) are checked, since either represents a level of
-         * privilege that should not bypass password authentication.
-         *
-         * @since 3.6.7
-         *
-         * @param \WP_User $user User object.
-         * @return bool True if the user is allowed to use login link.
-         */
-        public static function user_allowed(\WP_User $user): bool
-        {
-        }
-        /**
-         * Clears the verification failure counter after a successful login.
-         *
-         * Only the verify-failure transient is removed. The per-IP send-rate
-         * transient is intentionally left intact so that a successful login
-         * does not reset the send window and allow immediate re-requesting
-         * of more login links from the same IP.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public static function cleanup_rate_limits(): void
-        {
-        }
-        /**
-         * Resolves a WP_User from an email address or username.
-         *
-         * @since 3.6.7
-         *
-         * @param string $login Email address or username.
-         * @return \WP_User|false User object on success, false on failure.
-         */
-        public static function get_user_from_login(string $login)
-        {
-        }
-    }
-}
-namespace EDD\Users\LoginLink\Verify {
-    /**
-     * Handler class.
-     *
-     * Processes incoming one-time login link requests by validating
-     * the token and logging the user in.
-     *
-     * @since 3.6.7
-     */
-    class Handler implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Returns an array of events that this subscriber wants to listen to.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Handles an incoming login link verify request via edd_action.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function handle_verify()
-        {
-        }
-        /**
-         * Processes a one-time login link request.
-         *
-         * Delegates validation to validate_token() and, on success,
-         * logs the user in and redirects to checkout.
-         *
-         * @since 3.6.7
-         * @param string $token Raw login link token.
-         * @return void
-         */
-        private function process_login(string $token)
-        {
-        }
-        /**
-         * Validates a login link token through all required checks.
-         *
-         * Runs feature-enabled, rate-limit, and user-resolution checks,
-         * then delegates stored-token verification to verify_token_meta().
-         *
-         * @since 3.6.7
-         * @param string $token Raw login link token.
-         * @return array|\WP_Error {
-         *     Validated data on success, WP_Error on failure.
-         *
-         *     @type int      $user_id The resolved user ID.
-         *     @type \WP_User $user    The resolved user object.
-         * }
-         */
-        private function validate_token(string $token)
-        {
-        }
-        /**
-         * Verifies the stored token metadata against the incoming token.
-         *
-         * Checks that the user meta exists, the token has not already been
-         * used, has not expired, and that the hash matches.
-         *
-         * @since 3.6.7
-         * @param int      $user_id User ID.
-         * @param \WP_User $user    User object.
-         * @param string   $token   Raw login link token.
-         * @return array|\WP_Error Validated data on success, WP_Error on failure.
-         */
-        private function verify_token_meta(int $user_id, \WP_User $user, string $token)
-        {
-        }
-        /**
-         * Logs the user in without a password.
-         *
-         * @since 3.6.7
-         * @param \WP_User $user User object.
-         * @return void
-         */
-        private function log_user_in($user)
-        {
-        }
-        /**
-         * Redirects to checkout with a generic error message.
-         *
-         * Records a validation failure for rate-limiting purposes before
-         * redirecting.
-         *
-         * @since 3.6.7
-         * @param string $reason Failure reason identifier.
-         * @return void
-         */
-        private function redirect_with_error($reason)
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
-     * Validate class.
-     *
-     * @since 3.6.7
-     */
-    class Validate
-    {
-        /**
-         * Maximum number of failed token validation attempts per IP.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const MAX_FAILURES = 5;
-        /**
-         * Window in seconds for counting validation failures.
-         *
-         * @since 3.6.7
-         * @var int
-         */
-        const FAILURE_WINDOW = HOUR_IN_SECONDS;
-        /**
-         * Checks whether the current IP has exceeded the maximum number
-         * of failed token validation attempts.
-         *
-         * @since 3.6.7
-         *
-         * @return bool True if the IP is rate-limited.
-         */
-        public static function is_limited(): bool
-        {
-        }
-        /**
-         * Records a failed token validation attempt for the current IP.
-         *
-         * @since 3.6.7
-         *
-         * @return void
-         */
-        public static function record_failure(): void
-        {
-        }
-    }
-}
 namespace EDD\Users {
-    /**
-     * Users Search
-     *
-     * Handles the AJAX endpoint used by the UserSelect TomSelect/chosen field
-     * to search for WordPress users by display name, login, or email.
-     *
-     * @since 3.6.7
-     */
-    class Search implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Get the subscribed events.
-         *
-         * User search is restricted to authenticated admin users only, so no
-         * nopriv counterpart is registered.
-         *
-         * @since 3.6.7
-         * @return array
-         */
-        public static function get_subscribed_events(): array
-        {
-        }
-        /**
-         * Handle the AJAX user search request.
-         *
-         * @since 3.6.7
-         * @return void
-         */
-        public function search(): void
-        {
-        }
-        /**
-         * Get matching users for the search term.
-         *
-         * Returns an empty array when no search term is supplied so that
-         * TomSelect shows its placeholder rather than a "No users found" entry.
-         *
-         * @since 3.6.7
-         * @return array Array of {id, name} objects.
-         */
-        private function get_users(): array
-        {
-        }
-    }
     /**
      * Verification class.
      *
@@ -78215,10 +72473,9 @@ namespace EDD\Utils {
          *
          * @since 3.3.0
          * @param null|int $expiration The expiration timestamp. Use null to set the cookie to expire immediately.
-         * @param string   $cookie     The cookie name.
          * @return array
          */
-        private static function get_options($expiration, $cookie)
+        private static function get_options($expiration)
         {
         }
         /**
@@ -78406,61 +72663,6 @@ namespace EDD\Utils {
         {
         }
     }
-    /**
-     * Encryption class.
-     *
-     * @since 3.6.5
-     */
-    final class Encryption
-    {
-        /**
-         * The cipher method.
-         *
-         * @since 3.6.5
-         */
-        private const CIPHER_METHOD = 'AES-256-CBC';
-        /**
-         * Encrypts a plaintext string and returns a hex-encoded token.
-         *
-         * The token contains the random IV prepended to the ciphertext,
-         * so every call produces a different token for the same input.
-         *
-         * @since 3.6.5
-         * @param string $plaintext The data to encrypt.
-         * @return string|null Hex-encoded token, or null on failure.
-         */
-        public static function encrypt(string $plaintext): ?string
-        {
-        }
-        /**
-         * Decrypts a hex-encoded token back to plaintext.
-         *
-         * @since 3.6.5
-         * @param string $token Hex-encoded token from encrypt().
-         * @return string|null The original plaintext, or null on failure.
-         */
-        public static function decrypt(string $token): ?string
-        {
-        }
-        /**
-         * Checks if encryption requirements are met.
-         *
-         * @since 3.6.5
-         * @return bool True if all requirements are available.
-         */
-        private static function requirements_met(): bool
-        {
-        }
-        /**
-         * Derives the encryption key from WordPress salts.
-         *
-         * @since 3.6.5
-         * @return string Binary encryption key.
-         */
-        private static function get_encryption_key(): string
-        {
-        }
-    }
     class EnvironmentChecker
     {
         /**
@@ -78578,105 +72780,6 @@ namespace EDD\Utils {
          * @throws \InvalidArgumentException
          */
         public function versionNumbersMatch($currentVersion, $compareVersion)
-        {
-        }
-        /**
-         * Determines if the provided condition is a PHP version condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $condition The condition to check.
-         *
-         * @return bool
-         */
-        protected function isPhpVersion($condition)
-        {
-        }
-        /**
-         * Determines if the current PHP version matches the condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $currentPhpVersion The current PHP version (e.g., "8.2.10").
-         * @param string $condition         The condition to match (e.g., "php-8-2" or "php-8-x").
-         *
-         * @return bool
-         */
-        public function phpVersionMatch($currentPhpVersion, $condition)
-        {
-        }
-        /**
-         * Determines if the provided condition is a WordPress version condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $condition The condition to check.
-         *
-         * @return bool
-         */
-        protected function isWordPressVersion($condition)
-        {
-        }
-        /**
-         * Determines if the current WordPress version matches the condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $currentWpVersion The current WordPress version (e.g., "6.4.2").
-         * @param string $condition        The condition to match (e.g., "wp-6-4" or "wp-6-x").
-         *
-         * @return bool
-         */
-        public function wordPressVersionMatch($currentWpVersion, $condition)
-        {
-        }
-        /**
-         * Determines if the provided condition is an EDD version condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $condition The condition to check.
-         *
-         * @return bool
-         */
-        protected function isEddVersion($condition)
-        {
-        }
-        /**
-         * Determines if the current EDD version matches the condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $currentEddVersion The current EDD version (e.g., "3.3.5").
-         * @param string $condition         The condition to match (e.g., "edd-3-3" or "edd-3-x").
-         *
-         * @return bool
-         */
-        public function eddVersionMatch($currentEddVersion, $condition)
-        {
-        }
-        /**
-         * Determines if the provided condition is a plugin condition.
-         *
-         * @since 3.6.5
-         *
-         * @param string $condition The condition to check.
-         *
-         * @return bool
-         */
-        protected function isPluginCondition($condition)
-        {
-        }
-        /**
-         * Determines if a plugin matching the condition is active.
-         *
-         * @since 3.6.5
-         *
-         * @param string $condition The condition to check (e.g., "plugin-edd-recurring").
-         *
-         * @return bool
-         */
-        public function pluginIsActive($condition)
         {
         }
     }
@@ -78937,196 +73040,6 @@ namespace EDD\Utils {
         {
         }
     }
-    // @codeCoverageIgnore
-    /**
-     * Class Messages
-     *
-     * Handles all EDD error/success/info messaging via session storage with retrieval by code or type,
-     * and consistent HTML output using existing EDD alert CSS.
-     */
-    class Messages
-    {
-        /**
-         * Session key for the unified messages array.
-         *
-         * @var string
-         */
-        const SESSION_KEY = 'edd_messages';
-        /**
-         * Legacy session key for errors (migrated into edd_messages).
-         *
-         * @var string
-         */
-        const LEGACY_ERRORS_KEY = 'edd_errors';
-        /**
-         * Legacy session key for success messages (migrated into edd_messages).
-         *
-         * @var string
-         */
-        const LEGACY_SUCCESS_KEY = 'edd_success_errors';
-        /**
-         * Allowed message types (match CSS: edd-alert-error, edd-alert-success, edd-alert-info, edd-alert-warn).
-         *
-         * @var string[]
-         */
-        const TYPES = array('error', 'success', 'info', 'warn');
-        /**
-         * Default CSS wrapper class per type (without edd-alert-*).
-         *
-         * @var string[]
-         */
-        const WRAPPER_CLASSES = array('error' => 'edd-errors', 'success' => 'edd-success', 'info' => 'edd-info', 'warn' => 'edd-warn');
-        /**
-         * Add a message for a given type and code.
-         *
-         * @since 3.6.5
-         * @param string $type    One of error, success, info, warn.
-         * @param string $code    Unique code for the message (e.g. error_id).
-         * @param string $message Message text (will be sanitized for storage).
-         * @return void
-         */
-        public static function add($type, $code, $message)
-        {
-        }
-        /**
-         * Get messages for a single type.
-         *
-         * @since 3.6.5
-         * @param string $type One of error, success, info, warn.
-         * @return array<string, string> Map of code => message.
-         */
-        public static function get_by_type($type)
-        {
-        }
-        /**
-         * Get the first message matching the given code across any type.
-         *
-         * @since 3.6.5
-         * @param string $code Message code.
-         * @return array|null Associative array with 'type' and 'message', or null if not found.
-         */
-        public static function get_by_code($code): ?array
-        {
-        }
-        /**
-         * Get all messages, optionally filtered.
-         *
-         * @since 3.6.5
-         * @return array<string, array<string, string>> Full storage shape [ type => [ code => message ] ].
-         */
-        public static function get_all(): array
-        {
-        }
-        /**
-         * Remove a message by code. If type is omitted, only the error type is updated (backward compatibility with edd_unset_error).
-         *
-         * @since 3.6.5
-         * @param string      $code Message code.
-         * @param string|null $type Optional. One of error, success, info, warn. Default 'error'.
-         * @return void
-         */
-        public static function remove(string $code, ?string $type = 'error'): void
-        {
-        }
-        /**
-         * Clear all messages and legacy keys.
-         * If a type is provided, only clear that type.
-         * Otherwise, clear all types.
-         *
-         * @since 3.6.5
-         * @param string|null $type Optional. One of error, success, info, warn. Default null.
-         * @return void
-         */
-        public static function clear($type = null): void
-        {
-        }
-        /**
-         * Whether any messages exist (any type).
-         *
-         * @since 3.6.5
-         * @return bool
-         */
-        public static function has_any(): bool
-        {
-        }
-        /**
-         * Build HTML for messages. One block per type (error, success, info, warn) when present.
-         *
-         * Uses existing CSS: edd_errors/edd_success/edd_info/edd_warn, edd-alert, edd-alert-{type}.
-         * Applies edd_error_class filter for error block; edd_message_class for other types.
-         *
-         * @since 3.6.5
-         * @param string|null $type Optional. If provided, only output this type; otherwise all types.
-         * @return string HTML markup (escaped).
-         */
-        public static function to_html(?string $type = null): string
-        {
-        }
-        /**
-         * Build HTML for a raw array of messages (for backward compatibility with edd_build_errors_html / edd_build_successes_html).
-         * Uses the same markup as to_html() for the given type.
-         *
-         * @since 3.6.5
-         * @param array<string, string> $messages Map of code => message.
-         * @param string                $type    One of error, success, info, warn.
-         * @return string
-         */
-        public static function build_html_for_messages(array $messages, string $type = 'error'): string
-        {
-        }
-        /**
-         * Build HTML for a single message type block.
-         *
-         * @since 3.6.5
-         * @param string                $type    One of error, success, info, warn.
-         * @param array<string, string> $messages Map of code => message.
-         * @return string
-         */
-        private static function build_block_html(string $type, array $messages): string
-        {
-        }
-        /**
-         * Get translated label for a message type.
-         *
-         * @since 3.6.5
-         * @param string $type One of error, success, info, warn.
-         * @return string Translated label.
-         */
-        private static function get_translated_label(string $type): string
-        {
-        }
-        /**
-         * Get the full messages array from session, migrating legacy keys if present.
-         *
-         * @since 3.6.5
-         * @return array<string, array<string, string>> Shape: [ type => [ code => message ] ].
-         */
-        private static function get_storage(): array
-        {
-        }
-        /**
-         * Persist the full messages array to session.
-         *
-         * @since 3.6.5
-         * @param array<string, array<string, string>> $messages Full storage array.
-         * @return void
-         */
-        private static function persist(array $messages): void
-        {
-        }
-        /**
-         * Clear messages for a single type only (e.g. errors). Use this when callers
-         * intend to reset only one kind of message (e.g. "clear errors from previous attempt")
-         * without wiping success/info messages.
-         *
-         * @since 3.6.5
-         * @param string $type One of error, success, info, warn.
-         * @return void
-         */
-        private static function clear_by_type(string $type): void
-        {
-        }
-    }
     /**
      * Modal class.
      *
@@ -79159,8 +73072,7 @@ namespace EDD\Utils {
          * Render a reusable modal container.
          *
          * Outputs the HTML structure for a generic EDD modal that can be used
-         * with the EDDModal JavaScript class. Modal HTML is deferred to wp_footer
-         * (frontend) or admin_footer (admin).
+         * with the EDDModal JavaScript class. Modal HTML is deferred to wp_footer.
          *
          * Uses a custom <edd-modal> Web Component with Shadow DOM for style isolation.
          *
@@ -79511,16 +73423,6 @@ namespace EDD\Utils {
          * @return mixed
          */
         public function __get($key)
-        {
-        }
-        /**
-         * Magic isset.
-         *
-         * @since 3.6.5
-         * @param string $key The property name.
-         * @return bool
-         */
-        public function __isset($key)
         {
         }
         /**
@@ -79887,90 +73789,6 @@ namespace EDD\Utils {
         }
     }
 }
-namespace EDD\Utils\Validators {
-    /**
-     * Rate Limiter class.
-     *
-     * Uses WordPress transients for atomic operations and cache compatibility.
-     * Callers pass a transient key prefix, max attempts, and window duration;
-     * each identifier (e.g. IP, session id) is hashed and scoped to that key.
-     */
-    class RateLimiter
-    {
-        /**
-         * Transient key prefix. Stored keys become `{prefix}_{md5(identifier)}`.
-         *
-         * @var string
-         */
-        private string $transient_key_prefix;
-        /**
-         * Maximum allowed attempts in the current window.
-         *
-         * @var int
-         */
-        private int $max_attempts;
-        /**
-         * Window duration in seconds (lockout / reset time).
-         *
-         * @var int
-         */
-        private int $window_seconds;
-        /**
-         * Constructor.
-         *
-         * @since 3.6.5
-         * @param string $transient_key_prefix Prefix for transient keys (e.g. 'edd_acr_restore_rate'). Used with md5(identifier).
-         * @param int    $max_attempts         Maximum allowed attempts per window. Default 5.
-         * @param int    $window_seconds       Window (lockout) duration in seconds. Default 1 hour.
-         */
-        public function __construct(string $transient_key_prefix, int $max_attempts = 5, int $window_seconds = HOUR_IN_SECONDS)
-        {
-        }
-        /**
-         * Checks rate limit and increments counter. Use for action-style limits (e.g. restore link clicks).
-         *
-         * Returns true if the attempt is allowed; returns WP_Error when the rate limit is exceeded,
-         * with a message indicating how long until the lockout resets.
-         *
-         * @since 3.6.5
-         * @param string $identifier Unique identifier to limit (e.g. IP address, user id, session id).
-         * @return true|WP_Error True if allowed, WP_Error if rate limited.
-         */
-        public function check(string $identifier)
-        {
-        }
-        /**
-         * Increments the attempt counter for the identifier. Use for quota-style limits (e.g. snapshots per session).
-         *
-         * @since 3.6.5
-         * @param string $identifier Unique identifier to limit (e.g. session id, IP).
-         * @return bool True if under the limit (counter incremented), false if rate limit exceeded.
-         */
-        public function increment(string $identifier): bool
-        {
-        }
-        /**
-         * Returns remaining seconds until the current window resets for the identifier.
-         *
-         * @since 3.6.5
-         * @param string $identifier Same identifier used for increment/check.
-         * @return int Seconds until reset, or 0 if no active window.
-         */
-        public function get_remaining_lockout_seconds(string $identifier): int
-        {
-        }
-        /**
-         * Builds the transient key for an identifier.
-         *
-         * @since 3.6.5
-         * @param string $identifier Identifier to hash (e.g. IP, session id).
-         * @return string Transient key.
-         */
-        private function get_transient_key(string $identifier): string
-        {
-        }
-    }
-}
 /**
  * Blocks
  *
@@ -80071,16 +73889,7 @@ namespace EDD\Blocks\Recaptcha\Settings {
     {
     }
 }
-/**
- * Scripts for the EDD Blocks.
- *
- * @package EDD\Blocks\Admin\Scripts
- * @copyright Copyright Easy Digital Downloads
- * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 2.0
- */
 namespace EDD\Blocks\Admin\Scripts {
-    // @codeCoverageIgnore
     /**
      * Adds a custom variable to the JS to allow a user in the block editor
      * to preview sensitive data.
@@ -80093,11 +73902,6 @@ namespace EDD\Blocks\Admin\Scripts {
     }
     /**
      * If the EDD styles are registered, load them for the block editor.
-     *
-     * WordPress 7.0 moved to a fully iframed editor (Block API v3), so
-     * enqueue_block_editor_assets no longer fires inside the iframe.
-     * enqueue_block_assets fires inside the iframe, on the frontend, and
-     * in the editor shell, so the style is always available where blocks render.
      *
      * @since 2.0
      * @return void
@@ -81869,14 +75673,15 @@ namespace EDD\Gateways\PayPal {
      *
      * @link  https://developer.paypal.com/docs/api/payments/v2/#captures_refund
      *
-     * @param Order|\EDD_Payment $payment_or_order Order or payment object.
-     * @param Order|null         $refund_object   Refund object.
+     * @param \EDD_Payment|Order $payment_or_order
+     * @param Order|null         $refund_object
      *
      * @since 2.11
-     * @throws API_Exception If the request fails.
-     * @throws \Exception    If the transaction ID is missing.
+     * @throws Authentication_Exception
+     * @throws API_Exception
+     * @throws \Exception
      */
-    function refund_transaction($payment_or_order, ?\EDD\Orders\Order $refund_object = null)
+    function refund_transaction($payment_or_order, \EDD\Orders\Order $refund_object = null)
     {
     }
 }
@@ -82423,8 +76228,7 @@ namespace EDD\Reports {
      * Get the time zone converted dates for the query.
      *
      * @since 3.1.1.4
-     * @since 3.6.5 This is a wrapper for the Utilities\Database::get_column_conversion method.
-     * @param string $column The column to convert.
+     * @param string $column
      * @return string
      */
     function get_column_conversion($column = 'date_created')
@@ -83797,31 +77601,6 @@ namespace {
     {
     }
     /**
-     * Default Log Views
-     *
-     * Wrapper for the Logs class method.
-     *
-     * @since 1.4
-     * @deprecated 3.6.4 Use \EDD\Admin\Tools\Logs::get_default_views() instead.
-     *
-     * @return array $views Log Views
-     */
-    function edd_log_default_views()
-    {
-    }
-    /**
-     * Renders the Reports page views drop down
-     *
-     * @since 1.3
-     * @since 3.0 Deprecated, and modified to look like the 3.0 approach
-     * @deprecated 3.6.4 Moved to PSR-4 class structure
-     *
-     * @return void
-     */
-    function edd_log_views()
-    {
-    }
-    /**
      * Get the admin pages.
      *
      * @since 3.0
@@ -83950,7 +77729,7 @@ namespace {
      * Loads the tools batch processing class for recounting stats for a single customer
      *
      * @since  2.5
-     * @param  string $class The class being requested to run for the batch export.
+     * @param  string $class The class being requested to run for the batch export
      * @return void
      */
     function edd_include_single_customer_recount_tool_batch_processer($class)
@@ -84686,10 +78465,10 @@ namespace {
      * Loads the payments batch process if needed
      *
      * @since  2.6
-     * @param  string $import_class The class being requested to run for the batch import.
+     * @param  string $class The class being requested to run for the batch import
      * @return void
      */
-    function edd_include_payments_batch_import_processer($import_class)
+    function edd_include_payments_batch_import_processer($class)
     {
     }
     /**
@@ -84704,10 +78483,10 @@ namespace {
      * Loads the downloads batch process if needed
      *
      * @since  2.6
-     * @param  string $import_class The class being requested to run for the batch import.
+     * @param  string $class The class being requested to run for the batch import
      * @return void
      */
-    function edd_include_downloads_batch_import_processer($import_class)
+    function edd_include_downloads_batch_import_processer($class)
     {
     }
     /**
@@ -84742,11 +78521,11 @@ namespace {
      *
      * @since 3.0.2
      *
-     * @param string $import_class The class name to check.
+     * @param string $class The class name to check.
      *
      * @return bool If the class is allowed to be used as an importer.
      */
-    function edd_importer_is_class_allowed($import_class = '')
+    function edd_importer_is_class_allowed($class = '')
     {
     }
     /**
@@ -84785,7 +78564,6 @@ namespace {
     function edd_admin_ajax_delete_note()
     {
     }
-    // @codeCoverageIgnore
     /**
      * Get the HTML used to output all of the notes for a single object
      *
@@ -84801,7 +78579,7 @@ namespace {
      * Get the HTML used to output a single note, from an array of notes
      *
      * @since 3.0
-     * @param int $note_id Note ID.
+     * @param int $note_id
      *
      * @return string
      */
@@ -86108,6 +79886,18 @@ namespace {
     {
     }
     /**
+     * Recapture Callback
+     *
+     * Renders Recapture Settings
+     *
+     * @since 2.10.2
+     * @param array $args Arguments passed by the setting.
+     * @return void
+     */
+    function edd_recapture_callback($args)
+    {
+    }
+    /**
      * Renders tax rates table.
      *
      * @since 1.6
@@ -86163,18 +79953,6 @@ namespace {
      * @return void
      */
     function edd_checkbox_toggle_callback($args)
-    {
-    }
-    /**
-     * Amount Type Callback
-     *
-     * Renders amount/type fields with a unit prefix or suffix.
-     *
-     * @since 3.6.5
-     * @param array $args Arguments passed by the setting.
-     * @return void
-     */
-    function edd_amounttype_callback($args)
     {
     }
     /**
@@ -86344,6 +80122,92 @@ namespace {
      * @since 3.0
      */
     function edd_tools_tab_logs()
+    {
+    }
+    /**
+     * Setup the logs view
+     *
+     * @since 3.0
+     *
+     * @param type $type
+     * @return boolean
+     */
+    function edd_logs_view_setup($type = '')
+    {
+    }
+    /**
+     * Output the log page
+     *
+     * @since 3.0
+     *
+     * @param EDD_Base_Log_List_Table $logs_table List table class to work with
+     * @param string                  $tag        Type of log to view
+     */
+    function edd_logs_view_page($logs_table, $tag = '')
+    {
+    }
+    /** Views *********************************************************************/
+    /**
+     * File Download Logs
+     *
+     * @since 1.4
+     * @uses EDD_File_Downloads_Log_Table::prepare_items()
+     * @uses EDD_File_Downloads_Log_Table::search_box()
+     * @uses EDD_File_Downloads_Log_Table::display()
+     * @return void
+     */
+    function edd_logs_view_file_downloads()
+    {
+    }
+    /**
+     * Gateway Error Logs
+     *
+     * @since 1.4
+     * @uses EDD_File_Downloads_Log_Table::prepare_items()
+     * @uses EDD_File_Downloads_Log_Table::display()
+     * @return void
+     */
+    function edd_logs_view_gateway_errors()
+    {
+    }
+    /**
+     * API Request Logs
+     *
+     * @since 1.5
+     * @uses EDD_API_Request_Log_Table::prepare_items()
+     * @uses EDD_API_Request_Log_Table::search_box()
+     * @uses EDD_API_Request_Log_Table::display()
+     * @return void
+     */
+    function edd_logs_view_api_requests()
+    {
+    }
+    /**
+     * Default Log Views
+     *
+     * @since 1.4
+     * @return array $views Log Views
+     */
+    function edd_log_default_views()
+    {
+    }
+    /**
+     * Renders the Reports page views drop down
+     *
+     * @since 1.3
+     * @since 3.0 Deprecated, and modified to look like the 3.0 approach
+     *
+     * @return void
+    */
+    function edd_log_views()
+    {
+    }
+    /**
+     * Output old logs filter bar items
+     *
+     * @since 3.0
+     */
+    function edd_old_logs_filter_bar_items()
     {
     }
     /**
@@ -86942,6 +80806,15 @@ namespace {
      * @return void
      */
     function edd_ajax_download_category_search()
+    {
+    }
+    /**
+     * Search the users database via AJAX
+     *
+     * @since 2.6.9
+     * @return void
+     */
+    function edd_ajax_user_search()
     {
     }
     /**
@@ -90480,48 +84353,6 @@ namespace {
     function _edd_die_handler()
     {
     }
-    /**
-     * Recapture Callback
-     *
-     * Renders Recapture Settings
-     *
-     * @since 2.10.2
-     * @deprecated 3.6.5
-     * @param array $args Arguments passed by the setting.
-     * @return void
-     */
-    function edd_recapture_callback($args)
-    {
-    }
-    /**
-     * Handle installation and connection for Recapture via ajax
-     *
-     * @since 2.10.2
-     * @deprecated 3.6.5
-     */
-    function edd_recapture_remote_install_handler()
-    {
-    }
-    /**
-     * Maybe adds a notice to abandoned payments if Recapture isn't installed.
-     *
-     * @since 2.10.2
-     * @deprecated 3.6.5
-     * @param int $payment_id The ID of the abandoned payment, for which a Recapture notice is being thrown.
-     */
-    function maybe_add_recapture_notice_to_abandoned_payment($payment_id)
-    {
-    }
-    /**
-     * Search the users database via AJAX
-     *
-     * @since 2.6.9
-     * @deprecated 3.6.7 Handled by EDD\Users\Search
-     * @return void
-     */
-    function edd_ajax_user_search()
-    {
-    }
     // @codeCoverageIgnore
     /**
      * Add a discount.
@@ -92006,7 +85837,7 @@ namespace {
      * Note: recalculating download stats is an expensive query, so it's deferred intentionally.
      *
      * @since 3.1
-     * @param int $download_id The download ID.
+     * @param int $download_id
      * @return void
      */
     function edd_maybe_schedule_download_recalculation($download_id)
@@ -92209,6 +86040,25 @@ namespace {
     function edd_delete_email_meta_by_key($meta_key)
     {
     }
+    // @codeCoverageIgnore
+    /**
+     * Handle installation and connection for Recapture via ajax
+     *
+     * @since 2.10.2
+     */
+    function edd_recapture_remote_install_handler()
+    {
+    }
+    /**
+     * Maybe adds a notice to abandoned payments if Recapture isn't installed.
+     *
+     * @since 2.10.2
+     *
+     * @param int $payment_id The ID of the abandoned payment, for which a Recapture notice is being thrown.
+     */
+    function maybe_add_recapture_notice_to_abandoned_payment($payment_id)
+    {
+    }
     /**
      * Get registered emails.
      *
@@ -92252,7 +86102,7 @@ namespace {
     {
     }
     /**
-     * Enqueue scripts for the email tags inserter (dialog + tag list).
+     * Enqueue scripts for clicking a tag inside of Thickbox.
      *
      * @since 3.0
      * @param string $context The context to get tags for.
@@ -92262,10 +86112,9 @@ namespace {
     {
     }
     /**
-     * Output the email tags inserter dialog content (native dialog, edd-modal pattern).
+     * Output Thickbox content.
      *
      * @since 3.0
-     * @since 3.6.5 Moved from thickbox to native dialog.
      * @param string $context The context to get tags for.
      * @param string $recipient The recipient to get tags for.
      */
@@ -92666,6 +86515,7 @@ namespace {
     function edd_render_receipt_in_browser($data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Print Errors
      *
@@ -92673,8 +86523,8 @@ namespace {
      * If errors exist, they are returned.
      *
      * @since 1.0
-     * @uses EDD\Utils\Messages::to_html()
-     * @uses EDD\Utils\Messages::clear()
+     * @uses edd_get_errors()
+     * @uses edd_clear_errors()
      * @return void
      */
     function edd_print_errors()
@@ -92708,7 +86558,7 @@ namespace {
      * If errors exist, they are returned.
      *
      * @since 1.0
-     * @uses EDD\Utils\Messages::get_by_type()
+     * @uses EDD\Sessions\Handler::get()
      * @return mixed array if errors are present, false if none found
      */
     function edd_get_errors()
@@ -92720,7 +86570,7 @@ namespace {
      * Stores an error in a session var.
      *
      * @since 1.0
-     * @uses EDD\Utils\Messages::add()
+     * @uses EDD\Sessions\Handler::get()
      * @param int    $error_id ID of the error being set.
      * @param string $error_message Message to store with the error.
      * @return void
@@ -92732,7 +86582,7 @@ namespace {
      * Stores an array of success messages in a session variable.
      *
      * @since 3.1
-     * @uses EDD\Utils\Messages::add()
+     * @uses EDD\Sessions\Handler::set()
      * @param string $error_id      ID of the error being set.
      * @param string $error_message Message to store with the error.
      * @return void
@@ -92741,14 +86591,10 @@ namespace {
     {
     }
     /**
-     * Clears all stored errors (error-type messages only).
-     *
-     * Success, info, and warn messages are left intact so that gateways and other
-     * code can clear errors from a previous attempt without wiping success notices
-     * (e.g. cart recovery restored).
+     * Clears all stored errors.
      *
      * @since 1.0
-     * @uses EDD\Utils\Messages::clear_by_type()
+     * @uses EDD\Sessions\Handler::set()
      * @return void
      */
     function edd_clear_errors()
@@ -92758,9 +86604,8 @@ namespace {
      * Removes (unsets) a stored error
      *
      * @since 1.3.4
-     * @uses EDD\Utils\Messages::remove()
+     * @uses EDD\Sessions\Handler::set()
      * @param int $error_id ID of the error being set.
-     * @return void
      */
     function edd_unset_error($error_id)
     {
@@ -98384,7 +92229,7 @@ namespace {
      *
      * @since 3.0
      *
-     * @param int $order_id Order ID.
+     * @param $order_id
      *
      * @return bool      true if the order was trashed successfully, false if not
      */
@@ -98396,7 +92241,7 @@ namespace {
      *
      * @since 3.0
      *
-     * @param int $order_id Order ID.
+     * @param $order_id
      *
      * @return bool      true if the order was trashed successfully, false if not
      */
@@ -98544,7 +92389,7 @@ namespace {
     /**
      * Determine if an order ID is able to be trashed.
      *
-     * @param int $order_id Order ID.
+     * @param $order_id
      *
      * @return bool
      */
@@ -98554,7 +92399,7 @@ namespace {
     /**
      * Determine if an order ID is able to be restored from the trash.
      *
-     * @param int $order_id Order ID.
+     * @param $order_id
      *
      * @return bool
      */
@@ -100159,7 +94004,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $string The string to mask.
+     * @param string $string
      *
      * @return string
      */
@@ -100173,7 +94018,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $domain The domain to mask.
+     * @param string $domain
      *
      * @return string
      */
@@ -100187,7 +94032,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address The email address to mask.
+     * @param $email_address
      *
      * @return string
      */
@@ -100210,7 +94055,7 @@ namespace {
     function edd_log_terms_and_privacy_times($order_id = 0, $order_data = array())
     {
     }
-    /**
+    /*
      * Return an anonymized email address.
      *
      * While WP Core supports anonymizing email addresses with the wp_privacy_anonymize_data function,
@@ -100224,7 +94069,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address The email address to anonymize.
+     * @param string $email_address
      *
      * @return string
      */
@@ -100243,7 +94088,7 @@ namespace {
      *
      * Once completed, a note is left stating when the customer was anonymized.
      *
-     * @param int $customer_id The customer ID.
+     * @param int $customer_id Customer ID.
      *
      * @return array
      */
@@ -100261,7 +94106,7 @@ namespace {
      * - Address line 1 is made blank
      * - Address line 2 is made blank
      *
-     * @param int $order_id The order ID.
+     * @param int $order_id Order ID.
      * @return array
      */
     function _edd_anonymize_payment($order_id = 0)
@@ -100273,7 +94118,7 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to allow \EDD\Orders\Order objects to be passed.
      *
-     * @param EDD_Payment|\EDD\Orders\Order $order The order object.
+     * @param EDD_Payment|\EDD\Orders\Order $order
      *
      * @return string
      */
@@ -100287,7 +94132,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address The email address to get the customer data for.
+     * @param $email_address
      *
      * @return EDD_Customer
      */
@@ -100301,7 +94146,7 @@ namespace {
      * @since 2.9.2
      *
      * @param array $exporters Privacy exporters.
-     * @return array The available exporters.
+     * @return array
      */
     function edd_register_privacy_exporters($exporters = array())
     {
@@ -100368,7 +94213,7 @@ namespace {
      * We are going to set an option of what customer we're currently deleting for what email address, so that after the
      * customer is anonymized we can still find them. Then we'll delete it.
      *
-     * @param array $erasers The erasers to register.
+     * @param array $erasers
      * @return array $erasers
      */
     function edd_register_privacy_eraser_customer_id_lookup($erasers = array())
@@ -100377,8 +94222,8 @@ namespace {
     /**
      * Lookup the customer ID for this email address so that we can use it later in the anonymization process.
      *
-     * @param string $email_address The email address to lookup the customer ID for.
-     * @param int    $page The page number.
+     * @param     $email_address
+     * @param int $page
      *
      * @return array
      */
@@ -100390,7 +94235,7 @@ namespace {
      *
      * We are now assumed done with our exporters, so we can go ahead and delete the customer ID we found for this eraser.
      *
-     * @param array $erasers The erasers to register.
+     * @param array $erasers
      * @return array $erasers
      */
     function edd_register_privacy_eraser_customer_id_removal($erasers = array())
@@ -100399,7 +94244,7 @@ namespace {
     /**
      * Delete the customer ID for this email address that was found in edd_privacy_prefetch_customer_id()
      *
-     * @param string $email_address The email address to remove the customer ID for.
+     * @param string $email_address
      * @param int    $page
      *
      * @return array
@@ -100414,8 +94259,8 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to use new query methods.
      *
-     * @param string $email_address The email address requesting anonymization/erasure.
-     * @param int    $page          The page (not needed for this query).
+     * @param string $email_address The email address requesting anonymization/erasure
+     * @param int    $page          The page (not needed for this query)
      *
      * @return array
      */
@@ -100427,7 +94272,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param array $erasers The erasers to register.
+     * @param array $erasers
      *
      * @return array
      */
@@ -100439,8 +94284,8 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address The email address to anonymize the customer record for.
-     * @param int    $page The page number.
+     * @param     $email_address
+     * @param int $page
      *
      * @return array
      */
@@ -100450,8 +94295,8 @@ namespace {
     /**
      * Anonymize a payment record through the WP Core Privacy Data Eraser methods.
      *
-     * @param string $email_address The email address to anonymize the payment record for.
-     * @param int    $page The page number.
+     * @param string $email_address
+     * @param int    $page
      *
      * @return array
      */
@@ -100464,8 +94309,8 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to use new query methods.
      *
-     * @param string $email_address The email address to anonymize the file download logs for.
-     * @param int    $page The page number.
+     * @param string $email_address
+     * @param int    $page
      *
      * @return array
      */
@@ -100477,8 +94322,8 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address The email address to delete the API access logs for.
-     * @param int    $page The page number.
+     * @param string $email_address
+     * @param int    $page
      *
      * @return array
      */
@@ -100785,11 +94630,12 @@ namespace {
      *            as it is done later on in the order flow where a customer ID
      *            is available.
      *
+     * @param array $valid_data
      * @access  private
      * @since  1.0.8.1
      *
      * @param   array $valid_data The validated data from the checkout form validation.
-     * @return  array The user data.
+     * @return  array
      */
     function edd_get_purchase_form_user($valid_data = array(), $is_ajax = \null)
     {
@@ -100820,7 +94666,7 @@ namespace {
     {
     }
     /**
-     * Get Credit Card Info.
+     * Get Credit Card Info
      *
      * @access  private
      * @since  1.4.4
@@ -100830,12 +94676,12 @@ namespace {
     {
     }
     /**
-     * Validate zip code based on country code.
+     * Validate zip code based on country code
      *
      * @since  1.4.4
      *
-     * @param int    $zip The zip code to validate.
-     * @param string $country_code The country code to validate against.
+     * @param int    $zip
+     * @param string $country_code
      *
      * @return bool|mixed|void
      */
@@ -100843,7 +94689,7 @@ namespace {
     {
     }
     /**
-     * Check the purchase to ensure a banned email is not allowed through.
+     * Check the purchase to ensure a banned email is not allowed through
      *
      * @since       2.0
      * @return      void
@@ -102489,7 +96335,7 @@ namespace {
      * @global $post
      * @param string $redirect Redirect page URL
      * @return string Login form
-     */
+    */
     function edd_login_form($redirect = '')
     {
     }
@@ -102501,7 +96347,7 @@ namespace {
      *
      * @param array $data Data sent from the login form
      * @return void
-     */
+    */
     function edd_process_login_form($data)
     {
     }
@@ -102511,12 +96357,12 @@ namespace {
      * @since 1.0
      * @since 2.9.24 Uses the wp_signon function instead of all the additional checks which can bypass hooks in core.
      *
-     * @param int     $user_id User ID
-     * @param string  $user_login Username
-     * @param string  $user_pass Password
+     * @param int $user_id User ID
+     * @param string $user_login Username
+     * @param string $user_pass Password
      * @param boolean $remember Remember me
      * @return void
-     */
+    */
     function edd_log_user_in($user_id, $user_login, $user_pass, $remember = \false)
     {
     }
@@ -102524,9 +96370,7 @@ namespace {
      * If a login page has been set in the EDD settings,
      * update the WordPress login URL.
      *
-     * @param string $url          The login URL.
-     * @param string $redirect_to  The redirect URL.
-     * @param bool   $force_reauth Whether to force reauthorization.
+     * @param string $url
      * @return string
      */
     function edd_update_login_url($url, $redirect_to, $force_reauth)
