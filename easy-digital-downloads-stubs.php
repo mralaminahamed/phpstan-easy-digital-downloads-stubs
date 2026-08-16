@@ -1207,12 +1207,25 @@ namespace {
         {
         }
         /**
-         * Retrieve the customer counts
+         * Retrieve the customer counts.
          *
          * @since 3.0
+         * @since 3.6.7 Updated to pass search/filter args to edd_get_customer_counts().
+         *
          * @return void
          */
         public function get_counts()
+        {
+        }
+        /**
+         * Parse the query arguments for the customer list table.
+         *
+         * @since 3.6.7
+         *
+         * @param bool $paginate Whether to include pagination arguments.
+         * @return array
+         */
+        private function parse_args($paginate = \true)
         {
         }
         /**
@@ -3916,6 +3929,14 @@ namespace {
         private function get_tables_to_skip()
         {
         }
+        /**
+         * Reset per-download sales and earnings post meta.
+         *
+         * @since 3.6.7
+         */
+        private function reset_download_stats()
+        {
+        }
     }
     /**
      * EDD_File_Download_Log_Migration Class
@@ -6026,65 +6047,6 @@ namespace {
         {
         }
     }
-    /**
-     * EDD_Cache_Helper class.
-     *
-     * @since 1.7
-     */
-    class EDD_Cache_Helper
-    {
-        /**
-         * Constructor.
-         *
-         * @since 1.7
-         */
-        public function __construct()
-        {
-        }
-        /**
-         * Prevent caching on dynamic pages.
-         *
-         * @since 1.7
-         */
-        public function init()
-        {
-        }
-        /**
-         * Set nocache constants and headers.
-         *
-         * @since 1.7
-         * @access private
-         */
-        private function nocache()
-        {
-        }
-        /**
-         * Admin notices.
-         *
-         * @since 1.7
-         */
-        public function notices()
-        {
-        }
-        /**
-         * Prevents W3TC from adding to the cache prior to modifying data.
-         *
-         * @since 1.7
-         * @since 3.0.4 Removed the cache suspend call.
-         */
-        public function w3tc_suspend_cache_addition_pre()
-        {
-        }
-        /**
-         * Prevents W3TC from adding to the cache after modifying data.
-         *
-         * @since 1.7
-         * @since 3.0.4 Removed the cache suspend call.
-         */
-        public function w3tc_suspend_cache_addition_post()
-        {
-        }
-    }
 }
 namespace EDD\CLI\Traits {
     // @codeCoverageIgnore
@@ -6296,6 +6258,14 @@ namespace {
          * --status=<status>: The status to create purchases as
          * --id=<product_id>: A specific product to create purchase data for
          * --price_id=<price_id>: A price ID of the specified product
+         * --gateway=<gateway>: The gateway to use for the purchase.
+         * --currency=<currency>: The currency to use for the purchase.
+         * --date=<date>: The date to use for the purchase.
+         * --range=<range>: The range to use for the purchase.
+         * --generate_users=<generate_users>: Whether to generate users for the purchase.
+         * --email=<email>: The email to use for the purchase.
+         * --fname=<fname>: The first name to use for the purchase.
+         * --lname=<lname>: The last name to use for the purchase.
          *
          * ## EXAMPLES
          *
@@ -6552,6 +6522,20 @@ namespace {
          * @return false|string
          */
         private function get_order_timestring($date, $range)
+        {
+        }
+        /**
+         * Get the gateway from the arguments:
+         * - If no gateway is provided, return 'manual'.
+         * - If 'random' is provided, return a random gateway.
+         * - If the gateway is not in the list of available gateways, return 'manual'.
+         * The gateway does not have to be active.
+         *
+         * @since 3.6.7
+         * @param array $args The arguments.
+         * @return string The gateway.
+         */
+        private function get_gateway($args)
         {
         }
     }
@@ -19413,6 +19397,25 @@ namespace EDD\Admin\Emails {
         {
         }
         /**
+         * Modifies the email editor.
+         *
+         * @since 3.6.7
+         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
+         */
+        public function modify_email_editor($email)
+        {
+        }
+        /**
+         * Enqueues the scripts and styles.
+         *
+         * @since 3.6.7
+         * @param string $hook The current admin page hook.
+         * @return void
+         */
+        public function enqueue($hook = '')
+        {
+        }
+        /**
          * Gets the required tags description.
          *
          * @since 3.6.5
@@ -19667,7 +19670,7 @@ namespace EDD\Admin\Emails {
          *
          * @since 3.3.0
          */
-        protected static function enqueue()
+        public static function enqueue($hook = '')
         {
         }
         /**
@@ -22350,9 +22353,10 @@ namespace EDD\Admin\Extensions {
          * Registers the extension manager script and style.
          *
          * @since 2.11.4
+         * @param string $hook The current admin page hook.
          * @return void
          */
-        public function register_assets()
+        public function register_assets($hook = '')
         {
         }
         /**
@@ -22369,9 +22373,9 @@ namespace EDD\Admin\Extensions {
          *
          * @since 2.11.4
          * @param ProductData $product             The product data object.
-         * @param array        $inactive_parameters The array of information to build the button for an inactive/not installed plugin.
-         * @param array        $active_parameters   The array of information needed to build the link to configure an active plugin.
-         * @param array        $configuration       The optional array of data to override the product data retrieved from the API.
+         * @param array       $inactive_parameters The array of information to build the button for an inactive/not installed plugin.
+         * @param array       $active_parameters   The array of information needed to build the link to configure an active plugin.
+         * @param array       $configuration       The optional array of data to override the product data retrieved from the API.
          * @return void
          */
         public function do_extension_card(\EDD\Admin\Extensions\ProductData $product, $inactive_parameters, $active_parameters, $configuration = array())
@@ -31201,6 +31205,46 @@ namespace EDD\Blocks\Checkout\Elements {
         }
     }
 }
+namespace EDD\Blocks\Forms {
+    /**
+     * Profile Editor block registration and rendering.
+     *
+     * @since 3.6.7
+     */
+    class ProfileEditor implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the profile editor block type.
+         *
+         * EDD_BLOCKS_DIR is defined by the blocks plugin at plugins_loaded priority 500,
+         * which always runs before init.
+         *
+         * @since 3.6.7
+         */
+        public static function register(): void
+        {
+        }
+        /**
+         * Render the profile editor block.
+         *
+         * @since 3.6.7
+         * @param array $block_attributes The block attributes.
+         * @return string
+         */
+        public static function render(array $block_attributes = array()): string
+        {
+        }
+    }
+}
 namespace EDD\Blocks {
     /**
      * Class Loader
@@ -31286,6 +31330,211 @@ namespace EDD\CLI\Migration {
          * @return void
          */
         public function migrate_missing()
+        {
+        }
+    }
+}
+namespace EDD\EventManagement {
+    /**
+     * Class Subscriber
+     *
+     * @since 3.3.0
+     * @package EDD\EventManagement
+     */
+    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The instance of this class.
+         *
+         * @var Subscriber
+         */
+        public static $instance;
+        /**
+         * Gets the instance of this class.
+         *
+         * @since 3.3.0
+         * @return Subscriber
+         */
+        public static function get_instance()
+        {
+        }
+    }
+}
+namespace EDD\Cache {
+    /**
+     * Cache Handler subscriber.
+     *
+     * @since 3.6.7
+     */
+    class Handler extends \EDD\EventManagement\Subscriber
+    {
+        /**
+         * Transient key used to store excluded page URIs.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        const TRANSIENT = 'edd_cache_excluded_ids';
+        /**
+         * Returns the events this subscriber listens to.
+         *
+         * @since 3.6.7
+         *
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Prevents caching on the checkout and success pages.
+         * Sets no-cache headers on EDD dynamic pages using template tags and page ID matching.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function check_request(): void
+        {
+        }
+        /**
+         * Displays an admin notice if W3 Total Cache database caching is misconfigured.
+         *
+         * EDD stores session data in the custom edd_sessions table. If W3 Total Cache
+         * database caching is enabled without excluding edd_sessions queries, cached
+         * SELECT results may serve stale cart or checkout session data.
+         *
+         * @since 1.7
+         * @since 3.6.7 Updated to check for edd_sessions instead of the deprecated _wp_session_ option key.
+         *
+         * @return void
+         */
+        public static function notices(): void
+        {
+        }
+        /**
+         * Deletes the cached page ID list.
+         *
+         * Hooked to settings updates and permalink structure changes so the list
+         * is rebuilt on the next request with current page ids.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public static function flush_page_ids(): void
+        {
+        }
+        /**
+         * Flushes the cached page ID list when a relevant post is saved.
+         *
+         * Only fires when the saved post is the configured checkout or success page,
+         * so slug edits are reflected immediately.
+         *
+         * @since 3.6.7
+         *
+         * @param int $post_id The ID of the post being saved.
+         * @return void
+         */
+        public function maybe_flush_page_ids(int $post_id): void
+        {
+        }
+        /**
+         * Retrieves the dynamic page IDs.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        private function get_dynamic_page_ids(): array
+        {
+        }
+        /**
+         * Initializes the cache handler.
+         *
+         * @since 1.7
+         * @since 3.6.7 Deprecated.
+         * @return void
+         */
+        public function init(): void
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * NoCache class.
+     *
+     * @since 3.6.7
+     */
+    class NoCache
+    {
+        /**
+         * Default headers added to every nocache_headers call.
+         *
+         * @since 3.6.7
+         * @var array<string,string>
+         */
+        private const DEFAULTS = array('Referrer-Policy' => 'no-referrer', 'X-LiteSpeed-Cache-Control' => 'no-store');
+        /**
+         * The single nocache_headers filter callback registered for this request.
+         *
+         * Tracked so subsequent set_headers() calls can remove it before registering
+         * a replacement that carries the merged accumulated state.
+         *
+         * @since 3.6.7
+         * @var \Closure|null
+         */
+        private static ?\Closure $filter_callback = null;
+        /**
+         * Accumulated extra-header overrides from all set_headers() calls this request.
+         *
+         * Merged across calls via array_merge so an earlier empty-string suppression
+         * is preserved when a subsequent call passes no overrides.
+         *
+         * @since 3.6.7
+         * @var array<string,string>
+         */
+        private static array $accumulated_extra = array();
+        /**
+         * Sets no-cache headers for the current request.
+         *
+         * Defines DONOTCACHEPAGE, hooks nocache_headers to inject Referrer-Policy
+         * and X-LiteSpeed-Cache-Control, and calls nocache_headers().
+         *
+         * Callers may pass $extra to add headers or suppress a default by passing
+         * an empty string as the value. Multiple calls within the same request
+         * accumulate their overrides; a suppression set by an earlier call is
+         * preserved even when a later call passes no overrides.
+         *
+         * @since 3.6.7
+         *
+         * @param array<string,string> $extra Additional headers to merge. An empty-string
+         *                                    value removes the corresponding default header.
+         * @return void
+         */
+        public static function set_headers(array $extra = array()): void
+        {
+        }
+        /**
+         * Resets the class state for the current request.
+         *
+         * Removes the registered nocache_headers filter and clears the accumulated
+         * extra-header overrides. Should be called in test tearDown methods to
+         * prevent state from bleeding between tests.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public static function reset(): void
+        {
+        }
+        /**
+         * Sanitizes header names and values to prevent header injection.
+         *
+         * @since 3.6.7
+         *
+         * @param array<string,string> $headers Raw caller-supplied headers.
+         * @return array<string,string>
+         */
+        private static function sanitize_headers(array $headers): array
         {
         }
     }
@@ -31973,32 +32222,6 @@ namespace EDD\Cart\Preview {
         }
     }
 }
-namespace EDD\EventManagement {
-    /**
-     * Class Subscriber
-     *
-     * @since 3.3.0
-     * @package EDD\EventManagement
-     */
-    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * The instance of this class.
-         *
-         * @var Subscriber
-         */
-        public static $instance;
-        /**
-         * Gets the instance of this class.
-         *
-         * @since 3.3.0
-         * @return Subscriber
-         */
-        public static function get_instance()
-        {
-        }
-    }
-}
 namespace EDD\Checkout {
     /**
      * Accessibility class.
@@ -32086,7 +32309,7 @@ namespace EDD\Checkout {
          *
          * @var array
          */
-        private $customer = array('address' => array('line1' => '', 'line2' => '', 'city' => '', 'zip' => '', 'state' => '', 'country' => '', 'phone' => ''));
+        private $customer = array('address' => array('line1' => '', 'line2' => '', 'city' => '', 'zip' => '', 'state' => '', 'country' => '', 'company' => '', 'phone' => ''));
         /**
          * Get the fields to display.
          *
@@ -38435,9 +38658,40 @@ namespace EDD\Database\Queries {
          *     @type string       $order                How to order results. Accepts 'ASC', 'DESC'. Default 'DESC'.
          *     @type string       $search               Search term(s) to retrieve matching notes for. Default empty.
          *     @type bool         $update_cache         Whether to prime the cache for found notes. Default false.
+         *     @type int          $customer_id          A customer ID to return all notes for that customer, including
+         *                                              manual order notes from their orders. Default empty.
          * }
          */
         public function __construct($query = array())
+        {
+        }
+        /**
+         * Override the query method to support the customer_id parameter.
+         *
+         * When customer_id is passed, the WHERE clause is replaced with an OR condition
+         * that returns both customer notes and manual order notes for that customer's orders.
+         *
+         * @since 3.6.7
+         *
+         * @param string|array $query Query arguments.
+         * @return array|int Array of Note objects or count.
+         */
+        public function query($query = array())
+        {
+        }
+        /**
+         * Filter the query clauses to return all notes for a customer.
+         *
+         * Replaces the default WHERE clause with an OR condition that returns:
+         * - Customer notes (object_type = 'customer' AND object_id = customer_id)
+         * - Manual order notes (object_type = 'order' AND user_id != 0 AND object_id belongs to customer)
+         *
+         * @since 3.6.7
+         *
+         * @param array $clauses The query clauses.
+         * @return array Modified query clauses.
+         */
+        public function query_by_customer($clauses)
         {
         }
     }
@@ -45883,6 +46137,19 @@ namespace EDD\Emails\Tags {
         {
         }
         /**
+         * Renders the company name email tag.
+         *
+         * @since 3.6.7
+         *
+         * @param int    $object_id    The object ID.
+         * @param mixed  $email_object The email object.
+         * @param string $context      The context.
+         * @return string
+         */
+        public function company($object_id, $email_object = null, $context = null)
+        {
+        }
+        /**
          * Check if it the first purchase for a given user.
          *
          * @since 3.3.0
@@ -46549,6 +46816,131 @@ namespace EDD\Emails\Templates {
          * @return string
          */
         private function get_default_content()
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * One-Time Login Link Email Template Class
+     *
+     * @since 3.6.7
+     */
+    class LoginLink extends \EDD\Emails\Templates\EmailTemplate
+    {
+        /**
+         * Whether the email can be previewed.
+         *
+         * @since 3.6.7
+         * @var bool
+         */
+        protected $can_preview = true;
+        /**
+         * Unique identifier for this template.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        protected $email_id = 'login_link';
+        /**
+         * The email recipient.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        protected $recipient = 'user';
+        /**
+         * The email context.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        protected $context = 'user';
+        /**
+         * The required tag.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        protected $required_tag = 'login_link_url';
+        /**
+         * Name of the template.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_name()
+        {
+        }
+        /**
+         * Description of the email.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description()
+        {
+        }
+        /**
+         * Retrieves the default email properties.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public function defaults(): array
+        {
+        }
+        /**
+         * Gets the content for the status tooltip, if needed.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public function get_status_tooltip(): array
+        {
+        }
+        /**
+         * This email cannot be activated if the login link feature is not enabled.
+         *
+         * @since 3.6.7
+         * @return bool
+         */
+        public function are_base_requirements_met(): bool
+        {
+        }
+        /**
+         * Gets the required tag parameters for the email editor.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_required_tag_parameters()
+        {
+        }
+        /**
+         * Retrieves the preview data for this email.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_preview_data()
+        {
+        }
+        /**
+         * The email properties that can be edited.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_editable_properties(): array
+        {
+        }
+        /**
+         * The default email body.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        private function get_body_default()
         {
         }
     }
@@ -48414,6 +48806,97 @@ namespace EDD\Emails\Types {
     }
     // @codeCoverageIgnore
     /**
+     * The One-Time Login Link email class.
+     *
+     * This is sent to users when they request a login link to sign in without a password.
+     *
+     * @since 3.6.7
+     */
+    class LoginLink extends \EDD\Emails\Types\Email
+    {
+        /**
+         * The email ID.
+         *
+         * @var string
+         * @since 3.6.7
+         */
+        protected $id = 'login_link';
+        /**
+         * The email context.
+         *
+         * @var string
+         * @since 3.6.7
+         */
+        protected $context = 'user';
+        /**
+         * The email recipient type.
+         *
+         * @var string
+         * @since 3.6.7
+         */
+        protected $recipient_type = 'user';
+        /**
+         * The user ID.
+         *
+         * @var int
+         * @since 3.6.7
+         */
+        protected $user_id;
+        /**
+         * The user data.
+         *
+         * @var \WP_User
+         * @since 3.6.7
+         */
+        protected $user_data;
+        /**
+         * The login link token.
+         *
+         * @var string
+         * @since 3.6.7
+         */
+        protected $token;
+        /**
+         * The class constructor.
+         *
+         * @since 3.6.7
+         * @param int   $user_id    The user ID.
+         * @param array $token_data Token data containing 'token' and 'expires_at'.
+         */
+        public function __construct($user_id, $token_data = array())
+        {
+        }
+        /**
+         * Set the email message.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        protected function set_message()
+        {
+        }
+        /**
+         * Set the email to address.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        protected function set_to_email()
+        {
+        }
+        /**
+         * Parses the {login_link_url} tag.
+         *
+         * @since 3.6.7
+         * @param string $content The content to parse.
+         * @return string
+         */
+        private function parse_tag(string $content): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
      * Class NewUser
      *
      * @since 3.3.0
@@ -50188,6 +50671,59 @@ namespace EDD\Forms\Checkout {
     }
     // @codeCoverageIgnore
     /**
+     * The company name field.
+     *
+     * @since 3.6.7
+     */
+    class Company extends \EDD\Forms\Checkout\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
      * The country field.
      *
      * @since 3.3.8
@@ -51233,6 +51769,904 @@ namespace EDD\Forms\Register {
          * @return array
          */
         protected function get_form_group_classes(): array
+        {
+        }
+    }
+}
+namespace EDD\Forms\User {
+    /**
+     * User profile billing city field.
+     *
+     * @since 3.6.7
+     */
+    class City extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile company name field.
+     *
+     * @since 3.6.7
+     */
+    class Company extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile billing country field.
+     *
+     * @since 3.6.7
+     */
+    class Country extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile display name field.
+     *
+     * @since 3.6.7
+     */
+    class DisplayName extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+        /**
+         * Build the list of display name options for the current user.
+         *
+         * @since 3.6.7
+         * @param \WP_User|null $user The current user.
+         * @return array<string, string> Map of option value => label.
+         */
+        private function get_display_name_options(?\WP_User $user): array
+        {
+        }
+    }
+    /**
+     * User profile primary email field.
+     *
+     * Renders a text input when the customer has a single email address,
+     * or a select dropdown when they have multiple.
+     *
+     * @since 3.6.7
+     */
+    class Email extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * Renders a select if the customer has multiple email addresses,
+         * otherwise renders a plain email input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Checks if the field is required.
+         *
+         * @since 3.6.7
+         * @return bool
+         */
+        protected function is_required(): bool
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+        /**
+         * Render a text input for a single email address.
+         *
+         * @since 3.6.7
+         * @param \EDD_Customer|null $customer The customer object.
+         * @param \WP_User|null      $user     The current user.
+         */
+        private function do_email_input(?\EDD_Customer $customer, ?\WP_User $user): void
+        {
+        }
+        /**
+         * Render a select for multiple email addresses.
+         *
+         * @since 3.6.7
+         * @param \EDD_Customer $customer The customer object.
+         */
+        private function do_email_select(\EDD_Customer $customer): void
+        {
+        }
+    }
+    /**
+     * User profile first name field.
+     *
+     * @since 3.6.7
+     */
+    class FirstName extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile last name field.
+     *
+     * @since 3.6.7
+     */
+    class LastName extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile billing address line 1 field.
+     *
+     * @since 3.6.7
+     */
+    class Line1 extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile billing address line 2 field.
+     *
+     * @since 3.6.7
+     */
+    class Line2 extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile new password field.
+     *
+     * Not required — password change is optional on the profile editor form.
+     * Includes the WP password strength indicator and show/hide toggle.
+     *
+     * @since 3.6.7
+     */
+    class Password extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Override the label to point to the aliased input ID.
+         *
+         * @since 3.6.7
+         */
+        protected function do_label(): void
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * The input ID is set to "pass1" so WP's user-profile.js picks it up for
+         * strength checking. The name remains "edd_new_user_pass1" for server-side
+         * processing. data-reveal is intentionally omitted — unlike the registration
+         * form, the profile editor password field should start empty.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+        /**
+         * Get the form group classes.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_form_group_classes(): array
+        {
+        }
+    }
+    /**
+     * User profile confirm new password field.
+     *
+     * Not required — password change is optional on the profile editor form.
+     *
+     * @since 3.6.7
+     */
+    class PasswordConfirm extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Override the label to point to the aliased input ID.
+         *
+         * @since 3.6.7
+         */
+        protected function do_label(): void
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * The input ID is set to "pass2" so WP's user-profile.js can sync its value
+         * to the password field on form submit. The name remains "edd_new_user_pass2"
+         * for server-side processing.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+        /**
+         * Get the form group classes.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_form_group_classes(): array
+        {
+        }
+    }
+    /**
+     * User profile weak password confirmation checkbox.
+     *
+     * Shown by the WP password strength JS when the chosen password is weak,
+     * requiring the user to acknowledge the use of a weak password.
+     *
+     * @since 3.6.7
+     */
+    class PasswordWeak extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the field.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the form group classes.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_form_group_classes(): array
+        {
+        }
+    }
+    /**
+     * User profile phone number field.
+     *
+     * @since 3.6.7
+     */
+    class Phone extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile billing postal/ZIP code field.
+     *
+     * @since 3.6.7
+     */
+    class PostalCode extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+    }
+    /**
+     * User profile billing state/province field.
+     *
+     * Renders a select dropdown when states are available for the selected country,
+     * or a text input otherwise.
+     *
+     * @since 3.6.7
+     */
+    class State extends \EDD\Forms\Fields\Field
+    {
+        /**
+         * Get the field ID.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the field label.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_label(): string
+        {
+        }
+        /**
+         * Render the input.
+         *
+         * @since 3.6.7
+         */
+        public function do_input(): void
+        {
+        }
+        /**
+         * Get the description.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get_description(): string
+        {
+        }
+        /**
+         * Get the field key.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        protected function get_key(): string
+        {
+        }
+        /**
+         * Get the field classes.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_field_classes(): array
         {
         }
     }
@@ -58783,6 +60217,10 @@ namespace EDD\HTML {
         /**
          * Parses the arguments for the element.
          *
+         * Performs a shallow merge via wp_parse_args, then recursively merges any
+         * keys whose default value is an array so that partial overrides (e.g. a
+         * subset of `data` attributes) don't silently discard the remaining defaults.
+         *
          * @since 3.2.8
          * @param array $args The arguments for the element.
          * @return array
@@ -59142,9 +60580,8 @@ namespace EDD\HTML {
          * Renders an HTML Dropdown of all the Users
          *
          * @since 2.6.9
-         *
+         * @since 3.6.7 This is now just a wrapper for UserSelect.
          * @param array $args Arguments for the dropdown.
-         *
          * @return string $output User dropdown
          */
         public function user_dropdown($args = array())
@@ -59292,10 +60729,9 @@ namespace EDD\HTML {
          * Renders an ajax user search field
          *
          * @since 2.0
-         *
+         * @since 3.6.7 This is now just a wrapper for UserSelect.
          * @param array $args Arguments for the field.
-         *
-         * @return string text field with ajax search
+         * @return string User select HTML.
          */
         public function ajax_user_search($args = array())
         {
@@ -59383,6 +60819,19 @@ namespace EDD\HTML {
          * @param array $data The data for the tooltip.
          */
         private function do_tooltip($data)
+        {
+        }
+        /**
+         * Gets the label for a multicheck option.
+         *
+         * Ensures the label is always a string to avoid fatal errors when passing
+         * to wp_kses_post(). Falls back to legacy string-option support, then empty string.
+         *
+         * @since 3.6.7
+         * @param mixed $data The option data.
+         * @return string
+         */
+        private function get_label($data): string
         {
         }
         /**
@@ -59847,6 +61296,64 @@ namespace EDD\HTML {
          * @return string
          */
         private function get_data_input()
+        {
+        }
+    }
+    /**
+     * Class UserSelect
+     *
+     * Renders a user-search-powered select element backed by TomSelect (chosen).
+     * On initial render only the pre-selected user (or the current logged-in user)
+     * is included as an option; all other lookups are performed via the
+     * `edd_user_search` AJAX action as the admin types.
+     *
+     * @since 3.6.7
+     * @package EDD\HTML
+     */
+    class UserSelect extends \EDD\HTML\Select
+    {
+        /**
+         * Gets the HTML for the user select.
+         *
+         * Populates the initial option list with only the selected user(s) or,
+         * when nothing is selected, the currently logged-in user. This keeps the
+         * initial HTML payload small and delegates all search lookups to AJAX.
+         *
+         * @since 3.6.7
+         * @return string
+         */
+        public function get()
+        {
+        }
+        /**
+         * Gets the default arguments for the user select.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function defaults()
+        {
+        }
+        /**
+         * Gets the base CSS classes for the user select element.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_base_classes(): array
+        {
+        }
+        /**
+         * Builds the initial options array for the select element.
+         *
+         * Returns only the pre-selected user(s). When no user is selected, falls
+         * back to the current logged-in user so the dropdown is never completely
+         * empty on first render.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        private function get_initial_options(): array
         {
         }
     }
@@ -75381,6 +76888,21 @@ namespace EDD\Upgrades\Orders {
         {
         }
         /**
+         * Conditionally registers the shutdown hook for the background update when Action Scheduler is active.
+         *
+         * This method is hooked onto action_scheduler_init, which fires after Action Scheduler has fully
+         * initialized. At that point next_scheduled() is reliable, so we can safely skip adding the
+         * shutdown callback when the cron event is already pending — avoiding unnecessary work on every
+         * page's shutdown for the duration of the migration.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public function maybe_add_shutdown_hook()
+        {
+        }
+        /**
          * Maybe schedules the background update.
          *
          * We're running this on shutdown, so we can be sure that the Orders table has been created.
@@ -75508,7 +77030,660 @@ namespace EDD\Upgrades\Utilities {
         }
     }
 }
+namespace EDD\Users\LoginLink {
+    /**
+     * Assets class.
+     *
+     * Registers front-end scripts and styles for the login link feature
+     * and renders the login link prompt in various form contexts.
+     *
+     * @since 3.6.7
+     */
+    class Assets implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Performs the actual script and style registration.
+         *
+         * Called from the `wp_enqueue_scripts` hook and on-demand from
+         * `enqueue()` when a prompt renders before that hook fires.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public static function do_register_assets()
+        {
+        }
+        /**
+         * Enqueues login link assets when a prompt is rendered.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public static function enqueue()
+        {
+        }
+        /**
+         * Renders the login link prompt for the checkout-login context.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function render_checkout_prompt()
+        {
+        }
+        /**
+         * Renders the login link prompt for the checkout-email context.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function render_email_prompt()
+        {
+        }
+        /**
+         * Outputs the login link prompt markup.
+         *
+         * @since 3.6.7
+         * @param string $context Context for the prompt.
+         * @param string $message Prompt message.
+         * @param bool   $hidden  Whether the prompt should be hidden by default.
+         * @return void
+         */
+        private static function prompt($context, $message = '', $hidden = null)
+        {
+        }
+    }
+    /**
+     * Loader class.
+     *
+     * Extends MiniManager to register one-time login link event classes.
+     *
+     * @since 3.6.7
+     */
+    class Loader extends \EDD\EventManagement\MiniManager
+    {
+        /**
+         * Gets the event classes to register.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        protected function get_event_classes(): array
+        {
+        }
+    }
+}
+namespace EDD\Users\LoginLink\Send {
+    /**
+     * Handler class.
+     *
+     * Processes the front-end AJAX request to generate and email
+     * a one-time login link URL to the user.
+     *
+     * @since 3.6.7
+     */
+    class Handler implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Handles the AJAX request to send a login link email.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function send_login_link()
+        {
+        }
+        /**
+         * Sends an ambiguous success response.
+         *
+         * Always returns the same message regardless of whether the user
+         * exists or the email was actually sent, preventing user enumeration.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        private function send_generic_success()
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Validate class.
+     *
+     * @since 3.6.7
+     */
+    class Validate
+    {
+        /**
+         * Cooldown period in seconds between requests for the same user.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const COOLDOWN_SECONDS = 120;
+        /**
+         * Maximum number of one-time login link emails that can be sent to a single user.
+         *
+         * Once reached, no more emails are sent until the window expires.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const MAX_EMAILS = 3;
+        /**
+         * Maximum number of one-time login link requests per IP within the window.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const IP_LIMIT = 3;
+        /**
+         * Sliding window in seconds for per-IP request counting.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const IP_WINDOW = HOUR_IN_SECONDS;
+        /**
+         * Sliding window in seconds for per-user email log lookups.
+         *
+         * Kept separate from IP_WINDOW so each can be tuned independently.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const USER_WINDOW = HOUR_IN_SECONDS;
+        /**
+         * Checks per-user rate limits (cooldown and max emails).
+         *
+         * @since 3.6.7
+         *
+         * @param int $user_id User ID.
+         * @return true|\WP_Error True if allowed, WP_Error if rate-limited.
+         */
+        public static function check_user(int $user_id)
+        {
+        }
+        /**
+         * Checks per-IP sliding-window rate limits.
+         *
+         * @since 3.6.7
+         *
+         * @return true|\WP_Error True if allowed, WP_Error if rate-limited.
+         */
+        public static function check_ip()
+        {
+        }
+        /**
+         * Records a successful one-time login link send for rate limiting.
+         *
+         * Appends the current timestamp to the per-IP request log.
+         * Per-user rate limiting is derived from email log entries
+         * created by the Email class on send.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public static function record(): void
+        {
+        }
+        /**
+         * Retrieves recent login link email log entries for a user.
+         *
+         * Returns entries within the USER_WINDOW, ordered newest first.
+         * The result is used for both cooldown and max-email checks.
+         *
+         * @since 3.6.7
+         *
+         * @param int $user_id User ID.
+         * @return array Array of log entry objects.
+         */
+        private static function get_recent_logs(int $user_id): array
+        {
+        }
+    }
+}
+namespace EDD\Users\LoginLink {
+    // @codeCoverageIgnore
+    /**
+     * Token class.
+     *
+     * Provides static helpers for issuing, hashing, resolving, and
+     * invalidating login link tokens.
+     *
+     * @since 3.6.7
+     */
+    class Token
+    {
+        /**
+         * Token time-to-live in seconds.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const TTL = 10 * MINUTE_IN_SECONDS;
+        /**
+         * User meta key for login link token data.
+         *
+         * @since 3.6.7
+         * @var string
+         */
+        const META_KEY = 'edd_login_link';
+        /**
+         * Issues a new login link token for a user.
+         *
+         * Generates a random token, stores its hash and associated metadata
+         * in user meta, and creates a transient index for fast token-to-user
+         * lookups. Only one active token per user is stored; a new request
+         * overwrites the previous token.
+         *
+         * @since 3.6.7
+         *
+         * @param int $user_id User ID.
+         * @return array {
+         *     Token data on success, empty array on failure.
+         *
+         *     @type string $token      Raw token string.
+         *     @type int    $expires_at Unix timestamp when the token expires.
+         * }
+         */
+        public static function issue(int $user_id): array
+        {
+        }
+        /**
+         * Generates a cryptographically secure random token string.
+         *
+         * @since 3.6.7
+         *
+         * @return string 64-character hex string.
+         */
+        public static function generate(): string
+        {
+        }
+        /**
+         * Hashes a token for secure storage and comparison.
+         *
+         * @since 3.6.7
+         *
+         * @param string $token Raw token value.
+         * @return string HMAC-SHA256 hash of the token.
+         */
+        public static function hash(string $token): string
+        {
+        }
+        /**
+         * Resolves a user ID from a token via the transient index.
+         *
+         * @since 3.6.7
+         *
+         * @param string $token Raw login link token.
+         * @return int User ID, or 0 if not found.
+         */
+        public static function resolve_user_id(string $token): int
+        {
+        }
+        /**
+         * Generates a login link URL for a user.
+         *
+         * @since 3.6.7
+         *
+         * @param int    $user_id User ID.
+         * @param string $token   Raw login link token.
+         * @return string|false URL, or false on invalid input.
+         */
+        public static function generate_url(int $user_id, string $token)
+        {
+        }
+        /**
+         * Invalidates a token by marking it as used and cleaning up.
+         *
+         * Sets the used_at timestamp in user meta, deletes the transient
+         * index, and removes the user meta entry.
+         *
+         * @since 3.6.7
+         *
+         * @param int    $user_id User ID.
+         * @param string $token   Raw login link token.
+         * @return void
+         */
+        public static function invalidate(int $user_id, string $token): void
+        {
+        }
+        /**
+         * Gets the transient key used to map a token to a user ID.
+         *
+         * @since 3.6.7
+         *
+         * @param string $token Raw login link token.
+         * @return string Transient key.
+         */
+        private static function get_index_key(string $token): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Utility class.
+     *
+     * @since 3.6.7
+     */
+    class Utility
+    {
+        /**
+         * Determines if login link is enabled.
+         *
+         * @since 3.6.7
+         * @return bool
+         */
+        public static function enabled(): bool
+        {
+        }
+        /**
+         * Determines if login link is available for the current visitor.
+         *
+         * Returns true only when the feature is enabled AND the
+         * current user is not logged in.
+         *
+         * @since 3.6.7
+         * @return bool
+         */
+        public static function is_available(): bool
+        {
+        }
+        /**
+         * Gets the centralized policy for login link visibility and messaging.
+         *
+         * @since 3.6.7
+         * @return array Policy array.
+         */
+        public static function get_policy(): array
+        {
+        }
+        /**
+         * Gets the login link policy for a single context.
+         *
+         * @since 3.6.7
+         * @param string $context Login link context.
+         * @return array Context policy array.
+         */
+        public static function get_context_policy(string $context): array
+        {
+        }
+        /**
+         * Checks if a login link context is enabled.
+         *
+         * @since 3.6.7
+         * @param string $context Login link context.
+         * @return bool
+         */
+        public static function context_enabled(string $context): bool
+        {
+        }
+        /**
+         * Gets the configured message for a login link context.
+         *
+         * @since 3.6.7
+         * @param string $context Login link context.
+         * @return string
+         */
+        public static function get_context_message(string $context): string
+        {
+        }
+        /**
+         * Determines whether a user is allowed to log in via login link.
+         *
+         * By default, users with administrative capabilities are excluded because
+         * the login link bypasses the password and could be used to silently
+         * authenticate as a high-privilege user if their email is compromised.
+         *
+         * Both manage_options (WordPress administrators) and manage_shop_settings
+         * (EDD shop managers) are checked, since either represents a level of
+         * privilege that should not bypass password authentication.
+         *
+         * @since 3.6.7
+         *
+         * @param \WP_User $user User object.
+         * @return bool True if the user is allowed to use login link.
+         */
+        public static function user_allowed(\WP_User $user): bool
+        {
+        }
+        /**
+         * Clears the verification failure counter after a successful login.
+         *
+         * Only the verify-failure transient is removed. The per-IP send-rate
+         * transient is intentionally left intact so that a successful login
+         * does not reset the send window and allow immediate re-requesting
+         * of more login links from the same IP.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public static function cleanup_rate_limits(): void
+        {
+        }
+        /**
+         * Resolves a WP_User from an email address or username.
+         *
+         * @since 3.6.7
+         *
+         * @param string $login Email address or username.
+         * @return \WP_User|false User object on success, false on failure.
+         */
+        public static function get_user_from_login(string $login)
+        {
+        }
+    }
+}
+namespace EDD\Users\LoginLink\Verify {
+    /**
+     * Handler class.
+     *
+     * Processes incoming one-time login link requests by validating
+     * the token and logging the user in.
+     *
+     * @since 3.6.7
+     */
+    class Handler implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Handles an incoming login link verify request via edd_action.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function handle_verify()
+        {
+        }
+        /**
+         * Processes a one-time login link request.
+         *
+         * Delegates validation to validate_token() and, on success,
+         * logs the user in and redirects to checkout.
+         *
+         * @since 3.6.7
+         * @param string $token Raw login link token.
+         * @return void
+         */
+        private function process_login(string $token)
+        {
+        }
+        /**
+         * Validates a login link token through all required checks.
+         *
+         * Runs feature-enabled, rate-limit, and user-resolution checks,
+         * then delegates stored-token verification to verify_token_meta().
+         *
+         * @since 3.6.7
+         * @param string $token Raw login link token.
+         * @return array|\WP_Error {
+         *     Validated data on success, WP_Error on failure.
+         *
+         *     @type int      $user_id The resolved user ID.
+         *     @type \WP_User $user    The resolved user object.
+         * }
+         */
+        private function validate_token(string $token)
+        {
+        }
+        /**
+         * Verifies the stored token metadata against the incoming token.
+         *
+         * Checks that the user meta exists, the token has not already been
+         * used, has not expired, and that the hash matches.
+         *
+         * @since 3.6.7
+         * @param int      $user_id User ID.
+         * @param \WP_User $user    User object.
+         * @param string   $token   Raw login link token.
+         * @return array|\WP_Error Validated data on success, WP_Error on failure.
+         */
+        private function verify_token_meta(int $user_id, \WP_User $user, string $token)
+        {
+        }
+        /**
+         * Logs the user in without a password.
+         *
+         * @since 3.6.7
+         * @param \WP_User $user User object.
+         * @return void
+         */
+        private function log_user_in($user)
+        {
+        }
+        /**
+         * Redirects to checkout with a generic error message.
+         *
+         * Records a validation failure for rate-limiting purposes before
+         * redirecting.
+         *
+         * @since 3.6.7
+         * @param string $reason Failure reason identifier.
+         * @return void
+         */
+        private function redirect_with_error($reason)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Validate class.
+     *
+     * @since 3.6.7
+     */
+    class Validate
+    {
+        /**
+         * Maximum number of failed token validation attempts per IP.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const MAX_FAILURES = 5;
+        /**
+         * Window in seconds for counting validation failures.
+         *
+         * @since 3.6.7
+         * @var int
+         */
+        const FAILURE_WINDOW = HOUR_IN_SECONDS;
+        /**
+         * Checks whether the current IP has exceeded the maximum number
+         * of failed token validation attempts.
+         *
+         * @since 3.6.7
+         *
+         * @return bool True if the IP is rate-limited.
+         */
+        public static function is_limited(): bool
+        {
+        }
+        /**
+         * Records a failed token validation attempt for the current IP.
+         *
+         * @since 3.6.7
+         *
+         * @return void
+         */
+        public static function record_failure(): void
+        {
+        }
+    }
+}
 namespace EDD\Users {
+    /**
+     * Users Search
+     *
+     * Handles the AJAX endpoint used by the UserSelect TomSelect/chosen field
+     * to search for WordPress users by display name, login, or email.
+     *
+     * @since 3.6.7
+     */
+    class Search implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * User search is restricted to authenticated admin users only, so no
+         * nopriv counterpart is registered.
+         *
+         * @since 3.6.7
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Handle the AJAX user search request.
+         *
+         * @since 3.6.7
+         * @return void
+         */
+        public function search(): void
+        {
+        }
+        /**
+         * Get matching users for the search term.
+         *
+         * Returns an empty array when no search term is supplied so that
+         * TomSelect shows its placeholder rather than a "No users found" entry.
+         *
+         * @since 3.6.7
+         * @return array Array of {id, name} objects.
+         */
+        private function get_users(): array
+        {
+        }
+    }
     /**
      * Verification class.
      *
@@ -77817,7 +79992,16 @@ namespace EDD\Blocks\Recaptcha\Settings {
     {
     }
 }
+/**
+ * Scripts for the EDD Blocks.
+ *
+ * @package EDD\Blocks\Admin\Scripts
+ * @copyright Copyright Easy Digital Downloads
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since 2.0
+ */
 namespace EDD\Blocks\Admin\Scripts {
+    // @codeCoverageIgnore
     /**
      * Adds a custom variable to the JS to allow a user in the block editor
      * to preview sensitive data.
@@ -77830,6 +80014,11 @@ namespace EDD\Blocks\Admin\Scripts {
     }
     /**
      * If the EDD styles are registered, load them for the block editor.
+     *
+     * WordPress 7.0 moved to a fully iframed editor (Block API v3), so
+     * enqueue_block_editor_assets no longer fires inside the iframe.
+     * enqueue_block_assets fires inside the iframe, on the frontend, and
+     * in the editor shell, so the style is always available where blocks render.
      *
      * @since 2.0
      * @return void
@@ -79601,15 +81790,14 @@ namespace EDD\Gateways\PayPal {
      *
      * @link  https://developer.paypal.com/docs/api/payments/v2/#captures_refund
      *
-     * @param \EDD_Payment|Order $payment_or_order
-     * @param Order|null         $refund_object
+     * @param Order|\EDD_Payment $payment_or_order Order or payment object.
+     * @param Order|null         $refund_object   Refund object.
      *
      * @since 2.11
-     * @throws Authentication_Exception
-     * @throws API_Exception
-     * @throws \Exception
+     * @throws API_Exception If the request fails.
+     * @throws \Exception    If the transaction ID is missing.
      */
-    function refund_transaction($payment_or_order, \EDD\Orders\Order $refund_object = null)
+    function refund_transaction($payment_or_order, ?\EDD\Orders\Order $refund_object = null)
     {
     }
 }
@@ -81683,7 +83871,7 @@ namespace {
      * Loads the tools batch processing class for recounting stats for a single customer
      *
      * @since  2.5
-     * @param  string $class The class being requested to run for the batch export
+     * @param  string $class The class being requested to run for the batch export.
      * @return void
      */
     function edd_include_single_customer_recount_tool_batch_processer($class)
@@ -82518,6 +84706,7 @@ namespace {
     function edd_admin_ajax_delete_note()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get the HTML used to output all of the notes for a single object
      *
@@ -82533,7 +84722,7 @@ namespace {
      * Get the HTML used to output a single note, from an array of notes
      *
      * @since 3.0
-     * @param int $note_id
+     * @param int $note_id Note ID.
      *
      * @return string
      */
@@ -84674,15 +86863,6 @@ namespace {
      * @return void
      */
     function edd_ajax_download_category_search()
-    {
-    }
-    /**
-     * Search the users database via AJAX
-     *
-     * @since 2.6.9
-     * @return void
-     */
-    function edd_ajax_user_search()
     {
     }
     /**
@@ -88251,6 +90431,16 @@ namespace {
      * @param int $payment_id The ID of the abandoned payment, for which a Recapture notice is being thrown.
      */
     function maybe_add_recapture_notice_to_abandoned_payment($payment_id)
+    {
+    }
+    /**
+     * Search the users database via AJAX
+     *
+     * @since 2.6.9
+     * @deprecated 3.6.7 Handled by EDD\Users\Search
+     * @return void
+     */
+    function edd_ajax_user_search()
     {
     }
     // @codeCoverageIgnore
@@ -96115,7 +98305,7 @@ namespace {
      *
      * @since 3.0
      *
-     * @param $order_id
+     * @param int $order_id Order ID.
      *
      * @return bool      true if the order was trashed successfully, false if not
      */
@@ -96127,7 +98317,7 @@ namespace {
      *
      * @since 3.0
      *
-     * @param $order_id
+     * @param int $order_id Order ID.
      *
      * @return bool      true if the order was trashed successfully, false if not
      */
@@ -96275,7 +98465,7 @@ namespace {
     /**
      * Determine if an order ID is able to be trashed.
      *
-     * @param $order_id
+     * @param int $order_id Order ID.
      *
      * @return bool
      */
@@ -96285,7 +98475,7 @@ namespace {
     /**
      * Determine if an order ID is able to be restored from the trash.
      *
-     * @param $order_id
+     * @param int $order_id Order ID.
      *
      * @return bool
      */
@@ -98516,12 +100706,11 @@ namespace {
      *            as it is done later on in the order flow where a customer ID
      *            is available.
      *
-     * @param array $valid_data
      * @access  private
      * @since  1.0.8.1
      *
      * @param   array $valid_data The validated data from the checkout form validation.
-     * @return  array
+     * @return  array The user data.
      */
     function edd_get_purchase_form_user($valid_data = array(), $is_ajax = \null)
     {
@@ -98552,7 +100741,7 @@ namespace {
     {
     }
     /**
-     * Get Credit Card Info
+     * Get Credit Card Info.
      *
      * @access  private
      * @since  1.4.4
@@ -98562,12 +100751,12 @@ namespace {
     {
     }
     /**
-     * Validate zip code based on country code
+     * Validate zip code based on country code.
      *
      * @since  1.4.4
      *
-     * @param int    $zip
-     * @param string $country_code
+     * @param int    $zip The zip code to validate.
+     * @param string $country_code The country code to validate against.
      *
      * @return bool|mixed|void
      */
@@ -98575,7 +100764,7 @@ namespace {
     {
     }
     /**
-     * Check the purchase to ensure a banned email is not allowed through
+     * Check the purchase to ensure a banned email is not allowed through.
      *
      * @since       2.0
      * @return      void
