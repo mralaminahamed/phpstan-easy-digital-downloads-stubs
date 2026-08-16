@@ -7735,7 +7735,7 @@ namespace EDD\Database {
          *
          * @param array $items
          */
-        private function update_item_cache($items = array())
+        private function update_item_cache($items = array(), $bump_last_changed = true)
         {
         }
         /**
@@ -21292,6 +21292,17 @@ namespace EDD\Admin\Exports\Exporters\Traits {
          * @return bool
          */
         private function stash_temp_data($data = array())
+        {
+        }
+        /**
+         * Deletes any existing temp file so a new export starts clean.
+         *
+         * Call this on step 1 to prevent stale data from an interrupted previous run
+         * from being accumulated into the new export.
+         *
+         * @since 3.6.8
+         */
+        protected function reset_temp_file(): void
         {
         }
         /**
@@ -42912,7 +42923,7 @@ namespace EDD\Database\Tables {
          * @since  3.0
          * @var    int
          */
-        protected $version = 202307111;
+        protected $version = 202605080;
         /**
          * Array of upgrade versions and methods.
          *
@@ -42920,7 +42931,7 @@ namespace EDD\Database\Tables {
          * @since  3.0
          * @var    array
          */
-        protected $upgrades = array('201901111' => 201901111, '202002141' => 202002141, '202012041' => 202012041, '202102161' => 202102161, '202103261' => 202103261, '202105221' => 202105221, '202108041' => 202108041, '202302241' => 202302241, '202307111' => 202307111);
+        protected $upgrades = array('201901111' => 201901111, '202002141' => 202002141, '202012041' => 202012041, '202102161' => 202102161, '202103261' => 202103261, '202105221' => 202105221, '202108041' => 202108041, '202302241' => 202302241, '202307111' => 202307111, '202605080' => 202605080);
         /**
          * Setup the database schema.
          *
@@ -43026,6 +43037,17 @@ namespace EDD\Database\Tables {
         {
         }
         protected function __202307111()
+        {
+        }
+        /**
+         * Upgrade to version 202605080
+         * - Add a composite index on (parent, type) to support child-order lookups without full-table scans.
+         *
+         * @since 3.6.8
+         *
+         * @return boolean
+         */
+        protected function __202605080()
         {
         }
     }
@@ -58734,6 +58756,52 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          * Gets the icon for the payment method.
          *
          * @since 3.3.5
+         * @return string
+         */
+        public static function get_icon(): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Blik class.
+     */
+    class Blik extends \EDD\Gateways\Stripe\PaymentMethods\Method
+    {
+        /**
+         * The ID of the payment method.
+         *
+         * @since 3.6.8
+         * @var string
+         */
+        protected static $id = 'blik';
+        /**
+         * The supported currencies for the payment method.
+         *
+         * @since 3.6.8
+         * @var array
+         */
+        public static $currencies = array('PLN');
+        /**
+         * The supported countries for the payment method.
+         *
+         * @since 3.6.8
+         * @var array
+         */
+        public static $countries = array('at', 'be', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu', 'is', 'ie', 'it', 'lv', 'li', 'lt', 'lu', 'mt', 'nl', 'no', 'pl', 'pt', 'ro', 'sk', 'si', 'es', 'se');
+        /**
+         * Gets the label for the payment method.
+         *
+         * @since 3.6.8
+         * @return string
+         */
+        public static function get_label()
+        {
+        }
+        /**
+         * Gets the icon for the payment method.
+         *
+         * @since 3.6.8
          * @return string
          */
         public static function get_icon(): string
@@ -75781,6 +75849,16 @@ namespace EDD\Telemetry {
         public function get()
         {
         }
+        /**
+         * Gets the telemetry collector instances.
+         *
+         * @since 3.6.8
+         *
+         * @return array
+         */
+        protected function get_collectors(): array
+        {
+        }
     }
     /**
      * Class Environment
@@ -76286,10 +76364,11 @@ namespace EDD\Telemetry {
         /**
          * Setup the data that is going to be tracked.
          *
-         * @access private
+         * @since 3.1.1
+         *
          * @return void
          */
-        private function setup_data()
+        protected function setup_data()
         {
         }
         /**
