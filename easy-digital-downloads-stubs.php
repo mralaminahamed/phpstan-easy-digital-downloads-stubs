@@ -5121,6 +5121,7 @@ namespace {
          * Get Discounts.
          *
          * @since 2.7
+         * @since 3.6.6 Uses get_discounts_from_session() for normalization.
          * @return array $discounts The active discount codes
          */
         public function get_discounts()
@@ -5627,11 +5628,11 @@ namespace {
         {
         }
         /**
-         * Populate the discounts with the data stored in the session.
+         * Gets the discounts from the session.
          *
          * @since  2.7
-         * @deprecated 3.3.0
-         * @return void
+         * @since 3.6.6 Now returns an array of discounts.
+         * @return array The active discount codes.
          */
         public function get_discounts_from_session()
         {
@@ -15916,80 +15917,6 @@ namespace EDD\API\WP {
         }
     }
 }
-namespace EDD\API\v3 {
-    /**
-     * Abstract class for API endpoints.
-     *
-     * @since 2.11.4
-     */
-    abstract class Endpoint
-    {
-        /**
-         * The namespace for the endpoint.
-         *
-         * @var string
-         */
-        public static $namespace = 'edd/v3';
-        /**
-         * Registers the endpoint(s).
-         *
-         * @since 2.11.4
-         *
-         * @return void
-         */
-        abstract public function register();
-    }
-    /**
-     * Notifications API Endpoint.
-     *
-     * @since 2.11.4
-     */
-    class Notifications extends \EDD\API\v3\Endpoint
-    {
-        /**
-         * Registers the endpoints.
-         *
-         * @since 2.11.4
-         */
-        public function register()
-        {
-        }
-        /**
-         * Whether the current user can view (and dismiss) notifications.
-         *
-         * @since 2.11.4
-         *
-         * @return bool
-         */
-        public function canViewNotification()
-        {
-        }
-        /**
-         * Returns a list of notifications.
-         *
-         * @since 2.11.4
-         *
-         * @param \WP_REST_Request $request The request object.
-         *
-         * @return \WP_REST_Response
-         */
-        public function listNotifications(\WP_REST_Request $request)
-        {
-        }
-        /**
-         * Dismisses a single notification.
-         *
-         * @since 2.11.4
-         *
-         * @param \WP_REST_Request $request The request object.
-         *
-         * @return \WP_REST_Response
-         */
-        public function dismissNotification(\WP_REST_Request $request)
-        {
-        }
-    }
-}
 namespace EDD {
     /**
      * Implements a base object to be extended by core objects.
@@ -19388,6 +19315,16 @@ namespace EDD\Admin\Emails {
          * @since 3.3.0
          */
         public function reset()
+        {
+        }
+        /**
+         * Adds the reset button to the email editor.
+         * The priority is 100 to ensure it is added after other media buttons.
+         *
+         * @since 3.6.6
+         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
+         */
+        public function add_reset_button($email)
         {
         }
         /**
@@ -32552,6 +32489,15 @@ namespace EDD\Checkout {
         {
         }
         /**
+         * Gets the checkout type for the purchase page.
+         *
+         * @since 3.6.6
+         * @return string The checkout type: 'elementor', 'block', 'shortcode', 'undetermined', or 'unknown'.
+         */
+        public static function get_checkout_type($post_id = null): string
+        {
+        }
+        /**
          * Checks the query for the Validator class.
          *
          * @since 3.3.0
@@ -35150,15 +35096,40 @@ namespace EDD\Cron {
         {
         }
         /**
+         * The transient key used to track whether cron events have been registered.
+         *
+         * @since 3.6.6
+         * @var string
+         */
+        const EVENTS_REGISTERED_TRANSIENT = 'edd_cron_events_registered';
+        /**
          * Load any cron events we need to.
          *
          * Cron Events are the 'do_action' events that are fired by WordPress, on a defined schedule.
+         *
+         * Uses a transient to avoid checking schedule status on every page load.
+         * When using Action Scheduler, each check requires database queries against
+         * the actionscheduler_actions table. The transient ensures we only run these
+         * checks periodically rather than on every request.
          *
          * @since 3.3.0
          *
          * @return void
          */
         public function load_events()
+        {
+        }
+        /**
+         * Clear the events registered transient.
+         *
+         * Call this when events need to be re-registered, such as after
+         * plugin activation, deactivation, or upgrade.
+         *
+         * @since 3.6.6
+         *
+         * @return void
+         */
+        public static function clear_events_transient()
         {
         }
         /**
@@ -35331,6 +35302,20 @@ namespace EDD\Cron\Schedulers {
          * @return array Array of hook names (strings).
          */
         public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array;
+        /**
+         * Check if an action is scheduled.
+         *
+         * More efficient than next_scheduled() when you only need to know
+         * if an event exists, not when it will run.
+         *
+         * @since 3.6.6
+         *
+         * @param string $hook  The hook name to check.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier.
+         * @return bool True if a matching action is pending or in-progress, false otherwise.
+         */
+        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool;
         /**
          * Search for scheduled actions.
          *
@@ -35682,6 +35667,19 @@ namespace EDD\Cron\Schedulers {
          * @return bool True if successfully unscheduled, false otherwise.
          */
         public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool
+        {
+        }
+        /**
+         * Check if an action is scheduled.
+         *
+         * @since 3.6.6
+         *
+         * @param string $hook  The hook name to check.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier (unused in WP-Cron).
+         * @return bool True if a matching action is pending or in-progress, false otherwise.
+         */
+        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool
         {
         }
         /**
@@ -36886,6 +36884,13 @@ namespace EDD\Database {
     class NotificationsDB
     {
         /**
+         * Date format used for UTC date comparisons.
+         *
+         * @since 3.6.6
+         * @var string
+         */
+        const DATETIME_FORMAT = 'Y-m-d H:i:s';
+        /**
          * Constructor
          */
         public function __construct()
@@ -36899,14 +36904,6 @@ namespace EDD\Database {
          * @return void
          */
         public function enqueue($hook_suffix = '')
-        {
-        }
-        /**
-         * Add `defer` to the AlpineJS script tag.
-         *
-         * @since 3.2.4
-         */
-        public function defer_alpine($url)
         {
         }
         /**
@@ -37011,6 +37008,38 @@ namespace EDD\Database {
          * @return string
          */
         private function getActiveQuery($conditionsOnly = false)
+        {
+        }
+        /**
+         * Returns notifications filtered by the provided arguments.
+         *
+         * When dismissed=0 (default), applies date range checks and EnvironmentChecker conditions.
+         * When dismissed=1, returns dismissed notifications without date/condition filtering.
+         *
+         * @since 3.6.6
+         *
+         * @param array $args {
+         *     Optional. Arguments to filter notifications.
+         *
+         *     @type int    $dismissed Whether to return dismissed (1) or active (0) notifications. Default 0.
+         *     @type string $source    Filter by notification source.
+         *     @type string $type      Filter by notification type.
+         * }
+         * @return Notification[]
+         */
+        public function getNotifications($args = array())
+        {
+        }
+        /**
+         * Returns dismissed notifications.
+         *
+         * Convenience wrapper around getNotifications() for dismissed notifications.
+         *
+         * @since 3.6.6
+         *
+         * @return Notification[]
+         */
+        public function getDismissedNotifications()
         {
         }
         /**
@@ -45148,6 +45177,301 @@ namespace EDD\Emails {
          */
         protected $uuid;
     }
+}
+namespace EDD\Emails\Providers {
+    // @codeCoverageIgnore
+    /**
+     * Email Provider Interface.
+     *
+     * @since 3.6.6
+     */
+    interface ProviderInterface
+    {
+        /**
+         * Get the provider ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id(): string;
+        /**
+         * Get the provider name.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_name(): string;
+        /**
+         * Detect whether a payload belongs to this provider's bounce format.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return bool
+         */
+        public function can_handle_bounce(array $payload): bool;
+        /**
+         * Parse a bounce payload into a standardized format.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
+         */
+        public function parse_bounce(array $payload): ?array;
+    }
+    // @codeCoverageIgnore
+    /**
+     * Abstract Email Provider class.
+     *
+     * @since 3.6.6
+     */
+    abstract class Provider implements \EDD\Emails\Providers\ProviderInterface
+    {
+        /**
+         * Cached provider instances.
+         *
+         * @since 3.6.6
+         * @var array
+         */
+        private static $providers = array();
+        /**
+         * Get all available email service providers.
+         *
+         * @since 3.6.6
+         * @return array Array of provider instances keyed by ID.
+         */
+        public static function get_available_providers(): array
+        {
+        }
+        /**
+         * Get a specific provider by ID.
+         *
+         * @since 3.6.6
+         * @param string $id The provider ID.
+         * @return ProviderInterface|null The provider instance or null if not found.
+         */
+        public static function get_provider_by_id(string $id): ?\EDD\Emails\Providers\ProviderInterface
+        {
+        }
+        /**
+         * Get the provider that can handle a given bounce payload.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return ProviderInterface|null The matching provider or null.
+         */
+        public static function get_provider_for_bounce(array $payload): ?\EDD\Emails\Providers\ProviderInterface
+        {
+        }
+        /**
+         * Find an email log ID by recipient email address.
+         *
+         * @since 3.6.6
+         * @param string $recipient_email The recipient email address.
+         * @return int|null The email log ID if found, null otherwise.
+         */
+        protected function find_email_by_recipient(string $recipient_email): ?int
+        {
+        }
+        /**
+         * Reset the static provider cache.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        public static function reset(): void
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Mailgun Email Provider class.
+     *
+     * @since 3.6.6
+     */
+    class Mailgun extends \EDD\Emails\Providers\Provider
+    {
+        /**
+         * Get the provider ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the provider name.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Detect whether a payload belongs to Mailgun's bounce format.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return bool
+         */
+        public function can_handle_bounce(array $payload): bool
+        {
+        }
+        /**
+         * Parse a Mailgun bounce payload.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
+         */
+        public function parse_bounce(array $payload): ?array
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * AWS SES Email Provider class.
+     *
+     * @since 3.6.6
+     */
+    class SES extends \EDD\Emails\Providers\Provider
+    {
+        /**
+         * Get the provider ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the provider name.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Detect whether a payload belongs to AWS SES's bounce format (via SNS).
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return bool
+         */
+        public function can_handle_bounce(array $payload): bool
+        {
+        }
+        /**
+         * Parse an AWS SES bounce payload.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
+         */
+        public function parse_bounce(array $payload): ?array
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * SendGrid Email Provider class.
+     *
+     * @since 3.6.6
+     */
+    class SendGrid extends \EDD\Emails\Providers\Provider
+    {
+        /**
+         * Get the provider ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the provider name.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Detect whether a payload belongs to SendGrid's bounce format.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return bool
+         */
+        public function can_handle_bounce(array $payload): bool
+        {
+        }
+        /**
+         * Parse a SendGrid bounce payload.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
+         */
+        public function parse_bounce(array $payload): ?array
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * SendLayer Email Provider class.
+     *
+     * @since 3.6.6
+     */
+    class SendLayer extends \EDD\Emails\Providers\Provider
+    {
+        /**
+         * Get the provider ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id(): string
+        {
+        }
+        /**
+         * Get the provider name.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Detect whether a payload belongs to SendLayer's bounce format.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return bool
+         */
+        public function can_handle_bounce(array $payload): bool
+        {
+        }
+        /**
+         * Parse a SendLayer bounce payload.
+         *
+         * @since 3.6.6
+         * @param array $payload The webhook payload.
+         * @return array|null Array with 'email_id' and 'reason' keys, or null on failure.
+         */
+        public function parse_bounce(array $payload): ?array
+        {
+        }
+    }
+}
+namespace EDD\Emails {
     final class Registry
     {
         /**
@@ -54978,6 +55302,20 @@ namespace EDD\Gateways\Stripe\Checkout {
         {
         }
         /**
+         * Get the expected price for validation.
+         *
+         * If an order already exists (via intent metadata), returns the order total.
+         * Otherwise returns the session purchase data price.
+         *
+         * @since 3.6.6
+         *
+         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent The Stripe Intent object.
+         * @return float The expected price.
+         */
+        private function get_expected_price($intent)
+        {
+        }
+        /**
          * Retrieve the Intent ID.
          *
          * @since 3.3.5
@@ -55302,6 +55640,96 @@ namespace EDD\Gateways\Stripe\Checkout {
          * @return false|string
          */
         private static function get_custom_payment_method($charge, $order)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Validation class.
+     *
+     * Consolidates common Stripe checkout validation checks.
+     *
+     * @since 3.6.6
+     */
+    class Validation
+    {
+        /**
+         * Validate that an intent has an acceptable status.
+         *
+         * @since 3.6.6
+         *
+         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent         The Stripe Intent object.
+         * @param array                                     $valid_statuses Acceptable statuses.
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If the intent status is invalid.
+         */
+        public static function intent_status($intent, $valid_statuses = array('succeeded', 'requires_capture'))
+        {
+        }
+        /**
+         * Validate that the intent amount matches the expected price.
+         *
+         * Skips validation for SetupIntents which have no amount.
+         *
+         * @since 3.6.6
+         *
+         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent         The Stripe Intent object.
+         * @param float|string                              $expected_price The expected price in standard currency units.
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
+         */
+        public static function intent_amount($intent, $expected_price)
+        {
+        }
+        /**
+         * Validate that a charge amount matches the expected price.
+         *
+         * @since 3.6.6
+         *
+         * @param \Stripe\Charge $charge         The Stripe Charge object.
+         * @param float|string   $expected_price The expected price in standard currency units.
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
+         */
+        public static function charge_amount($charge, $expected_price)
+        {
+        }
+        /**
+         * Validate that purchase data is present and non-empty.
+         *
+         * @since 3.6.6
+         *
+         * @param mixed $purchase_data The purchase data to validate.
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If purchase data is empty.
+         */
+        public static function purchase_data($purchase_data)
+        {
+        }
+        /**
+         * Validate that an intent object or array has an ID.
+         *
+         * @since 3.6.6
+         *
+         * @param mixed $intent The intent data (object or array).
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If the intent has no ID.
+         */
+        public static function intent_exists($intent)
+        {
+        }
+        /**
+         * Verify that a Stripe amount (in smallest currency unit) matches the expected price.
+         *
+         * @since 3.6.6
+         *
+         * @param int          $actual_amount The amount from Stripe in smallest currency unit (e.g. cents).
+         * @param float|string $expected_price The expected price in standard currency units (e.g. dollars).
+         * @param string       $reference_id   The Stripe object ID for logging.
+         * @return void
+         * @throws \EDD_Stripe_Gateway_Exception If the amounts do not match.
+         */
+        private static function verify_amount($actual_amount, $expected_price, $reference_id)
         {
         }
     }
@@ -59478,6 +59906,15 @@ namespace EDD\Integrations {
         public function load_elementor()
         {
         }
+        /**
+         * Check if Elementor is available.
+         *
+         * @since 3.6.6
+         * @return bool
+         */
+        public static function checkout_is_elementor($post_id = null): bool
+        {
+        }
     }
     /**
      * Class Registry
@@ -60201,6 +60638,43 @@ namespace EDD\Licensing {
         }
     }
 }
+namespace EDD\Lite\Admin\Emails {
+    /**
+     * Class Handler
+     *
+     * @since 3.6.6
+     */
+    class Handler implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Gets the events to subscribe to.
+         *
+         * @since 3.6.6
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Displays the conditional email tags button.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        public function conditional_email_tags()
+        {
+        }
+        /**
+         * Renders the conditional email tags button.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        public function render_button()
+        {
+        }
+    }
+}
 namespace EDD\Lite\Admin {
     class Menu implements \EDD\EventManagement\SubscriberInterface
     {
@@ -60387,6 +60861,73 @@ namespace EDD\Lite\Admin\Promos\Notices {
         }
     }
     /**
+     * Conditional Email Tags Upgrade Notice class.
+     *
+     * @since 3.6.6
+     */
+    class ConditionalEmailTags extends \EDD\Admin\Promos\Notices\Notice
+    {
+        /**
+         * Action hook for displaying the notice.
+         */
+        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-emails';
+        /**
+         * Type of promotional notice.
+         */
+        const TYPE = 'overlay';
+        /**
+         * Capability required to dismiss the notice.
+         */
+        const CAPABILITY = 'manage_shop_settings';
+        /**
+         * Duration (in seconds) that the notice is dismissed for.
+         * `0` means it's dismissed permanently.
+         *
+         * @since 3.6.6
+         * @return int
+         */
+        public static function dismiss_duration()
+        {
+        }
+        /**
+         * Renders the dismiss button for the notice.
+         * This is intentionally left blank as the dismiss button is rendered in the content.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        public function dismiss_button()
+        {
+        }
+        /**
+         * Gets the notice ID.
+         *
+         * @since 3.6.6
+         * @return string
+         */
+        public function get_id()
+        {
+        }
+        /**
+         * Displays the notice content.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        protected function _display()
+        {
+        }
+        /**
+         * Determines if the notice should be displayed.
+         *
+         * @since 3.6.6
+         * @return bool
+         */
+        protected function _should_display(): bool
+        {
+        }
+    }
+    /**
      * Featured Downloads Upgrade Notice class.
      *
      * @since 3.5.0
@@ -60530,7 +61071,7 @@ namespace EDD\Lite\Admin\Promos {
          *
          * @var array
          */
-        protected $lite_notices = array('\EDD\Lite\Admin\Promos\Notices\FeaturedDownloads', '\EDD\Lite\Admin\Promos\Notices\PreviewRecommendations', '\EDD\Lite\Admin\Promos\Notices\CampaignTracker');
+        protected $lite_notices = array('\EDD\Lite\Admin\Promos\Notices\FeaturedDownloads', '\EDD\Lite\Admin\Promos\Notices\PreviewRecommendations', '\EDD\Lite\Admin\Promos\Notices\CampaignTracker', '\EDD\Lite\Admin\Promos\Notices\ConditionalEmailTags');
         /**
          * Gets the notices.
          * This method overrides the parent method if an inactive pro install is detected.
@@ -61468,6 +62009,12 @@ namespace EDD\Models {
          *               and not via the remote import.
          */
         public $remote_id = null;
+        /**
+         * @var string Source of the notification, e.g. `api` or `local`.
+         *
+         * @since 3.6.6
+         */
+        public $source = 'api';
         /**
          * @var string Title of the notification.
          */
@@ -63635,56 +64182,6 @@ namespace EDD\REST\Controllers {
         private function parse_bounce_webhook(array $body, \WP_REST_Request $request): ?array
         {
         }
-        /**
-         * Parses SendGrid bounce webhook.
-         *
-         * @since 3.6.5
-         * @param array $body The webhook payload.
-         * @return array|null Parsed bounce data.
-         */
-        private function parse_sendgrid_bounce(array $body): ?array
-        {
-        }
-        /**
-         * Parses Mailgun bounce webhook.
-         *
-         * @since 3.6.5
-         * @param array $body The webhook payload.
-         * @return array|null Parsed bounce data.
-         */
-        private function parse_mailgun_bounce(array $body): ?array
-        {
-        }
-        /**
-         * Parses AWS SES bounce webhook.
-         *
-         * @since 3.6.5
-         * @param array $body The webhook payload.
-         * @return array|null Parsed bounce data.
-         */
-        private function parse_ses_bounce(array $body): ?array
-        {
-        }
-        /**
-         * Parses SendLayer bounce webhook.
-         *
-         * @since 3.6.5
-         * @param array $body The webhook payload.
-         * @return array|null Parsed bounce data.
-         */
-        private function parse_sendlayer_bounce(array $body): ?array
-        {
-        }
-        /**
-         * Finds an email log ID by recipient email address.
-         *
-         * @since 3.6.5
-         * @param string $recipient_email The recipient email address.
-         * @return int|null The email log ID if found, null otherwise.
-         */
-        private function find_email_by_recipient(string $recipient_email): ?int
-        {
-        }
     }
     /**
      * Cart controller class.
@@ -63813,6 +64310,34 @@ namespace EDD\REST\Controllers {
          * @return \WP_REST_Response|\WP_Error
          */
         public function prune($request)
+        {
+        }
+    }
+    /**
+     * Notifications Controller class
+     *
+     * @since 3.6.6
+     */
+    class Notifications
+    {
+        /**
+         * List notifications with optional filtering.
+         *
+         * @since 3.6.6
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function list_notifications($request)
+        {
+        }
+        /**
+         * Dismiss a single notification.
+         *
+         * @since 3.6.6
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response
+         */
+        public function dismiss_notification($request)
         {
         }
     }
@@ -64000,6 +64525,66 @@ namespace EDD\REST\Routes {
          * Uses standard WordPress REST authentication (cookies + nonce).
          *
          * @since 3.6.4
+         * @param \WP_REST_Request $request Request object.
+         * @return bool|\WP_Error
+         */
+        public function check_permission($request)
+        {
+        }
+    }
+    /**
+     * Notifications class
+     *
+     * Handles REST API route registration for notification operations.
+     *
+     * @since 3.6.6
+     */
+    class Notifications extends \EDD\REST\Routes\Route
+    {
+        /**
+         * REST API base.
+         *
+         * @since 3.6.6
+         * @var string
+         */
+        const BASE = 'notifications';
+        /**
+         * Allowed notification sources for filtering.
+         *
+         * @since 3.6.6
+         * @var string[]
+         */
+        const ALLOWED_SOURCES = array('api', 'local');
+        /**
+         * Allowed notification types for filtering.
+         *
+         * @since 3.6.6
+         * @var string[]
+         */
+        const ALLOWED_TYPES = array('success', 'warning', 'error', 'info');
+        /**
+         * Constructor.
+         *
+         * @since 3.6.6
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register routes.
+         *
+         * @since 3.6.6
+         * @return void
+         */
+        public function register()
+        {
+        }
+        /**
+         * Check permission for notification operations.
+         *
+         * Uses standard WordPress REST authentication (cookies + nonce).
+         *
+         * @since 3.6.6
          * @param \WP_REST_Request $request Request object.
          * @return bool|\WP_Error
          */
@@ -71232,6 +71817,7 @@ namespace EDD\Sessions {
          * Gets the cart discounts.
          *
          * @since 3.3.0
+         * @since 3.6.6 Normalizes the discounts to an array.
          */
         public function get_discounts()
         {
