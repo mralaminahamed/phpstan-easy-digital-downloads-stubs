@@ -1348,48 +1348,56 @@ namespace {
          * The file being imported
          *
          * @since 2.6
+         * @var string
          */
         public $file;
         /**
          * The parsed CSV file being imported
          *
          * @since 2.6
+         * @var array
          */
         public $csv;
         /**
          * Total rows in the CSV file
          *
          * @since 2.6
+         * @var int
          */
         public $total;
         /**
          * The current step being processed
          *
          * @since 2.6
+         * @var int
          */
         public $step;
         /**
          * The number of items to process per step
          *
          * @since 2.6
+         * @var int
          */
         public $per_step = 20;
         /**
          * The capability required to import data
          *
          * @since 2.6
+         * @var string
          */
         public $capability_type = 'manage_shop_settings';
         /**
          * Is the import file empty
          *
          * @since 2.6
+         * @var bool
          */
         public $is_empty = \false;
         /**
          * Map of CSV columns > database fields
          *
          * @since 2.6
+         * @var array
          */
         public $field_mapping = array();
         /**
@@ -1402,7 +1410,8 @@ namespace {
         /**
          * Get things started
          *
-         * @param $_step int The step to process
+         * @param string $_file The file to import.
+         * @param int    $_step The step to process.
          * @since 2.6
          */
         public function __construct($_file = '', $_step = 1)
@@ -1411,7 +1420,7 @@ namespace {
         /**
          * Sets up the CSV file for importing.
          *
-         * @param [type] $file
+         * @param string $file The file to set up.
          * @return void
          */
         public function set_up_csv($file)
@@ -1439,7 +1448,7 @@ namespace {
          * Parses the CSV from the file and returns the data as an array.
          *
          * @since 2.11.5
-         * @param string $file
+         * @param string $file The file to parse.
          *
          * @return array
          */
@@ -1497,7 +1506,6 @@ namespace {
          * Retrieve the URL to the list table for the import data type
          *
          * @since 2.6
-         * @return string
          */
         public function get_list_table_url()
         {
@@ -1506,7 +1514,6 @@ namespace {
          * Retrieve the label for the import type. Example: Payments
          *
          * @since 2.6
-         * @return string
          */
         public function get_import_type_label()
         {
@@ -1515,7 +1522,7 @@ namespace {
          * Convert a string containing delimiters to an array
          *
          * @since 2.6
-         * @param $str Input string to convert to an array
+         * @param string $str Input string to convert to an array.
          * @return array
          */
         public function str_to_array($str = '')
@@ -1527,7 +1534,7 @@ namespace {
          * This is identical to str_to_array() except it ignores all / characters.
          *
          * @since 2.9.20
-         * @param $str Input string to convert to an array
+         * @param string $str Input string to convert to an array.
          * @return array
          */
         public function convert_file_string_to_array($str = '')
@@ -1537,7 +1544,7 @@ namespace {
          * Trims a column value for preview
          *
          * @since 2.6
-         * @param $str Input string to trim down
+         * @param string $str Input string to trim down.
          * @return string
          */
         public function trim_preview($str = '')
@@ -1676,7 +1683,13 @@ namespace {
         public function create_payment($row = array())
         {
         }
-        private function set_customer($row)
+        /**
+         * Set the customer for the payment.
+         *
+         * @param array $row The row data.
+         * @return int The customer ID.
+         */
+        private function set_customer($row = array())
         {
         }
         /**
@@ -2044,6 +2057,13 @@ namespace {
          */
         protected $log_type = 'logs';
         /**
+         * Log types that support the download filter.
+         *
+         * @since 3.6.4
+         * @var array
+         */
+        protected $download_filter_log_types = array('file_downloads');
+        /**
          * Get things started
          *
          * @since 3.0
@@ -2176,6 +2196,15 @@ namespace {
          * @return void
          */
         public function log_views()
+        {
+        }
+        /**
+         * Check if the current log type supports the download filter.
+         *
+         * @since 3.6.4
+         * @return bool True if download filter should be shown, false otherwise.
+         */
+        protected function supports_download_filter()
         {
         }
         /**
@@ -19339,6 +19368,16 @@ namespace EDD\Admin\Promos\Notices {
          */
         const CAPABILITY = 'manage_options';
         /**
+         * Gets the border color for overlay modals.
+         * Return a hex color string to customize, or empty string to use default blue.
+         *
+         * @since 3.6.4
+         * @return string
+         */
+        public function get_border_color()
+        {
+        }
+        /**
          * Displays the notice content.
          *
          * @return void
@@ -23235,6 +23274,83 @@ namespace EDD\Admin\Menu {
         {
         }
     }
+    /**
+     * Class SubNav
+     *
+     * Renders a secondary navigation menu using the edd-sub-nav pattern.
+     *
+     * @since 3.6.4
+     */
+    class SubNav
+    {
+        /**
+         * The tabs.
+         *
+         * @since 3.6.4
+         * @var array
+         */
+        private $tabs;
+        /**
+         * The current tab.
+         *
+         * @since 3.6.4
+         * @var string
+         */
+        private $current;
+        /**
+         * Configuration arguments.
+         *
+         * @since 3.6.4
+         * @var array
+         */
+        private $args;
+        /**
+         * SubNav constructor.
+         *
+         * @since 3.6.4
+         * @param array $args Arguments for the sub-navigation.
+         */
+        public function __construct(array $args = array())
+        {
+        }
+        /**
+         * Gets the default arguments for the sub-navigation.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        private function get_defaults(): array
+        {
+        }
+        /**
+         * Renders the sub-navigation HTML.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
+         * Gets the URL for a specific tab.
+         *
+         * @since 3.6.4
+         * @param string $tab_id The tab identifier.
+         * @return string The URL for the tab.
+         */
+        private function get_tab_url(string $tab_id): string
+        {
+        }
+        /**
+         * Gets the wrapper style attribute if set.
+         *
+         * @since 3.6.4
+         * @return string The style attribute or empty string.
+         */
+        private function get_wrapper_style(): string
+        {
+        }
+    }
 }
 namespace EDD\Admin\Notifications {
     // @codeCoverageIgnore
@@ -25229,6 +25345,86 @@ namespace EDD\Admin\Promos\Notices {
     }
     // @codeCoverageIgnore
     /**
+     * Log Pruning Confirmation Modal.
+     *
+     * @since 3.6.4
+     */
+    class LogPruningConfirmModal extends \EDD\Admin\Promos\Notices\Notice
+    {
+        /**
+         * Action hook for displaying the notice.
+         */
+        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-tools';
+        /**
+         * Type of promotional notice.
+         */
+        const TYPE = 'overlay';
+        /**
+         * Capability required to dismiss the notice.
+         */
+        const CAPABILITY = 'manage_shop_settings';
+        /**
+         * Duration (in seconds) that the notice is dismissed for.
+         * `0` means it's dismissed permanently.
+         *
+         * @since 3.6.4
+         *
+         * @return int
+         */
+        public static function dismiss_duration()
+        {
+        }
+        /**
+         * Gets the border color for the modal.
+         * Returns warning yellow color.
+         *
+         * @since 3.6.4
+         * @return string
+         */
+        public function get_border_color()
+        {
+        }
+        /**
+         * Gets the notice content for AJAX requests.
+         *
+         * @since 3.6.4
+         *
+         * @return string
+         */
+        public function get_ajax_content()
+        {
+        }
+        /**
+         * Renders the dismiss button for the notice.
+         * This is intentionally left blank as the dismiss button is rendered in the AJAX content.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function dismiss_button()
+        {
+        }
+        /**
+         * Displays the notice content.
+         * This is intentionally left blank as the content is rendered in the AJAX content.
+         *
+         * @return void
+         */
+        protected function _display()
+        {
+        }
+        /**
+         * Determines if the notice should be displayed on render.
+         *
+         * @since 3.6.4
+         * @return bool
+         */
+        protected function _should_display(): bool
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
      * Class PriceChanges
      *
      * @since 3.3.6
@@ -25479,7 +25675,7 @@ namespace EDD\Admin\Promos {
          *
          * @var string[]
          */
-        protected $notices = array('\EDD\Admin\Promos\Notices\License_Upgrade_Notice', '\EDD\Admin\Promos\Notices\Five_Star_Review_Dashboard', '\EDD\Admin\Promos\Notices\Five_Star_Review_Settings', '\EDD\Admin\Promos\Notices\Lite', '\EDD\Admin\Onboarding\Notice', '\EDD\Admin\Promos\Notices\Emails', '\EDD\Admin\Emails\Reset', '\EDD\Admin\Promos\Notices\Recurring', '\EDD\Admin\Promos\Notices\PriceChanges', '\EDD\Admin\Promos\Notices\SquareWebhooksModal', '\EDD\Admin\Promos\Notices\EmptyCartBehavior', '\EDD\Admin\Promos\Notices\VATHandling');
+        protected $notices = array('\EDD\Admin\Promos\Notices\License_Upgrade_Notice', '\EDD\Admin\Promos\Notices\Five_Star_Review_Dashboard', '\EDD\Admin\Promos\Notices\Five_Star_Review_Settings', '\EDD\Admin\Promos\Notices\Lite', '\EDD\Admin\Onboarding\Notice', '\EDD\Admin\Promos\Notices\Emails', '\EDD\Admin\Emails\Reset', '\EDD\Admin\Promos\Notices\Recurring', '\EDD\Admin\Promos\Notices\PriceChanges', '\EDD\Admin\Promos\Notices\SquareWebhooksModal', '\EDD\Admin\Promos\Notices\LogPruningConfirmModal', '\EDD\Admin\Promos\Notices\EmptyCartBehavior', '\EDD\Admin\Promos\Notices\VATHandling');
         /**
          * Notices constructor.
          */
@@ -26847,6 +27043,7 @@ namespace EDD\Admin\Settings {
          * Output the secondary options page navigation
          *
          * @since 3.3.0
+         * @since 3.6.4 Refactored to use SubNav HTML helper.
          *
          * @param string $active_tab The active tab.
          * @param string $section    The active section.
@@ -28577,6 +28774,566 @@ namespace EDD\Admin\Tools {
         {
         }
     }
+    /**
+     * Log Settings tab.
+     *
+     * @since 3.6.4
+     */
+    class LogSettings implements \EDD\EventManagement\SubscriberInterface
+    {
+        use \EDD\Admin\Settings\Traits\AjaxToggle;
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Filter the flyout docs link when on the log settings page.
+         *
+         * @since 3.6.4
+         *
+         * @param string $url The default docs URL.
+         * @return string The filtered URL.
+         */
+        public function filter_flyout_docs_link(string $url): string
+        {
+        }
+        /**
+         * Check if we're on the log settings page.
+         *
+         * @since 3.6.4
+         * @return bool
+         */
+        private function is_log_settings_page(): bool
+        {
+        }
+        /**
+         * Get the list of settings that this handler allows to be toggled via AJAX.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public static function get_allowed_ajax_settings(): array
+        {
+        }
+        /**
+         * Handle the AJAX toggle request for log pruning settings.
+         *
+         * Overrides the trait method to handle nested log type storage.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public static function ajax_toggle_setting(): void
+        {
+        }
+        /**
+         * Handle AJAX request to update number settings (batch_size and days).
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function ajax_update_number(): void
+        {
+        }
+        /**
+         * Render the secondary navigation for logs views.
+         *
+         * @since 3.6.4
+         *
+         * @param string $active_view The currently active view.
+         * @return void
+         */
+        public function render_navigation(string $active_view = 'file_downloads'): void
+        {
+        }
+        /**
+         * Render the sub-navigation with correct styling.
+         *
+         * Uses the edd-sub-nav pattern to match the Settings page secondary navigation.
+         *
+         * @since 3.6.4
+         *
+         * @param string $active_view The currently active view.
+         * @return void
+         */
+        private function render_sub_nav(string $active_view): void
+        {
+        }
+        /**
+         * Render the log pruning settings page.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
+         * Enqueue JavaScript for log pruning.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        private function enqueue_scripts(): void
+        {
+        }
+        /**
+         * Get the record count for a log type.
+         *
+         * @since 3.6.4
+         *
+         * @param array $type_config Log type configuration.
+         * @return int Record count.
+         */
+        private function get_log_type_count(array $type_config): int
+        {
+        }
+        /**
+         * Prepare data for the registered log types table.
+         *
+         * @since 3.6.4
+         *
+         * @param array $log_types Registered log types from the registry.
+         * @param array $settings  The pruning settings array.
+         * @param bool  $enabled   Whether pruning is enabled globally.
+         * @return array Prepared items for the list table.
+         */
+        private function prepare_log_types_data(array $log_types, array $settings, bool $enabled): array
+        {
+        }
+        /**
+         * Prepare data for the additional (unregistered) log types table.
+         *
+         * @since 3.6.4
+         *
+         * @param array $additional_types Additional log types from the database.
+         * @param array $settings         The pruning settings array.
+         * @param bool  $enabled          Whether pruning is enabled globally.
+         * @return array Prepared items for the list table.
+         */
+        private function prepare_additional_log_types_data(array $additional_types, array $settings, bool $enabled): array
+        {
+        }
+        /**
+         * Get the next pruning text for a log type.
+         *
+         * @since 3.6.4
+         *
+         * @param bool   $enabled      Whether pruning is enabled globally.
+         * @param bool   $type_enabled Whether pruning is enabled for this log type.
+         * @param string $type_id      The log type ID.
+         * @return string Next pruning text.
+         */
+        private function get_next_pruning_text(bool $enabled, bool $type_enabled, string $type_id): string
+        {
+        }
+    }
+    /**
+     * Logs class.
+     *
+     * @since 3.6.4
+     */
+    class Logs implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Setup the logs view.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type Log type.
+         * @return bool True if setup successful, false otherwise.
+         */
+        public static function setup($type = ''): bool
+        {
+        }
+        /**
+         * Output the log page.
+         *
+         * @since 3.6.4
+         *
+         * @param \EDD_Base_Log_List_Table $logs_table List table class to work with.
+         * @param string                   $tag        Type of log to view.
+         * @return void
+         */
+        public static function render_page($logs_table, string $tag = ''): void
+        {
+        }
+        /**
+         * Get default log views.
+         *
+         * @since 3.6.4
+         * @return array Log views.
+         */
+        public static function get_default_views(): array
+        {
+        }
+        /**
+         * Render file downloads log view.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function render_file_downloads(): void
+        {
+        }
+        /**
+         * Render gateway errors log view.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function render_gateway_errors(): void
+        {
+        }
+        /**
+         * Render API requests log view.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function render_api_requests(): void
+        {
+        }
+    }
+}
+namespace EDD\Admin\Tools\Logs {
+    /**
+     * Log Storage Calculator class.
+     *
+     * @since 3.6.4
+     */
+    class LogStorageCalculator
+    {
+        /**
+         * Cache TTL in seconds.
+         *
+         * @since 3.6.4
+         */
+        private const CACHE_TTL = HOUR_IN_SECONDS;
+        /**
+         * Cache key prefix.
+         *
+         * @since 3.6.4
+         */
+        private const CACHE_PREFIX = 'edd_log_storage_';
+        /**
+         * Get the storage size in bytes for a log type.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id     The log type identifier.
+         * @param array  $type_config The log type configuration.
+         * @return int Storage size in bytes.
+         */
+        public static function get_storage(string $type_id, array $type_config): int
+        {
+        }
+        /**
+         * Get the formatted storage size for display.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id     The log type identifier.
+         * @param array  $type_config The log type configuration.
+         * @return string Human-readable storage size (e.g., "1.5 MB").
+         */
+        public static function get_formatted_storage(string $type_id, array $type_config): string
+        {
+        }
+        /**
+         * Invalidate the cache for a specific log type or all log types.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id Optional. The log type identifier. If empty, clears all caches.
+         */
+        public static function invalidate_cache(string $type_id = ''): void
+        {
+        }
+        /**
+         * Calculate the storage size for a log type.
+         *
+         * Uses row-based estimation for maximum compatibility across all hosting environments.
+         * Includes both main table and meta table storage if configured.
+         *
+         * @since 3.6.4
+         *
+         * @param array $type_config The log type configuration.
+         * @return int Estimated storage size in bytes.
+         */
+        private static function calculate_storage(array $type_config): int
+        {
+        }
+        /**
+         * Calculate the meta table storage size for a log type.
+         *
+         * @since 3.6.4
+         *
+         * @param array $type_config The log type configuration.
+         * @return int Estimated meta storage size in bytes.
+         */
+        private static function calculate_meta_storage(array $type_config): int
+        {
+        }
+        /**
+         * Get the columns for a specific log table.
+         *
+         * @since 3.6.4
+         *
+         * @param string $table The table name without prefix.
+         * @return array Array of column names.
+         */
+        private static function get_table_columns(string $table): array
+        {
+        }
+    }
+    /**
+     * Log Types List Table Class.
+     *
+     * Renders the log types table for the log pruning settings.
+     *
+     * @since 3.6.4
+     */
+    class LogTypesListTable extends \EDD\Admin\List_Table
+    {
+        /**
+         * The log types data.
+         *
+         * @since 3.6.4
+         * @var array
+         */
+        private $log_types = array();
+        /**
+         * The pruning settings.
+         *
+         * @since 3.6.4
+         * @var array
+         */
+        private $settings = array();
+        /**
+         * Whether pruning is enabled globally.
+         *
+         * @since 3.6.4
+         * @var bool
+         */
+        private $pruning_enabled = false;
+        /**
+         * Whether this is the additional (unregistered) types table.
+         *
+         * @since 3.6.4
+         * @var bool
+         */
+        private $is_additional = false;
+        /**
+         * Constructor.
+         *
+         * @since 3.6.4
+         *
+         * @param array $args {
+         *     Optional. Arguments for configuring the list table.
+         *
+         *     @type array $log_types       Array of log type configurations.
+         *     @type array $settings        The pruning settings array.
+         *     @type bool  $pruning_enabled Whether pruning is enabled globally.
+         *     @type bool  $is_additional   Whether this is the additional types table.
+         * }
+         */
+        public function __construct($args = array())
+        {
+        }
+        /**
+         * Get the columns for the table.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public function get_columns()
+        {
+        }
+        /**
+         * Gets the name of the primary column.
+         *
+         * @since 3.6.4
+         * @return string Name of the primary column.
+         */
+        protected function get_primary_column_name()
+        {
+        }
+        /**
+         * Retrieves the data for the table.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public function get_data()
+        {
+        }
+        /**
+         * Prepare items for display.
+         *
+         * @since 3.6.4
+         */
+        public function prepare_items()
+        {
+        }
+        /**
+         * Default column output.
+         *
+         * @since 3.6.4
+         *
+         * @param array  $item        The current item.
+         * @param string $column_name The column name.
+         * @return string
+         */
+        public function column_default($item, $column_name)
+        {
+        }
+        /**
+         * Render the Log Type column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_log_type($item)
+        {
+        }
+        /**
+         * Render the Records column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_records($item)
+        {
+        }
+        /**
+         * Render the Database Storage column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_storage($item)
+        {
+        }
+        /**
+         * Render the Enable Pruning column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_enable_pruning($item)
+        {
+        }
+        /**
+         * Render the Days to Keep column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_days_to_keep($item)
+        {
+        }
+        /**
+         * Render the Next Pruning column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_next_pruning($item)
+        {
+        }
+        /**
+         * Render the Manual Pruning column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_manual_pruning($item)
+        {
+        }
+        /**
+         * Render the Status column.
+         *
+         * @since 3.6.4
+         *
+         * @param array $item The current item.
+         * @return string
+         */
+        public function column_status($item)
+        {
+        }
+        /**
+         * Message to be displayed when there are no items.
+         *
+         * @since 3.6.4
+         */
+        public function no_items()
+        {
+        }
+        /**
+         * Generate the table navigation.
+         *
+         * Override to hide bulk actions and pagination since this is a settings table.
+         *
+         * @since 3.6.4
+         *
+         * @param string $which The location of the tablenav: 'top' or 'bottom'.
+         */
+        protected function display_tablenav($which)
+        {
+        }
+        /**
+         * Display the table.
+         *
+         * Override to remove the table footer since this is a compact settings table.
+         *
+         * @since 3.6.4
+         */
+        public function display()
+        {
+        }
+        /**
+         * Get bulk actions.
+         *
+         * Override to return empty array since this is a settings table.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public function get_bulk_actions()
+        {
+        }
+    }
+}
+namespace EDD\Admin\Tools {
     /**
      * Class Screen
      *
@@ -32889,6 +33646,99 @@ namespace EDD\Cron\Components {
         }
     }
     /**
+     * LogPruning Component Class
+     *
+     * @since 3.6.4
+     */
+    class LogPruning extends \EDD\Cron\Components\Component
+    {
+        /**
+         * The unique identifier for this component.
+         *
+         * @since 3.6.4
+         * @var string
+         */
+        protected static $id = 'log_pruning';
+        /**
+         * Gets the array of subscribed events.
+         *
+         * Registers an init hook to dynamically add hooks for enabled log types.
+         * This avoids loading translations too early (before text domains are loaded).
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register pruning hooks for enabled log types.
+         *
+         * Called on `init` to ensure text domains are loaded and settings are available.
+         * Only registers hooks for log types that have pruning enabled.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function register_pruning_hooks()
+        {
+        }
+        /**
+         * Prune logs for a single log type.
+         *
+         * Called by the individual cron event for this log type.
+         * Automatically detects which log type to prune based on the hook name.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function prune_single_log_type()
+        {
+        }
+        /**
+         * Builds the date_created_query array for pruning queries.
+         *
+         * @since 3.6.4
+         *
+         * @param \DateTime $cutoff_date The cutoff date for pruning.
+         * @return array The date query configuration.
+         */
+        private static function build_date_query(\DateTime $cutoff_date): array
+        {
+        }
+        /**
+         * Prune logs of a specific type.
+         *
+         * This method is public and static so it can be called from both the cron
+         * and the AJAX handler for manual pruning.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id     Log type ID.
+         * @param array  $type_config Log type configuration.
+         * @param int    $days        Number of days to keep logs.
+         * @param int    $batch_size  Number of logs to delete per batch. Default 250.
+         * @return int Number of logs deleted.
+         */
+        public static function prune_log_type($type_id, $type_config, $days, $batch_size = 250): int
+        {
+        }
+        /**
+         * Get count of logs that would be pruned for a specific type.
+         *
+         * This method is public and static so it can be called from the AJAX handler.
+         *
+         * @since 3.6.4
+         *
+         * @param array $type_config Log type configuration.
+         * @param int   $days        Number of days to keep logs.
+         * @return int Number of logs that would be deleted.
+         */
+        public static function get_prune_count($type_config, $days): int
+        {
+        }
+    }
+    /**
      * NewUser Class for Cron Events.
      *
      * @since 3.4.0
@@ -33278,6 +34128,107 @@ namespace EDD\Cron\Events {
          * @var string
          */
         protected $schedule = 'daily';
+    }
+    /**
+     * LogPruning Event Class
+     *
+     * Schedules separate daily cron events for each log type at randomized times
+     * throughout the day to avoid database strain from simultaneous operations.
+     *
+     * @since 3.6.4
+     */
+    class LogPruning extends \EDD\Cron\Events\Event
+    {
+        use \EDD\Cron\Traits\Clear;
+        /**
+         * Hook name.
+         *
+         * This is a base hook - individual log types will have their own hooks.
+         *
+         * @since 3.6.4
+         * @var string
+         */
+        protected $hook = 'edd_prune_logs';
+        /**
+         * First Run Time.
+         *
+         * Not used directly - calculated per log type.
+         *
+         * @since 3.6.4
+         * @var int
+         */
+        protected $first_run = 0;
+        /**
+         * Schedule.
+         *
+         * The registered WP Cron schedule to use.
+         *
+         * @since 3.6.4
+         * @var string
+         */
+        protected $schedule = 'daily';
+        /**
+         * Schedule events for all enabled log types.
+         *
+         * Overrides the parent schedule() method to create separate events
+         * for each log type at staggered times.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function schedule()
+        {
+        }
+        /**
+         * Clean up orphaned cron events.
+         *
+         * Removes cron events for log types that are no longer enabled or registered.
+         *
+         * @since 3.6.4
+         *
+         * @param array $valid_type_ids Array of type IDs that should have cron events.
+         * @return void
+         */
+        private function cleanup_orphaned_events(array $valid_type_ids)
+        {
+        }
+        /**
+         * Schedule a single log type's cron event.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id     Log type ID.
+         * @param int    $base_time   Base timestamp for scheduling.
+         * @param int    $time_offset Offset in seconds from base time.
+         * @return void
+         */
+        private function schedule_single_type($type_id, $base_time, $time_offset)
+        {
+        }
+        /**
+         * Calculate the base time for scheduling.
+         *
+         * Returns a random time between 1-6 AM UTC tomorrow. The base time is cached
+         * in a transient to prevent schedule drift when events are rescheduled.
+         *
+         * @since 3.6.4
+         * @return int Unix timestamp.
+         */
+        private function calculate_base_time(): int
+        {
+        }
+        /**
+         * Get a random time offset in seconds.
+         *
+         * @since 3.6.4
+         *
+         * @param int $min Minimum offset in seconds.
+         * @param int $max Maximum offset in seconds.
+         * @return int Random offset in seconds.
+         */
+        private function get_random_offset($min = 900, $max = 2700): int
+        {
+        }
     }
     /**
      * Session Cleanup Event
@@ -52699,15 +53650,6 @@ namespace EDD\Gateways\Stripe\Checkout {
     class Address extends \EDD\Checkout\Address
     {
         /**
-         * Gets the fields to display.
-         *
-         * @since 3.3.8
-         * @return array
-         */
-        public function get_fields()
-        {
-        }
-        /**
          * Sets up the customer data.
          *
          * @since 3.3.8
@@ -58941,6 +59883,161 @@ namespace EDD\Logs {
          */
         protected $date_modified;
     }
+    /**
+     * Log Type Registry class.
+     *
+     * @since 3.6.4
+     */
+    final class Registry
+    {
+        /**
+         * Cached log types array.
+         *
+         * @since 3.6.4
+         * @var array|null
+         */
+        private static $cached_types = null;
+        /**
+         * Reset the cached log types.
+         *
+         * This is primarily useful for testing, when filters need to be
+         * applied after the cache has already been populated.
+         *
+         * @since 3.6.4
+         *
+         * @return void
+         */
+        public static function reset_cache()
+        {
+        }
+        /**
+         * Get all registered log types with their metadata.
+         *
+         * @since 3.6.4
+         *
+         * @return array Array of log types with configuration.
+         */
+        public static function get_types(): array
+        {
+        }
+        /**
+         * Check if the file download limit setting is enabled.
+         *
+         * @since 3.6.4
+         *
+         * @return bool True if file download limit is enabled, false otherwise.
+         */
+        private static function is_file_download_limit_enabled(): bool
+        {
+        }
+        /**
+         * Get active extensions that may depend on file download logs.
+         *
+         * Returns untranslated extension identifiers to avoid loading
+         * text domains too early. Use get_extension_labels() to get
+         * translated names for display purposes.
+         *
+         * @since 3.6.4
+         *
+         * @return array Array of active extension identifiers.
+         */
+        private static function get_active_file_download_extensions(): array
+        {
+        }
+        /**
+         * Get translated labels for extension identifiers.
+         *
+         * @since 3.6.4
+         *
+         * @return array Mapping of extension identifiers to translated names.
+         */
+        private static function get_extension_labels(): array
+        {
+        }
+        /**
+         * Check if file download logs should show a pruning warning.
+         *
+         * Automatically detects if certain extensions are active that may require
+         * file download logs depending on their settings.
+         *
+         * @since 3.6.4
+         *
+         * @return bool True if a warning should be shown, false otherwise.
+         */
+        public static function should_warn_file_downloads(): bool
+        {
+        }
+        /**
+         * Get the pruning warning message for a log type.
+         *
+         * @since 3.6.4
+         *
+         * @param string $log_type_id Log type ID.
+         * @return string Warning message or empty string if no warning.
+         */
+        public static function get_pruning_warning($log_type_id): string
+        {
+        }
+        /**
+         * Builds configuration for an unregistered log type.
+         *
+         * Unregistered log types are those found in the database but not formally
+         * registered via the edd_registered_log_types filter.
+         *
+         * @since 3.6.4
+         *
+         * @param string $type_id The type ID (with or without 'unregistered_' prefix).
+         * @param array  $extra   Optional extra fields to merge (e.g., 'description', 'count').
+         * @return array|null Config array or null if empty type value.
+         */
+        public static function get_unregistered_type_config(string $type_id, array $extra = array()): ?array
+        {
+        }
+        /**
+         * Gets additional (unregistered) log types from the database.
+         *
+         * Queries the edd_logs table for distinct type values that are not
+         * part of the registered log types.
+         *
+         * @since 3.6.4
+         *
+         * @param bool $include_counts Whether to include record counts (slower query).
+         * @param bool $use_cache      Whether to use transient caching.
+         * @return array Array of unregistered log type configurations.
+         */
+        public static function get_additional_log_types(bool $include_counts = false, bool $use_cache = true): array
+        {
+        }
+        /**
+         * Merge legacy log types from the edd_log_views filter.
+         *
+         * Provides backwards compatibility for extensions that register log types
+         * via the edd_log_views filter before updating to use edd_registered_log_types.
+         *
+         * @since 3.6.4
+         *
+         * @param array $log_types Current registered log types.
+         * @return array Merged log types array.
+         */
+        private static function merge_legacy_log_views(array $log_types): array
+        {
+        }
+        /**
+         * Format a list of items with proper grammar using "or".
+         *
+         * - 1 item: "Item1"
+         * - 2 items: "Item1 or Item2"
+         * - 3+ items: "Item1, Item2, or Item3"
+         *
+         * @since 3.6.4
+         *
+         * @param array $items Array of items to format.
+         * @return string Formatted list string.
+         */
+        private static function format_list_with_or(array $items): string
+        {
+        }
+    }
 }
 namespace EDD\Models {
     // @codeCoverageIgnore
@@ -61305,6 +62402,24 @@ namespace EDD\REST\Controllers {
         {
         }
     }
+    /**
+     * LogPruning Controller class
+     *
+     * @since 3.6.4
+     */
+    class LogPruning
+    {
+        /**
+         * Prune logs of a specific type.
+         *
+         * @since 3.6.4
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response|\WP_Error
+         */
+        public function prune($request)
+        {
+        }
+    }
 }
 namespace EDD\REST {
     /**
@@ -61417,6 +62532,59 @@ namespace EDD\REST\Routes {
          * @return void
          */
         public function register()
+        {
+        }
+    }
+    /**
+     * LogPruning class
+     *
+     * Handles REST API route registration for log pruning operations.
+     *
+     * @since 3.6.4
+     */
+    class LogPruning extends \EDD\REST\Routes\Route
+    {
+        /**
+         * REST API base.
+         *
+         * @since 3.6.4
+         * @var string
+         */
+        const BASE = 'logs/prune';
+        /**
+         * LogPruning controller instance.
+         *
+         * @since 3.6.4
+         * @var Controller
+         */
+        private $controller;
+        /**
+         * Constructor.
+         *
+         * @since 3.6.4
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register routes.
+         *
+         * @since 3.6.4
+         * @return void
+         */
+        public function register()
+        {
+        }
+        /**
+         * Check permission for log pruning.
+         *
+         * Uses standard WordPress REST authentication (cookies + nonce).
+         *
+         * @since 3.6.4
+         * @param \WP_REST_Request $request Request object.
+         * @return bool|\WP_Error
+         */
+        public function check_permission($request)
         {
         }
     }
@@ -65834,7 +67002,7 @@ namespace EDD\Reports\Endpoints\Pies {
          * @since 3.5.3
          * @return int
          */
-        private function get_max_pieces(): int
+        protected function get_max_pieces(): int
         {
         }
     }
@@ -65996,6 +67164,49 @@ namespace EDD\Reports\Endpoints\Pies {
         {
         }
     }
+}
+namespace EDD\Reports\Endpoints\Pies\Traits {
+    /**
+     * Trait Gateway
+     *
+     * @since 3.6.4
+     */
+    trait Gateway
+    {
+        /**
+         * Formats a breakdown label for display in tooltips.
+         *
+         * @since 3.6.4
+         * @param string $piece The original piece identifier (gateway slug).
+         * @return string The formatted label.
+         */
+        protected function format_breakdown_label(string $piece): string
+        {
+        }
+        /**
+         * Gets the labels for the pie chart.
+         *
+         * @since 3.6.4
+         * @return array
+         */
+        protected function get_labels(): array
+        {
+        }
+        /**
+         * Processes the query results to populate the data and labels arrays.
+         *
+         * Only includes gateways that have actual sales or earnings data.
+         *
+         * @since 3.6.4
+         * @param array $query_results Database query results.
+         * @return array
+         */
+        protected function process_results(array $query_results): array
+        {
+        }
+    }
+}
+namespace EDD\Reports\Endpoints\Pies {
     /**
      * Gateway Earnings Breakdown Pie Chart class.
      *
@@ -66005,6 +67216,7 @@ namespace EDD\Reports\Endpoints\Pies {
      */
     class GatewayEarnings extends \EDD\Reports\Endpoints\Pies\Pie
     {
+        use \EDD\Reports\Endpoints\Pies\Traits\Gateway;
         /**
          * The key for the dataset.
          *
@@ -66039,34 +67251,6 @@ namespace EDD\Reports\Endpoints\Pies {
         protected function get_query_results(): array
         {
         }
-        /**
-         * Gets the labels for the pie chart.
-         *
-         * @since 3.5.1
-         * @return array
-         */
-        protected function get_labels(): array
-        {
-        }
-        /**
-         * Gets the pieces for the pie chart.
-         *
-         * @since 3.5.1
-         * @return array
-         */
-        protected function get_pieces(): array
-        {
-        }
-        /**
-         * Processes the query results to populate the data and labels arrays.
-         *
-         * @since 3.5.1
-         * @param array $query_results Database query results.
-         * @return array
-         */
-        protected function process_results(array $query_results): array
-        {
-        }
     }
     /**
      * Gateway Sales Breakdown Pie Chart class.
@@ -66077,6 +67261,7 @@ namespace EDD\Reports\Endpoints\Pies {
      */
     class GatewaySales extends \EDD\Reports\Endpoints\Pies\Pie
     {
+        use \EDD\Reports\Endpoints\Pies\Traits\Gateway;
         /**
          * The key for the dataset.
          *
@@ -66109,33 +67294,6 @@ namespace EDD\Reports\Endpoints\Pies {
          * @return array
          */
         protected function get_query_results(): array
-        {
-        }
-        /**
-         * Gets the labels for the pie chart.
-         *
-         * @since 3.5.1
-         * @return array
-         */
-        protected function get_labels(): array
-        {
-        }
-        /**
-         * Gets the pieces for the pie chart.
-         *
-         * @since 3.5.1
-         * @return array
-         */
-        protected function get_pieces(): array
-        {
-        }
-        /**
-         * Processes the query results to populate the data and labels arrays.
-         *
-         * @since 3.5.1
-         * @param array $query_results Database query results.
-         */
-        protected function process_results(array $query_results): array
         {
         }
     }
@@ -77601,6 +78759,31 @@ namespace {
     {
     }
     /**
+     * Default Log Views
+     *
+     * Wrapper for the Logs class method.
+     *
+     * @since 1.4
+     * @deprecated 3.6.4 Use \EDD\Admin\Tools\Logs::get_default_views() instead.
+     *
+     * @return array $views Log Views
+     */
+    function edd_log_default_views()
+    {
+    }
+    /**
+     * Renders the Reports page views drop down
+     *
+     * @since 1.3
+     * @since 3.0 Deprecated, and modified to look like the 3.0 approach
+     * @deprecated 3.6.4 Moved to PSR-4 class structure
+     *
+     * @return void
+     */
+    function edd_log_views()
+    {
+    }
+    /**
      * Get the admin pages.
      *
      * @since 3.0
@@ -78465,10 +79648,10 @@ namespace {
      * Loads the payments batch process if needed
      *
      * @since  2.6
-     * @param  string $class The class being requested to run for the batch import
+     * @param  string $import_class The class being requested to run for the batch import.
      * @return void
      */
-    function edd_include_payments_batch_import_processer($class)
+    function edd_include_payments_batch_import_processer($import_class)
     {
     }
     /**
@@ -78483,10 +79666,10 @@ namespace {
      * Loads the downloads batch process if needed
      *
      * @since  2.6
-     * @param  string $class The class being requested to run for the batch import
+     * @param  string $import_class The class being requested to run for the batch import.
      * @return void
      */
-    function edd_include_downloads_batch_import_processer($class)
+    function edd_include_downloads_batch_import_processer($import_class)
     {
     }
     /**
@@ -78521,11 +79704,11 @@ namespace {
      *
      * @since 3.0.2
      *
-     * @param string $class The class name to check.
+     * @param string $import_class The class name to check.
      *
      * @return bool If the class is allowed to be used as an importer.
      */
-    function edd_importer_is_class_allowed($class = '')
+    function edd_importer_is_class_allowed($import_class = '')
     {
     }
     /**
@@ -80122,92 +81305,6 @@ namespace {
      * @since 3.0
      */
     function edd_tools_tab_logs()
-    {
-    }
-    /**
-     * Setup the logs view
-     *
-     * @since 3.0
-     *
-     * @param type $type
-     * @return boolean
-     */
-    function edd_logs_view_setup($type = '')
-    {
-    }
-    /**
-     * Output the log page
-     *
-     * @since 3.0
-     *
-     * @param EDD_Base_Log_List_Table $logs_table List table class to work with
-     * @param string                  $tag        Type of log to view
-     */
-    function edd_logs_view_page($logs_table, $tag = '')
-    {
-    }
-    /** Views *********************************************************************/
-    /**
-     * File Download Logs
-     *
-     * @since 1.4
-     * @uses EDD_File_Downloads_Log_Table::prepare_items()
-     * @uses EDD_File_Downloads_Log_Table::search_box()
-     * @uses EDD_File_Downloads_Log_Table::display()
-     * @return void
-     */
-    function edd_logs_view_file_downloads()
-    {
-    }
-    /**
-     * Gateway Error Logs
-     *
-     * @since 1.4
-     * @uses EDD_File_Downloads_Log_Table::prepare_items()
-     * @uses EDD_File_Downloads_Log_Table::display()
-     * @return void
-     */
-    function edd_logs_view_gateway_errors()
-    {
-    }
-    /**
-     * API Request Logs
-     *
-     * @since 1.5
-     * @uses EDD_API_Request_Log_Table::prepare_items()
-     * @uses EDD_API_Request_Log_Table::search_box()
-     * @uses EDD_API_Request_Log_Table::display()
-     * @return void
-     */
-    function edd_logs_view_api_requests()
-    {
-    }
-    /**
-     * Default Log Views
-     *
-     * @since 1.4
-     * @return array $views Log Views
-     */
-    function edd_log_default_views()
-    {
-    }
-    /**
-     * Renders the Reports page views drop down
-     *
-     * @since 1.3
-     * @since 3.0 Deprecated, and modified to look like the 3.0 approach
-     *
-     * @return void
-    */
-    function edd_log_views()
-    {
-    }
-    /**
-     * Output old logs filter bar items
-     *
-     * @since 3.0
-     */
-    function edd_old_logs_filter_bar_items()
     {
     }
     /**
@@ -96335,7 +97432,7 @@ namespace {
      * @global $post
      * @param string $redirect Redirect page URL
      * @return string Login form
-    */
+     */
     function edd_login_form($redirect = '')
     {
     }
@@ -96347,7 +97444,7 @@ namespace {
      *
      * @param array $data Data sent from the login form
      * @return void
-    */
+     */
     function edd_process_login_form($data)
     {
     }
@@ -96357,12 +97454,12 @@ namespace {
      * @since 1.0
      * @since 2.9.24 Uses the wp_signon function instead of all the additional checks which can bypass hooks in core.
      *
-     * @param int $user_id User ID
-     * @param string $user_login Username
-     * @param string $user_pass Password
+     * @param int     $user_id User ID
+     * @param string  $user_login Username
+     * @param string  $user_pass Password
      * @param boolean $remember Remember me
      * @return void
-    */
+     */
     function edd_log_user_in($user_id, $user_login, $user_pass, $remember = \false)
     {
     }
@@ -96370,7 +97467,9 @@ namespace {
      * If a login page has been set in the EDD settings,
      * update the WordPress login URL.
      *
-     * @param string $url
+     * @param string $url          The login URL.
+     * @param string $redirect_to  The redirect URL.
+     * @param bool   $force_reauth Whether to force reauthorization.
      * @return string
      */
     function edd_update_login_url($url, $redirect_to, $force_reauth)
