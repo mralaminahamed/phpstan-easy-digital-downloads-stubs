@@ -5091,9 +5091,10 @@ namespace {
         /**
          * Sets the tax rate.
          *
-         * @param float $tax_rate
+         * @param float|null $tax_rate The tax rate to set, or null to reset.
          *
          * @since 3.0
+         * @since 3.6.5 Invalidate the cart cache when the tax rate is reset to null.
          */
         public function set_tax_rate($tax_rate)
         {
@@ -5254,7 +5255,7 @@ namespace {
          * @since 2.7
          *
          * @param int   $download_id Download ID of the item to check.
-         * @param array $options
+         * @param array $options      Cart item options.
          * @return bool
          */
         public function is_item_in_cart($download_id = 0, $options = array())
@@ -6083,6 +6084,88 @@ namespace {
         {
         }
     }
+}
+namespace EDD\CLI\Traits {
+    // @codeCoverageIgnore
+    /**
+     * Test Data Trait
+     *
+     * @since 3.6.5
+     */
+    trait TestData
+    {
+        /**
+         * Gets a random first name.
+         *
+         * @return string
+         */
+        protected function get_fname()
+        {
+        }
+        /**
+         * Gets a random last name.
+         *
+         * @return string
+         */
+        protected function get_lname()
+        {
+        }
+        /**
+         * Gets a random domain.
+         *
+         * @return string
+         */
+        protected function get_domain()
+        {
+        }
+        /**
+         * Gets a random TLD.
+         *
+         * @return string
+         */
+        protected function get_tld()
+        {
+        }
+        /**
+         * Generate a random IP address.
+         *
+         * @since 3.6.5
+         * @return string Random IP address.
+         */
+        private function generate_random_ip()
+        {
+        }
+        /**
+         * Generate a random user agent string.
+         *
+         * @since 3.6.5
+         * @return string Random user agent.
+         */
+        private function generate_random_user_agent()
+        {
+        }
+        /**
+         * Generate a random referrer URL.
+         *
+         * @since 3.6.5
+         * @return string Random referrer URL.
+         */
+        private function generate_random_referrer()
+        {
+        }
+        /**
+         * Generate a random email address.
+         *
+         * @since 3.6.5
+         * @return string Random email address.
+         */
+        private function generate_random_email()
+        {
+        }
+    }
+}
+namespace {
+    // @codeCoverageIgnore
     /**
      * Work with EDD through WP-CLI
      *
@@ -6094,6 +6177,7 @@ namespace {
      */
     class EDD_CLI extends \WP_CLI_Command
     {
+        use \EDD\CLI\Traits\TestData;
         private $api;
         public function __construct()
         {
@@ -6456,38 +6540,6 @@ namespace {
          * @return array
          */
         public function find_conflicting_orders()
-        {
-        }
-        /**
-         * Gets a random first name.
-         *
-         * @return string
-         */
-        protected function get_fname()
-        {
-        }
-        /**
-         * Gets a random last name.
-         *
-         * @return string
-         */
-        protected function get_lname()
-        {
-        }
-        /**
-         * Gets a random domain.
-         *
-         * @return string
-         */
-        protected function get_domain()
-        {
-        }
-        /**
-         * Gets a random TLD.
-         *
-         * @return string
-         */
-        protected function get_tld()
         {
         }
         /**
@@ -16289,6 +16341,125 @@ namespace EDD\Admin\Assets {
         }
     }
 }
+namespace EDD\Admin\CartRecovery {
+    /**
+     * Cart Recovery admin screen router.
+     *
+     * Routes between the welcome/setup screen and the full Pro feature set.
+     *
+     * @since 3.6.5
+     */
+    class Screen implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Returns subscribed events.
+         *
+         * @since 3.6.5
+         * @return array Event subscriptions.
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Handles form submission for enabling/disabling Cart Recovery.
+         *
+         * @since 3.6.5
+         */
+        public static function handle_form_submission()
+        {
+        }
+        /**
+         * Renders the admin screen.
+         *
+         * @since 3.6.5
+         */
+        public static function render()
+        {
+        }
+        /**
+         * Renders the welcome/setup screen.
+         *
+         * @since 3.6.5
+         */
+        private static function render_welcome()
+        {
+        }
+        /**
+         * Renders promotional content for Lite users.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_content()
+        {
+        }
+        /**
+         * Renders the hero section with personalized lost revenue data.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_hero()
+        {
+        }
+        /**
+         * Renders the key stats bar.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_stats()
+        {
+        }
+        /**
+         * Renders the feature cards section.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_features()
+        {
+        }
+        /**
+         * Renders the "How It Works" section.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_how_it_works()
+        {
+        }
+        /**
+         * Renders the bottom CTA section.
+         *
+         * @since 3.6.5
+         */
+        private static function render_promo_cta()
+        {
+        }
+        /**
+         * Gets data from pending and abandoned orders to show lost revenue.
+         *
+         * @since 3.6.5
+         *
+         * @return array Array with 'total' (float), 'count' (int), and 'customers' (int) keys.
+         */
+        private static function get_abandoned_order_data()
+        {
+        }
+        /**
+         * Renders enable content for Pro users.
+         *
+         * @since 3.6.5
+         */
+        private static function render_enable_content()
+        {
+        }
+        /**
+         * Enqueues assets for the welcome screen.
+         *
+         * @since 3.6.5
+         */
+        private static function enqueue_assets()
+        {
+        }
+    }
+}
 namespace EDD\Admin\Customers {
     /**
      * Class Emails
@@ -19195,7 +19366,7 @@ namespace EDD\Admin\Emails {
          * Outputs the email description for the editor.
          *
          * @since 3.3.0
-         * @param \EDD\Emails\Email $email The email.
+         * @param \EDD\Emails\Templates\EmailTemplate $email The email.
          */
         public function description($email)
         {
@@ -19304,6 +19475,27 @@ namespace EDD\Admin\Emails {
         public function remove_sections($sections)
         {
         }
+        /**
+         * Gets the required tags description.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Templates\EmailTemplate $email The email template.
+         * @return string
+         */
+        private function get_required_tags_description($email): string
+        {
+        }
+        /**
+         * Checks if the required tags are missing from the email content.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Templates\EmailTemplate $email_template The email template.
+         * @param array                               $updated_data     The updated data.
+         * @return bool
+         */
+        private function required_tags_missing($email_template, $updated_data): bool
+        {
+        }
     }
     /**
      * Class Messages
@@ -19328,7 +19520,7 @@ namespace EDD\Admin\Emails {
          * @since 3.3.0
          * @return  void
          */
-        public function notices()
+        public function notices($email = null)
         {
         }
         /**
@@ -19478,11 +19670,11 @@ namespace EDD\Admin\Emails {
         /**
          * Action hook for displaying the notice.
          */
-        const DISPLAY_HOOK = 'admin_print_footer_scripts-download_page_edd-emails';
+        const DISPLAY_HOOK = 'edd_email_editor_form';
         /**
          * The priority for the display hook.
          */
-        const DISPLAY_PRIORITY = 5;
+        const DISPLAY_PRIORITY = 100;
         /**
          * Type of promotional notice.
          */
@@ -19538,14 +19730,14 @@ namespace EDD\Admin\Emails {
          *
          * @since 3.3.0
          */
-        private static function enqueue()
+        protected static function enqueue()
         {
         }
         /**
          * Renders the email editor.
          *
          * @since 3.3.0
-         * @throws Exception
+         * @throws Exception If the email ID is missing or invalid.
          */
         private static function render_email_editor()
         {
@@ -19583,6 +19775,118 @@ namespace EDD\Admin\Emails {
          * @return string|false
          */
         private static function get_current_tab()
+        {
+        }
+    }
+    /**
+     * Registers email editor style formats via a filter and renders a "Format" button
+     * above the editor that opens a modal. Also injects the same formats into TinyMCE.
+     *
+     * @since 3.6.5
+     * @package EDD\Admin\Emails
+     */
+    class Styles implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Current email object when on the email editor screen.
+         *
+         * @var \EDD\Emails\Templates\Base|null
+         */
+        private $current_email = null;
+        /**
+         * Gets the subscribed events.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Sets up the style format UI and TinyMCE when the email editor is shown.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Templates\Base $email The email object.
+         */
+        public function setup($email)
+        {
+        }
+        /**
+         * Adds the styleselect button to the TinyMCE toolbar when we have formats.
+         *
+         * @since 3.6.5
+         * @param array $buttons TinyMCE buttons row 2.
+         * @return array
+         */
+        public function add_style_button($buttons)
+        {
+        }
+        /**
+         * Injects style formats into TinyMCE init from the filter.
+         *
+         * @since 3.6.5
+         * @param array $init_array TinyMCE initialization settings.
+         * @return array
+         */
+        public function add_styles_tinymce($init_array)
+        {
+        }
+        /**
+         * Renders the "Format" button and modal above the editor when formats are registered.
+         *
+         * @since 3.6.5
+         */
+        public function render_button()
+        {
+        }
+        /**
+         * Outputs the modal dialog content listing format options (native dialog element, same pattern as Cart Recovery modal).
+         *
+         * @since 3.6.5
+         * @param array $formats Normalized format definitions (with name key).
+         */
+        private function render_modal(array $formats)
+        {
+        }
+        /**
+         * Gets style formats for the current email via the filter.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Templates\Base $email Email object.
+         * @return array List of format definitions (title, block or selector, classes, styles, etc.).
+         */
+        private function get_style_formats($email)
+        {
+        }
+        /**
+         * Gets normalized formats for the current email.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Templates\Base $email Email object.
+         * @return array List of format definitions (title, block or selector, classes, styles, etc.).
+         */
+        private function get_normalized_formats($email)
+        {
+        }
+        /**
+         * Normalizes format definitions for TinyMCE: ensures each has a stable "name" for formatter.apply().
+         *
+         * @since 3.6.5
+         * @param array $formats Raw format definitions from the filter.
+         * @return array Format definitions with "name" key added where missing.
+         */
+        private function normalize_formats_for_tinymce(array $formats)
+        {
+        }
+        /**
+         * Generates a stable format name from title or classes for TinyMCE formatter.
+         *
+         * @since 3.6.5
+         * @param array $format     Single format definition.
+         * @param array $used_names Names already assigned to avoid collisions.
+         * @return string Sanitized name unique among used names.
+         */
+        private function get_stable_format_name(array $format, array $used_names)
         {
         }
     }
@@ -23113,6 +23417,18 @@ namespace EDD\Admin\Menu {
         {
         }
         /**
+         * Gets the Cart Recovery page definition.
+         *
+         * Returns null if the user has chosen to hide the menu item.
+         *
+         * @since 3.6.5
+         *
+         * @return array|null Page definition or null to exclude.
+         */
+        private static function get_cart_recovery_page()
+        {
+        }
+        /**
          * Registers the hidden upgrades page.
          *
          * @since 3.3.0
@@ -23144,6 +23460,16 @@ namespace EDD\Admin\Menu {
          * @return string
          */
         private static function mark_new($title)
+        {
+        }
+        /**
+         * Adds an indicator to mark a Pro menu item.
+         *
+         * @since 3.6.5
+         * @param string $title The menu title.
+         * @return string
+         */
+        private static function mark_pro($title)
         {
         }
     }
@@ -26504,6 +26830,25 @@ namespace EDD\Admin\Settings {
         {
         }
         /**
+         * Add the settings fields to the settings page.
+         *
+         * @since 3.6.5
+         * @param array $edd_settings The EDD settings.
+         * @return void
+         */
+        public static function add_settings_fields(array $edd_settings): void
+        {
+        }
+        /**
+         * Get the default settings.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        public static function get_default_setting_args(): array
+        {
+        }
+        /**
          * Register the settings.
          *
          * @since 3.1.4
@@ -27332,6 +27677,15 @@ namespace EDD\Admin\Settings\Tabs {
         private function get_trigger_url()
         {
         }
+        /**
+         * Gets the webhook configuration instructions.
+         *
+         * @since 3.6.5
+         * @return string HTML instructions for webhook configuration.
+         */
+        private function get_webhook_instructions(): string
+        {
+        }
     }
     /**
      * Extensions settings tab class.
@@ -27619,6 +27973,18 @@ namespace EDD\Admin\Settings\Tabs {
          * @return array
          */
         public function sanitize($input)
+        {
+        }
+        /**
+         * Gets the hide cart recovery setting.
+         *
+         * Pro users can only hide the menu item when Cart Recovery is disabled.
+         *
+         * @since 3.6.5
+         *
+         * @return array
+         */
+        private function get_hide_cart_recovery_setting()
         {
         }
         /**
@@ -28008,6 +28374,25 @@ namespace EDD\Admin\SiteHealth {
          * @return array
          */
         private function get_data()
+        {
+        }
+        /**
+         * Gets the cron system information.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        private function get_system_info()
+        {
+        }
+        /**
+         * Format the scheduler name for display.
+         *
+         * @since 3.6.5
+         * @param string $scheduler The scheduler name.
+         * @return string
+         */
+        private function format_scheduler_name($scheduler)
         {
         }
         /**
@@ -28723,6 +29108,13 @@ namespace EDD\EventManagement {
          */
         protected static $hook = 'plugins_loaded';
         /**
+         * The priority to subscribe to.
+         *
+         * @since 3.6.5
+         * @var int
+         */
+        protected static $priority = 10;
+        /**
          * Track which classes have already added their events.
          *
          * @since 3.5.0
@@ -29095,9 +29487,21 @@ namespace EDD\Admin\Tools\Logs {
          * @since 3.6.4
          *
          * @param string $table The table name without prefix.
+         * @param array  $type_config The log type configuration.
          * @return array Array of column names.
          */
-        private static function get_table_columns(string $table): array
+        private static function get_table_columns(string $table, array $type_config): array
+        {
+        }
+        /**
+         * Get the component from the table name.
+         *
+         * @since 3.6.5
+         *
+         * @param string $table The table name.
+         * @return string The component name.
+         */
+        private static function get_component_from_table(string $table): string
         {
         }
     }
@@ -29334,6 +29738,127 @@ namespace EDD\Admin\Tools\Logs {
     }
 }
 namespace EDD\Admin\Tools {
+    /**
+     * Scheduled Actions tab.
+     *
+     * @since 3.6.5
+     */
+    class ScheduledActions implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Render the scheduled actions tab.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
+         * Render message when Action Scheduler is not available.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        private function render_not_available(): void
+        {
+        }
+        /**
+         * Render the scheduled actions table.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        private function render_actions_table(): void
+        {
+        }
+        /**
+         * Render a single action row.
+         *
+         * @since 3.6.5
+         *
+         * @param int    $action_id The action ID.
+         * @param object $action    The action object.
+         * @return void
+         */
+        private function render_action_row(int $action_id, $action): void
+        {
+        }
+        /**
+         * Get the recurrence display for an action.
+         *
+         * @since 3.6.5
+         *
+         * @param object $action The action object.
+         * @return string The recurrence display string.
+         */
+        private function get_recurrence($action): string
+        {
+        }
+        /**
+         * Get the schedule display string for an action.
+         *
+         * @since 3.6.5
+         *
+         * @param object|null $schedule The schedule object.
+         * @return string The schedule display string.
+         */
+        private function get_schedule_display($schedule): string
+        {
+        }
+        /**
+         * Convert an interval of seconds into a human-friendly string.
+         *
+         * @since 3.6.5
+         *
+         * @param int $interval A interval in seconds.
+         * @return string A human friendly string representation of the interval.
+         */
+        private function human_interval(int $interval): string
+        {
+        }
+        /**
+         * Format a value for display.
+         *
+         * @since 3.6.5
+         *
+         * @param mixed $value The value to format.
+         * @return string The formatted value.
+         */
+        private function format_value($value): string
+        {
+        }
+        /**
+         * Get EDD actions from Action Scheduler.
+         *
+         * @since 3.6.5
+         *
+         * @param int $per_page Number of actions to retrieve.
+         * @return array Array of action objects.
+         */
+        private function get_edd_actions(int $per_page = 1000): array
+        {
+        }
+        /**
+         * Get status labels from Action Scheduler.
+         *
+         * @since 3.6.5
+         *
+         * @return array Status labels.
+         */
+        private function get_status_labels(): array
+        {
+        }
+    }
     /**
      * Class Screen
      *
@@ -30041,6 +30566,61 @@ namespace EDD\Admin\Upgrades\v3 {
     }
 }
 namespace EDD\Admin\Utils {
+    // @codeCoverageIgnore
+    /**
+     * Class NoItems
+     *
+     * @since 3.6.5
+     */
+    class NoItems
+    {
+        /**
+         * The heading for the NoItems class.
+         *
+         * @var string
+         */
+        private $heading;
+        /**
+         * The text property for the NoItems class.
+         *
+         * @var string
+         */
+        private $text;
+        /**
+         * The actions array for the NoItems class.
+         *
+         * @var array
+         */
+        private $actions;
+        /**
+         * NoItems constructor.
+         *
+         * @param string $heading The heading for the NoItems class.
+         * @param string $text The text property for the NoItems class.
+         * @param array  $actions The actions array for the NoItems class.
+         */
+        public function __construct(string $heading, string $text = '', array $actions = array())
+        {
+        }
+        /**
+         * Displays a message when there are no items to show.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        public function render()
+        {
+        }
+        /**
+         * Renders the actions for the NoItems class.
+         *
+         * @access private
+         * @return void
+         */
+        private function render_actions()
+        {
+        }
+    }
     /**
      * Class Page
      *
@@ -31456,7 +32036,97 @@ namespace EDD\Cart\Preview {
         }
     }
 }
+namespace EDD\EventManagement {
+    /**
+     * Class Subscriber
+     *
+     * @since 3.3.0
+     * @package EDD\EventManagement
+     */
+    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The instance of this class.
+         *
+         * @var Subscriber
+         */
+        public static $instance;
+        /**
+         * Gets the instance of this class.
+         *
+         * @since 3.3.0
+         * @return Subscriber
+         */
+        public static function get_instance()
+        {
+        }
+    }
+}
 namespace EDD\Checkout {
+    /**
+     * Accessibility class.
+     *
+     * Provides accessibility improvements for checkout and other EDD forms
+     * to meet WCAG 3.3.2 compliance requirements.
+     *
+     * @since 3.6.5
+     */
+    class Accessibility extends \EDD\EventManagement\Subscriber
+    {
+        /**
+         * Whether the required fields notice has been rendered.
+         *
+         * @since 3.6.5
+         * @var bool
+         */
+        private static $rendered = false;
+        /**
+         * Gets the events this subscriber should be subscribed to.
+         *
+         * Hooks into multiple early hooks to display the required fields notice
+         * as close to the top of the checkout form as possible. The notice only
+         * renders once per page load regardless of how many hooks fire.
+         *
+         * The edd_checkout_form_top hook uses priority 0 to ensure the notice
+         * renders before the UserDetails block element (priority 1) on the
+         * checkout block, while still appearing after the discount field (priority -1).
+         *
+         * Note: edd_purchase_form_top is intentionally excluded because its content
+         * is loaded via AJAX (edd_load_ajax_gateway), creating a separate PHP request
+         * where the static $rendered flag resets. This would cause the notice to
+         * appear twice on the checkout block.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Renders the required fields notice for accessibility (WCAG 3.3.2).
+         *
+         * Displays a notice explaining that fields marked with an asterisk (*) are required.
+         * This helps users understand the meaning of the required field indicator.
+         *
+         * The notice is controlled by the 'show_required_fields_notice' admin setting
+         * (Settings > Payments > Checkout) and is disabled by default.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        public function render_required_fields_notice()
+        {
+        }
+        /**
+         * Resets the rendered flag for testing purposes.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        public static function reset_rendered_flag()
+        {
+        }
+    }
     /**
      * Address class.
      */
@@ -31564,34 +32234,6 @@ namespace EDD\Checkout {
         {
         }
     }
-}
-namespace EDD\EventManagement {
-    /**
-     * Class Subscriber
-     *
-     * @since 3.3.0
-     * @package EDD\EventManagement
-     */
-    abstract class Subscriber implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * The instance of this class.
-         *
-         * @var Subscriber
-         */
-        public static $instance;
-        /**
-         * Gets the instance of this class.
-         *
-         * @since 3.3.0
-         * @return Subscriber
-         */
-        public static function get_instance()
-        {
-        }
-    }
-}
-namespace EDD\Checkout {
     /**
      * Class AutoRegister
      *
@@ -33441,6 +34083,8 @@ namespace EDD\Cron\Traits {
         /**
          * Clear the scheduled event.
          *
+         * Clears from the active scheduler.
+         *
          * @since 3.3.0
          *
          * @param string $hook The hook name.
@@ -33975,7 +34619,11 @@ namespace EDD\Cron\Traits {
         /**
          * Get the timestamp of the next scheduled event.
          *
+         * Uses the active scheduler.
+         *
          * @since 3.3.0
+         * @since 3.6.5 Uses the appropriate scheduler (Action Scheduler or WP-Cron) to check
+         * if an event is already scheduled.
          *
          * @param string $hook The hook name.
          * @param array  $args The arguments to pass to the hook.
@@ -34036,11 +34684,39 @@ namespace EDD\Cron\Events {
          */
         public $valid;
         /**
+         * Accessible properties.
+         *
+         * The properties that are accessible to the event.
+         *
+         * @var array
+         */
+        private $accessible_properties = array('hook', 'schedule', 'args', 'first_run');
+        /**
          * Event constructor.
          *
          * @since 3.3.0
          */
         public function __construct()
+        {
+        }
+        /**
+         * Magic getter.
+         *
+         * @since 3.6.5
+         *
+         * @param string $property The property to get.
+         * @return mixed
+         */
+        public function __get($property)
+        {
+        }
+        /**
+         * Reset the event.
+         *
+         * @since 3.6.5
+         * @return void
+         */
+        public function reset()
         {
         }
         /**
@@ -34088,9 +34764,11 @@ namespace EDD\Cron\Events {
         /**
          * Schedule an event.
          *
+         * Uses the active scheduler (Action Scheduler or WP-Cron).
+         *
          * @since 3.3.0
          *
-         * @return void
+         * @return bool True if successfully scheduled, false otherwise.
          */
         public function schedule()
         {
@@ -34194,6 +34872,8 @@ namespace EDD\Cron\Events {
         }
         /**
          * Schedule a single log type's cron event.
+         *
+         * Uses the active scheduler (Action Scheduler or WP-Cron).
          *
          * @since 3.6.4
          *
@@ -34327,8 +35007,8 @@ namespace EDD\Cron\Events {
          *
          * @since 3.3.7
          *
-         * @param string $hook The hook name.
-         * @param array  $args The arguments to pass to the hook.
+         * @param string $hook  The hook name.
+         * @param array  $args  The arguments to pass to the hook.
          *
          * @return void
          */
@@ -34350,6 +35030,8 @@ namespace EDD\Cron\Events {
         /**
          * Schedule the event.
          *
+         * Uses the active scheduler (Action Scheduler or WP-Cron).
+         *
          * @since 3.3.0
          *
          * @return void
@@ -34359,6 +35041,8 @@ namespace EDD\Cron\Events {
         }
         /**
          * Unschedule the event.
+         *
+         * Unschedules from the active scheduler.
          *
          * @since 3.3.7
          *
@@ -34454,8 +35138,12 @@ namespace EDD\Cron {
         /**
          * Add our custom schedules to the cron schedules.
          *
+         * When Action Scheduler is available, EDD schedules are not added here; interval
+         * lookup is done via Handler::get_schedule_interval() and the edd_cron_schedules filter.
+         *
          * @since 3.3.0
          *
+         * @param array $schedules Existing cron schedules.
          * @return array
          */
         public function load_schedules($schedules)
@@ -34484,6 +35172,26 @@ namespace EDD\Cron {
         {
         }
         /**
+         * Get the registered events.
+         *
+         * @since 3.3.0
+         *
+         * @return array
+         */
+        public static function get_registered_events()
+        {
+        }
+        /**
+         * Get the registered components.
+         *
+         * @since 3.3.0
+         *
+         * @return array
+         */
+        public static function get_registered_components()
+        {
+        }
+        /**
          * Get the registered schedules.
          *
          * @since 3.3.0
@@ -34494,23 +35202,539 @@ namespace EDD\Cron {
         {
         }
         /**
-         * Get the registered events.
+         * Maybe migrate cron events to Action Scheduler.
          *
-         * @since 3.3.0
+         * Runs on 'init' hook at priority 999 to ensure cron events are loaded first.
          *
-         * @return array
+         * @since 3.6.5
          */
-        private function get_registered_events()
+        public function maybe_migrate_to_action_scheduler()
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Cron Migrator Class
+     *
+     * Migrates scheduled cron events between WP-Cron and Action Scheduler.
+     * Uses registered events from the Loader to ensure only EDD-managed
+     * cron events are migrated.
+     *
+     * @since 3.6.5
+     */
+    class Migrator
+    {
+        /**
+         * Migrate from WP-Cron to Action Scheduler.
+         *
+         * Clears all registered EDD events from WP-Cron and re-schedules
+         * them using Action Scheduler.
+         *
+         * @since 3.6.5
+         *
+         * @return bool True if migration was performed, false otherwise.
+         */
+        public static function migrate_to_action_scheduler(): bool
         {
         }
         /**
-         * Get the registered components.
+         * Migrate from Action Scheduler to WP-Cron.
          *
-         * @since 3.3.0
+         * Clears all registered EDD events from Action Scheduler and re-schedules
+         * them using WP-Cron.
          *
-         * @return array
+         * @since 3.6.5
+         *
+         * @return bool True if migration was performed, false otherwise.
          */
-        private function get_registered_components()
+        public static function migrate_to_wp_cron(): bool
+        {
+        }
+    }
+}
+namespace EDD\Cron\Schedulers {
+    /**
+     * Scheduler Interface
+     *
+     * Provides a unified interface for different cron scheduling systems.
+     *
+     * @since 3.6.5
+     */
+    interface Scheduler
+    {
+        /**
+         * Schedule a recurring event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp The first time the event should run.
+         * @param int    $interval  How often the event should recur (in seconds).
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier.
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool;
+        /**
+         * Schedule a single event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp When the event should run.
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier.
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool;
+        /**
+         * Get the next scheduled time for an event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to check.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier.
+         * @return int|false The next scheduled timestamp, or false if not scheduled.
+         */
+        public function next_scheduled(string $hook, array $args = array(), string $group = '');
+        /**
+         * Unschedule a specific event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to unschedule.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier.
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule(string $hook, array $args = array(), string $group = ''): bool;
+        /**
+         * Unschedule all events matching the criteria.
+         *
+         * @since 3.6.5
+         *
+         * @param string|null $hook  Optional hook name to filter by.
+         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
+         * @param string      $group Optional group identifier.
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool;
+        /**
+         * Get all scheduled hooks, optionally filtered by prefix.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
+         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
+         * @param string $group       Optional group identifier.
+         * @return array Array of hook names (strings).
+         */
+        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array;
+        /**
+         * Search for scheduled actions.
+         *
+         * @since 3.6.5
+         *
+         * @param array  $args         Query arguments. See implementation for supported args.
+         * @param string $return_format Return format: 'ids', 'objects', or 'OBJECT'. Default 'objects'.
+         * @return array Array of action IDs or objects.
+         */
+        public function search(array $args = array(), string $return_format = 'objects'): array;
+        /**
+         * Check if this scheduler is available.
+         *
+         * @since 3.6.5
+         *
+         * @return bool True if the scheduler is available, false otherwise.
+         */
+        public static function is_available(): bool;
+    }
+    // @codeCoverageIgnore
+    /**
+     * ActionScheduler Class
+     *
+     * Implements the Scheduler interface using Action Scheduler.
+     *
+     * @since 3.6.5
+     */
+    class ActionScheduler implements \EDD\Cron\Schedulers\Scheduler
+    {
+        /**
+         * The group identifier for EDD actions.
+         *
+         * @var string
+         */
+        const GROUP = 'edd';
+        /**
+         * Check if Action Scheduler is available and initialized.
+         *
+         * Action Scheduler is loaded early in the main plugin file and initializes
+         * on the plugins_loaded hook, so it should be available by the time this is called.
+         *
+         * @since 3.6.5
+         *
+         * @return bool
+         */
+        public static function is_available(): bool
+        {
+        }
+        /**
+         * Schedule a recurring event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp The first time the event should run.
+         * @param int    $interval  How often the event should recur (in seconds).
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier. Default 'edd'.
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Schedule a single event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp When the event should run.
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier. Default 'edd'.
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Get the next scheduled time for an event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to check.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier. Default 'edd'.
+         * @return int|false The next scheduled timestamp, or false if not scheduled.
+         */
+        public function next_scheduled(string $hook, array $args = array(), string $group = '')
+        {
+        }
+        /**
+         * Unschedule a specific event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to unschedule.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier. Default 'edd'.
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule(string $hook, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Unschedule all events matching the criteria.
+         *
+         * @since 3.6.5
+         *
+         * @param string|null $hook  Optional hook name to filter by.
+         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
+         * @param string      $group Optional group identifier. Default 'edd'.
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool
+        {
+        }
+        /**
+         * Check if an action is scheduled (more efficient than next_scheduled).
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook of the action.
+         * @param array  $args  Optional. Args that have been passed to the action. Default empty array.
+         * @param string $group Optional. The group the action is assigned to. Default 'edd'.
+         *
+         * @return bool True if a matching action is pending or in-progress, false otherwise.
+         */
+        public function has_scheduled(string $hook, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Get all scheduled hooks, optionally filtered by prefix.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
+         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
+         * @param string $group       Optional group identifier. Default 'edd'.
+         * @return array Array of hook names (strings).
+         */
+        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array
+        {
+        }
+        /**
+         * Get all scheduled actions for a group.
+         *
+         * @since 3.6.5
+         *
+         * @param string $group   Optional. The group to get actions for. Default 'edd'.
+         * @param int    $per_page Optional. Number of results to return. Default 100.
+         *
+         * @return array Array of action objects.
+         */
+        public static function get_actions(string $group = self::GROUP, int $per_page = 100): array
+        {
+        }
+        /**
+         * Search for scheduled actions.
+         *
+         * @since 3.6.5
+         *
+         * @param array  $args         Possible arguments, with their default values:
+         *        'hook' => '' - the name of the action that will be triggered
+         *        'args' => null - the args array that will be passed with the action
+         *        'date' => null - the scheduled date of the action. Expects a DateTime object, a unix timestamp, or a string that can parsed with strtotime(). Used in UTC timezone.
+         *        'date_compare' => '<=' - operator for testing "date". accepted values are '!=', '>', '>=', '<', '<=', '='
+         *        'modified' => null - the date the action was last updated. Expects a DateTime object, a unix timestamp, or a string that can parsed with strtotime(). Used in UTC timezone.
+         *        'modified_compare' => '<=' - operator for testing "modified". accepted values are '!=', '>', '>=', '<', '<=', '='
+         *        'group' => '' - the group the action belongs to
+         *        'status' => '' - ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
+         *        'claimed' => null - TRUE to find claimed actions, FALSE to find unclaimed actions, a string to find a specific claim ID
+         *        'per_page' => 5 - Number of results to return
+         *        'offset' => 0
+         *        'orderby' => 'date' - accepted values are 'hook', 'group', 'modified', or 'date'
+         *        'order' => 'ASC'.
+         * @param string $return_format Return format: 'ids' for IDs only, 'objects' or OBJECT for full objects. Default 'objects'.
+         * @return array Array of action IDs or objects based on return format.
+         */
+        public function search(array $args = array(), string $return_format = 'objects'): array
+        {
+        }
+    }
+    /**
+     * Handler Class
+     *
+     * Factory for creating and managing scheduler instances.
+     *
+     * @since 3.6.5
+     */
+    class Handler
+    {
+        /**
+         * Cached scheduler instance.
+         *
+         * @since 3.6.5
+         * @var Scheduler|null
+         */
+        private static $scheduler = null;
+        /**
+         * Get the active scheduler instance.
+         *
+         * @since 3.6.5
+         *
+         * @return Scheduler The active scheduler instance.
+         */
+        public static function get_scheduler(): \EDD\Cron\Schedulers\Scheduler
+        {
+        }
+        /**
+         * Create the appropriate scheduler instance.
+         *
+         * @since 3.6.5
+         *
+         * @return Scheduler The scheduler instance.
+         */
+        private static function create_scheduler(): \EDD\Cron\Schedulers\Scheduler
+        {
+        }
+        /**
+         * Determine if Action Scheduler should be used.
+         *
+         * @since 3.6.5
+         *
+         * @return bool True if Action Scheduler should be used, false otherwise.
+         */
+        private static function should_use_action_scheduler(): bool
+        {
+        }
+        /**
+         * Get the name of the active scheduler.
+         *
+         * @since 3.6.5
+         *
+         * @return string 'action-scheduler' or 'wp-cron'.
+         */
+        public static function get_active_scheduler_name(): string
+        {
+        }
+        /**
+         * Check if Action Scheduler is the active scheduler.
+         *
+         * @since 3.6.5
+         *
+         * @return bool True if Action Scheduler is active, false otherwise.
+         */
+        public static function is_using_action_scheduler(): bool
+        {
+        }
+        /**
+         * Reset the cached scheduler instance.
+         *
+         * Useful for testing or when switching schedulers.
+         *
+         * @since 3.6.5
+         *
+         * @return void
+         */
+        public static function reset(): void
+        {
+        }
+        /**
+         * Get the interval in seconds for a named schedule.
+         *
+         * Uses wp_get_schedules() first (core and any added via cron_schedules when using
+         * WP-Cron), then the edd_cron_schedules filter for EDD custom schedules (e.g. when
+         * using Action Scheduler and EDD schedules are not added to cron_schedules).
+         *
+         * @since 3.6.5
+         *
+         * @param string $schedule The schedule name (e.g. 'daily', 'edd_acr_sched_detection').
+         * @return int|false The interval in seconds, or false if not found.
+         */
+        public static function get_schedule_interval(string $schedule)
+        {
+        }
+    }
+    /**
+     * WP-Cron Scheduler Class
+     *
+     * Provides a unified interface for WordPress's native cron system.
+     *
+     * @since 3.6.5
+     */
+    class WPCronScheduler implements \EDD\Cron\Schedulers\Scheduler
+    {
+        /**
+         * Schedule a recurring event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp The first time the event should run.
+         * @param int    $interval  How often the event should recur (in seconds).
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier (unused in WP-Cron).
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_recurring(string $hook, int $timestamp, int $interval, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Schedule a single event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook      The hook name to execute.
+         * @param int    $timestamp When the event should run.
+         * @param array  $args      Optional arguments to pass to the hook.
+         * @param string $group     Optional group identifier (unused in WP-Cron).
+         * @return bool True if successfully scheduled, false otherwise.
+         */
+        public function schedule_single(string $hook, int $timestamp, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Get the next scheduled time for an event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to check.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier (unused in WP-Cron).
+         * @return int|false The next scheduled timestamp, or false if not scheduled.
+         */
+        public function next_scheduled(string $hook, array $args = array(), string $group = '')
+        {
+        }
+        /**
+         * Unschedule a specific event.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook  The hook name to unschedule.
+         * @param array  $args  Optional arguments to match.
+         * @param string $group Optional group identifier (unused in WP-Cron).
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule(string $hook, array $args = array(), string $group = ''): bool
+        {
+        }
+        /**
+         * Unschedule all events matching the criteria.
+         *
+         * @since 3.6.5
+         *
+         * @param string|null $hook  Optional hook name to filter by.
+         * @param array|null  $args  Optional arguments to match. Pass null to match any args, or array to match specific args.
+         * @param string      $group Optional group identifier (unused in WP-Cron).
+         * @return bool True if successfully unscheduled, false otherwise.
+         */
+        public function unschedule_all(?string $hook = null, $args = null, string $group = ''): bool
+        {
+        }
+        /**
+         * Get all scheduled hooks, optionally filtered by prefix.
+         *
+         * @since 3.6.5
+         *
+         * @param string $hook_prefix Optional. Hook name prefix to filter by (e.g., 'edd_prune_logs_'). Default empty (all hooks).
+         * @param int    $limit       Optional. Maximum number of hooks to return. Default 1000.
+         * @param string $group       Optional group identifier (unused in WP-Cron).
+         * @return array Array of hook names (strings).
+         */
+        public function get_scheduled_hooks(string $hook_prefix = '', int $limit = 1000, string $group = ''): array
+        {
+        }
+        /**
+         * Search for scheduled actions.
+         *
+         * Note: WP-Cron has limited search capabilities compared to Action Scheduler.
+         * Only 'hook', 'per_page', and 'status' (pending only) are supported.
+         *
+         * @since 3.6.5
+         *
+         * @param array  $args         Query arguments. Supported args:
+         *        'hook' => '' - Filter by hook name (required for meaningful results)
+         *        'per_page' => 100 - Maximum number of results to return
+         *        Other arguments are ignored as WP-Cron doesn't support advanced querying.
+         * @param string $return_format Return format: 'ids' or 'objects'. Default 'objects'.
+         *                              Note: WP-Cron returns simplified objects with limited data.
+         * @return array Array of action data based on return format.
+         */
+        public function search(array $args = array(), string $return_format = 'objects'): array
+        {
+        }
+        /**
+         * Check if WP-Cron is available.
+         *
+         * @since 3.6.5
+         *
+         * @return bool Always returns true as WP-Cron is always available in WordPress.
+         */
+        public static function is_available(): bool
+        {
+        }
+        /**
+         * Get or create a schedule name for a given interval.
+         *
+         * @since 3.6.5
+         *
+         * @param int $interval The interval in seconds.
+         * @return string The schedule name.
+         */
+        private function get_schedule_for_interval(int $interval): string
         {
         }
     }
@@ -42118,6 +43342,17 @@ namespace EDD\Downloads {
         {
         }
         /**
+         * Sorts results by relevance, prioritizing exact title matches.
+         *
+         * @since 3.6.5
+         * @param array  $items       The items to sort.
+         * @param string $search_term The search term.
+         * @return array
+         */
+        private function sort_by_relevance($items, $search_term)
+        {
+        }
+        /**
          * Filters the WHERE SQL query for the edd_download_search.
          * This searches the download titles only, not the excerpt/content.
          *
@@ -43454,6 +44689,13 @@ namespace EDD\Emails {
          */
         private $heading = '';
         /**
+         * The Email object using this processor.
+         *
+         * @since 3.6.5
+         * @var \EDD\Emails\Types\Email|null
+         */
+        private $email_object;
+        /**
          * Get things going
          *
          * @since 2.1
@@ -43545,6 +44787,25 @@ namespace EDD\Emails {
          * @since 2.1
          */
         public function get_heading()
+        {
+        }
+        /**
+         * Set the Email object using this processor.
+         *
+         * @since 3.6.5
+         * @param \EDD\Emails\Types\Email $email The Email object.
+         * @return void
+         */
+        public function set_email_object($email)
+        {
+        }
+        /**
+         * Get the Email object using this processor.
+         *
+         * @since 3.6.5
+         * @return \EDD\Emails\Types\Email|null
+         */
+        public function get_email_object()
         {
         }
         /**
@@ -45968,6 +47229,17 @@ namespace EDD\Emails\Traits {
          * @return \EDD\Emails\Templates\EmailTemplate
          */
         private function get_template($email_id)
+        {
+        }
+        /**
+         * Gets the redirect arguments for the test email.
+         *
+         * @since 3.6.5
+         * @param bool  $sent Whether the email was sent.
+         * @param array $data The $_POST data.
+         * @return array
+         */
+        private function get_test_email_redirect_args($sent, $data)
         {
         }
         /**
@@ -55042,6 +56314,19 @@ namespace EDD\Gateways\Stripe {
         {
         }
         /**
+         * Retrieves the list of legacy/deprecated payment methods.
+         *
+         * These payment methods have been deprecated by Stripe but may still
+         * exist in historical order data. This method is public to allow
+         * reports to include historical transactions made with these methods.
+         *
+         * @since 3.6.5
+         * @return array Array of legacy payment method types and their labels.
+         */
+        public static function get_legacy_methods()
+        {
+        }
+        /**
          * Retrieves a list of Stripe payment methods.
          *
          * @since 3.3.5
@@ -55088,15 +56373,6 @@ namespace EDD\Gateways\Stripe {
         {
         }
         /**
-         * Retrieves the supported payment methods.
-         *
-         * @since 3.3.5
-         * @return array The supported payment methods.
-         */
-        private static function get_registered_methods()
-        {
-        }
-        /**
          * Retrieves the class name for the specified payment method.
          *
          * @since 3.3.5
@@ -55112,6 +56388,28 @@ namespace EDD\Gateways\Stripe {
          * @since 3.3.5
          */
         public static function reset()
+        {
+        }
+        /**
+         * Retrieves the label for legacy/deprecated payment methods.
+         *
+         * These payment methods have been deprecated by Stripe but may still
+         * exist in historical order data.
+         *
+         * @since 3.6.5
+         * @param string $type The type of payment method.
+         * @return string|false The legacy label if found, false otherwise.
+         */
+        private static function get_legacy_label($type)
+        {
+        }
+        /**
+         * Retrieves the supported payment methods.
+         *
+         * @since 3.3.5
+         * @return array The supported payment methods.
+         */
+        private static function get_registered_methods()
         {
         }
         /**
@@ -56275,45 +57573,6 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
     }
     // @codeCoverageIgnore
     /**
-     * Sofort class.
-     */
-    class Sofort extends \EDD\Gateways\Stripe\PaymentMethods\Method
-    {
-        /**
-         * The ID of the payment method.
-         *
-         * @since 3.3.5
-         * @var string
-         */
-        protected static $id = 'sofort';
-        /**
-         * The supported currencies for the payment method.
-         *
-         * @since 3.3.5
-         * @var array
-         */
-        public static $currencies = array('EUR');
-        /**
-         * Gets the label for the payment method.
-         *
-         * @since 3.3.5
-         * @return string
-         */
-        public static function get_label()
-        {
-        }
-        /**
-         * Gets the icon for the payment method.
-         *
-         * @since 3.3.5
-         * @return string
-         */
-        public static function get_icon(): string
-        {
-        }
-    }
-    // @codeCoverageIgnore
-    /**
      * Twint class.
      */
     class Twint extends \EDD\Gateways\Stripe\PaymentMethods\Method
@@ -57101,6 +58360,43 @@ namespace EDD\HTML {
          * @return array
          */
         private function parse_args(array $args)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Class AmountType
+     *
+     * @since 3.6.5
+     * @package EDD\HTML
+     */
+    class AmountType extends \EDD\HTML\Base
+    {
+        /**
+         * Gets the HTML for the element.
+         *
+         * @since 3.6.5
+         * @return string Element HTML.
+         */
+        public function get(): string
+        {
+        }
+        /**
+         * Gets the default arguments for the element.
+         *
+         * @since 3.6.5
+         * @return array Default arguments.
+         */
+        public function defaults(): array
+        {
+        }
+        /**
+         * Gets the input element.
+         *
+         * @since 3.6.5
+         * @return Base Input element.
+         */
+        private function get_input(): \EDD\HTML\Base
         {
         }
     }
@@ -62291,6 +63587,106 @@ namespace EDD\Profiler {
 }
 namespace EDD\REST\Controllers {
     /**
+     * Bounce Webhook controller class.
+     *
+     * @since 3.6.5
+     */
+    final class BounceWebhook
+    {
+        /**
+         * Handles bounce webhook notifications.
+         *
+         * @since 3.6.5
+         * @param \WP_REST_Request $request Request object.
+         * @return \WP_REST_Response Response object.
+         */
+        public function handle_bounce(\WP_REST_Request $request): \WP_REST_Response
+        {
+        }
+        /**
+         * Verifies webhook permission via secret key.
+         *
+         * @since 3.6.5
+         * @param \WP_REST_Request $request Request object.
+         * @return bool True if authorized.
+         */
+        public function verify_webhook_permission(\WP_REST_Request $request): bool
+        {
+        }
+        /**
+         * Generates the webhook secret.
+         *
+         * Static method to allow access from settings/admin screens.
+         *
+         * @since 3.6.5
+         * @return string Webhook secret key.
+         */
+        public static function generate_webhook_secret(): string
+        {
+        }
+        /**
+         * Parses bounce webhook payload from various email service providers.
+         *
+         * @since 3.6.5
+         * @param array            $body    The webhook payload.
+         * @param \WP_REST_Request $request The request object.
+         * @return array|null Parsed bounce data with email_id and reason, or null on failure.
+         */
+        private function parse_bounce_webhook(array $body, \WP_REST_Request $request): ?array
+        {
+        }
+        /**
+         * Parses SendGrid bounce webhook.
+         *
+         * @since 3.6.5
+         * @param array $body The webhook payload.
+         * @return array|null Parsed bounce data.
+         */
+        private function parse_sendgrid_bounce(array $body): ?array
+        {
+        }
+        /**
+         * Parses Mailgun bounce webhook.
+         *
+         * @since 3.6.5
+         * @param array $body The webhook payload.
+         * @return array|null Parsed bounce data.
+         */
+        private function parse_mailgun_bounce(array $body): ?array
+        {
+        }
+        /**
+         * Parses AWS SES bounce webhook.
+         *
+         * @since 3.6.5
+         * @param array $body The webhook payload.
+         * @return array|null Parsed bounce data.
+         */
+        private function parse_ses_bounce(array $body): ?array
+        {
+        }
+        /**
+         * Parses SendLayer bounce webhook.
+         *
+         * @since 3.6.5
+         * @param array $body The webhook payload.
+         * @return array|null Parsed bounce data.
+         */
+        private function parse_sendlayer_bounce(array $body): ?array
+        {
+        }
+        /**
+         * Finds an email log ID by recipient email address.
+         *
+         * @since 3.6.5
+         * @param string $recipient_email The recipient email address.
+         * @return int|null The email log ID if found, null otherwise.
+         */
+        private function find_email_by_recipient(string $recipient_email): ?int
+        {
+        }
+    }
+    /**
      * Cart controller class.
      *
      * Handles cart operations via REST API.
@@ -62461,7 +63857,6 @@ namespace EDD\REST {
     }
 }
 namespace EDD\REST\Routes {
-    // @codeCoverageIgnore
     /**
      * Route class
      *
@@ -62480,12 +63875,57 @@ namespace EDD\REST\Routes {
          */
         public static $version = 'v3';
         /**
+         * Controller instance.
+         *
+         * @since 3.6.5
+         * @var Controller
+         */
+        protected $controller;
+        /**
+         * Security instance.
+         *
+         * @since 3.6.5
+         * @var Security
+         */
+        protected $security;
+        /**
          * Register the routes.
          *
          * @since 3.6.2
          * @return void
          */
         abstract public function register();
+    }
+    /**
+     * Bounce Webhook route class.
+     *
+     * @since 3.6.5
+     */
+    final class BounceWebhook extends \EDD\REST\Routes\Route
+    {
+        /**
+         * REST API base.
+         *
+         * @since 3.6.5
+         * @var string
+         */
+        const BASE = 'webhooks/bounce';
+        /**
+         * Constructor.
+         *
+         * @since 3.6.5
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register REST routes.
+         *
+         * @since 3.6.5
+         */
+        public function register(): void
+        {
+        }
     }
     /**
      * Cart class
@@ -62503,20 +63943,6 @@ namespace EDD\REST\Routes {
          * @var string
          */
         const BASE = 'cart';
-        /**
-         * Cart controller instance.
-         *
-         * @since 3.6.2
-         * @var Controller
-         */
-        private $controller;
-        /**
-         * Security instance.
-         *
-         * @since 3.6.2
-         * @var Security
-         */
-        private $security;
         /**
          * Constructor.
          *
@@ -62551,13 +63977,6 @@ namespace EDD\REST\Routes {
          * @var string
          */
         const BASE = 'logs/prune';
-        /**
-         * LogPruning controller instance.
-         *
-         * @since 3.6.4
-         * @var Controller
-         */
-        private $controller;
         /**
          * Constructor.
          *
@@ -63525,6 +64944,19 @@ namespace EDD\Reports\Data\Charts\v2 {
          * @var   array
          */
         protected $fields = array('borderSkipped', 'hoverBackgroundColor', 'hoverBorderColor', 'hoverBorderWidth');
+        /**
+         * Parses the dataset data for output via JS.
+         *
+         * Overrides parent to handle both time-based and static bar charts.
+         *
+         * @since 3.6.5
+         *
+         * @param array $data Dataset data.
+         * @return array Processed data.
+         */
+        public function parse_data_for_output($data)
+        {
+        }
     }
     /**
      * Represents a manifestation of a ChartJS v2 line chart dataset in PHP form.
@@ -64983,6 +66415,18 @@ namespace EDD\Reports\Data\Gateways {
         {
         }
         /**
+         * Retrieves all payment methods including legacy/deprecated ones.
+         *
+         * This ensures historical transactions using deprecated payment methods
+         * (like Sofort) are still included in reports.
+         *
+         * @since 3.6.5
+         * @return array Array of payment method types and their labels.
+         */
+        private function get_all_payment_methods()
+        {
+        }
+        /**
          * Setup the final data for the table
          *
          * @since 3.3.5
@@ -65867,6 +67311,13 @@ namespace EDD\Reports\Endpoints {
          */
         protected $date_column = 'date_created';
         /**
+         * The SQL clauses for the query.
+         *
+         * @since 3.6.5
+         * @var array
+         */
+        protected $sql_clauses;
+        /**
          * Constructor.
          *
          * @since 3.5.1
@@ -66037,6 +67488,224 @@ namespace EDD\Reports\Endpoints\Traits {
     }
 }
 namespace EDD\Reports\Endpoints\Charts {
+    /**
+     * Abstract base class for EDD Reports Bar Chart builders.
+     *
+     * Provides common functionality for bar chart data building patterns,
+     * particularly for charts that show multiple datasets over time periods.
+     *
+     * @since 3.6.5
+     */
+    abstract class Bar extends \EDD\Reports\Endpoints\Endpoint
+    {
+        use \EDD\Reports\Endpoints\Traits\Colors;
+        /**
+         * The chart type (always 'bar').
+         *
+         * @since 3.6.5
+         * @var string
+         */
+        protected $chart_type = 'bar';
+        /**
+         * Whether the bar chart should be stacked.
+         *
+         * @since 3.6.5
+         * @var bool
+         */
+        protected $stacked = false;
+        /**
+         * Date range for the chart display.
+         *
+         * @since 3.6.5
+         * @var array
+         */
+        protected $chart_dates;
+        /**
+         * The graph period (hour, day, month).
+         *
+         * @since 3.6.5
+         * @var string
+         */
+        protected $period;
+        /**
+         * The column to query for amounts.
+         *
+         * @since 3.6.5
+         * @var string
+         */
+        protected $column;
+        /**
+         * SQL clauses for the query.
+         *
+         * @since 3.6.5
+         * @var array
+         */
+        protected $sql_clauses;
+        /**
+         * True if using day-by-day period.
+         *
+         * @since 3.6.5
+         * @var bool
+         */
+        protected $day_by_day;
+        /**
+         * True if using hour-by-hour period.
+         *
+         * @since 3.6.5
+         * @var bool
+         */
+        protected $hour_by_hour;
+        /**
+         * The chart data array.
+         *
+         * @since 3.6.5
+         * @var array
+         */
+        protected $data = array();
+        /**
+         * Registers this chart with the reports system.
+         *
+         * @since 3.6.5
+         */
+        protected function register(): void
+        {
+        }
+        /**
+         * Gets chart data formatted for the callback system.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        public function get_data_for_callback(): array
+        {
+        }
+        /**
+         * Gets the chart data by building it from query results.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        protected function get_data(): array
+        {
+        }
+        /**
+         * Gets the heading for the chart.
+         *
+         * @since 3.6.5
+         * @return string
+         */
+        protected function get_heading(): string
+        {
+        }
+        /**
+         * Gets the query results that will be used to build the chart.
+         * This method should return an array or associative array of database result objects.
+         *
+         * For single dataset bar charts, return a simple array.
+         * For multiple dataset bar charts, return an associative array with keys for each dataset.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        abstract protected function get_query_results(): array;
+        /**
+         * Gets the chart datasets configuration.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        abstract protected function get_datasets(): array;
+        /**
+         * Initializes the data for a specific timestamp.
+         * Child classes should override this to set up their specific dataset structure.
+         *
+         * @since 3.6.5
+         * @param int    $timestamp     Unix timestamp.
+         * @param object $date_on_chart Current chart date.
+         */
+        abstract protected function initialize_timestamp_data($timestamp, $date_on_chart): void;
+        /**
+         * Processes query results for a specific timestamp.
+         * Child classes should override this to handle their specific data processing logic.
+         *
+         * @since 3.6.5
+         * @param array  $query_results All query results.
+         * @param int    $timestamp     Unix timestamp.
+         * @param object $date_on_chart Current chart date.
+         */
+        abstract protected function process_query_results(array $query_results, $timestamp, $date_on_chart): void;
+        /**
+         * Formats the data for output.
+         * Child classes should override this to format their data structure for the chart.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        abstract protected function format_data(): array;
+        /**
+         * Gets the chart options for the bar chart.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        protected function get_chart_options(): array
+        {
+        }
+        /**
+         * Gets the scales configuration for the bar chart.
+         * Child classes can override this to customize the scales.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        protected function get_scales(): array
+        {
+        }
+        /**
+         * Gets the time period to use for the bar chart axes.
+         *
+         * @since 3.6.5
+         * @return array
+         */
+        protected function get_time_for_axes(): array
+        {
+        }
+        /**
+         * Sets up common properties used by all chart types.
+         *
+         * @since 3.6.5
+         */
+        protected function initialize_properties(): void
+        {
+        }
+        /**
+         * Checks if a database result date matches the current chart date.
+         *
+         * @since 3.6.5
+         * @param object $result        Database result object.
+         * @param object $date_on_chart Current chart date.
+         * @return bool
+         */
+        protected function dates_match($result, $date_on_chart): bool
+        {
+        }
+        /**
+         * Increments the chart date to the next period.
+         *
+         * @since 3.6.5
+         */
+        protected function increment_chart_date(): void
+        {
+        }
+        /**
+         * Initializes the chart data structure.
+         *
+         * @since 3.6.5
+         */
+        protected function initialize_data(): void
+        {
+        }
+    }
     /**
      * Abstract base class for simple EDD Reports Chart builders.
      *
@@ -67744,6 +69413,17 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
         /**
+         * Gets the tooltip content for the tile.
+         *
+         * Override this method in child classes to provide a tooltip.
+         *
+         * @since 3.6.5
+         * @return string
+         */
+        protected function get_tooltip(): string
+        {
+        }
+        /**
          * Creates a Stats instance with common filters applied.
          *
          * @since 3.5.1
@@ -69229,6 +70909,63 @@ namespace EDD\Reports {
          * @param Data\Report_Registry $reports Reports registry instance.
          */
         private function register_core_endpoint_views($reports)
+        {
+        }
+    }
+}
+namespace EDD\Reports\Utilities {
+    /**
+     * Database Utilities.
+     *
+     * @since 3.6.5
+     */
+    class Database
+    {
+        /**
+         * Gets the SQL clauses.
+         * The result of this function should be run through $wpdb->prepare().
+         *
+         * @since 3.6.5
+         * @param string $period The period for the query.
+         * @param string $column The column to query.
+         * @return array
+         */
+        public static function get_sql_clauses(string $period, string $column = 'date_created'): array
+        {
+        }
+        /**
+         * Parses start and end dates for database queries.
+         *
+         * Accepts dates in various formats (strings, DateTimeInterface, EDD\Utils\Date)
+         * and returns UTC-converted MySQL datetime strings ready for WHERE clauses.
+         *
+         * @since 3.6.5
+         * @param string|\DateTimeInterface $start Start date in store timezone.
+         * @param string|\DateTimeInterface $end   End date in store timezone.
+         * @return array{start: string, end: string, period: string} UTC datetime strings and recommended period.
+         */
+        public static function parse_date_range_for_query($start, $end): array
+        {
+        }
+        /**
+         * Determines the appropriate grouping period based on date range span.
+         *
+         * @since 3.6.5
+         * @param \DateTimeInterface $start Start date.
+         * @param \DateTimeInterface $end   End date.
+         * @return string 'hour', 'day', or 'month'.
+         */
+        public static function get_period_for_date_range(\DateTimeInterface $start, \DateTimeInterface $end): string
+        {
+        }
+        /**
+         * Retrieves the column conversion for the given date column.
+         *
+         * @since 3.6.5
+         * @param string $column The column to convert.
+         * @return string
+         */
+        public static function get_column_conversion(string $column = 'date_created'): string
         {
         }
     }
@@ -72993,6 +74730,13 @@ namespace EDD\Upgrades {
     class Loader extends \EDD\EventManagement\MiniManager
     {
         /**
+         * The priority to subscribe to.
+         *
+         * @since 3.6.5
+         * @var int
+         */
+        protected static $priority = 100;
+        /**
          * Get the event classes.
          *
          * @since 3.2.10
@@ -73631,9 +75375,10 @@ namespace EDD\Utils {
          *
          * @since 3.3.0
          * @param null|int $expiration The expiration timestamp. Use null to set the cookie to expire immediately.
+         * @param string   $cookie     The cookie name.
          * @return array
          */
-        private static function get_options($expiration)
+        private static function get_options($expiration, $cookie)
         {
         }
         /**
@@ -73821,6 +75566,61 @@ namespace EDD\Utils {
         {
         }
     }
+    /**
+     * Encryption class.
+     *
+     * @since 3.6.5
+     */
+    final class Encryption
+    {
+        /**
+         * The cipher method.
+         *
+         * @since 3.6.5
+         */
+        private const CIPHER_METHOD = 'AES-256-CBC';
+        /**
+         * Encrypts a plaintext string and returns a hex-encoded token.
+         *
+         * The token contains the random IV prepended to the ciphertext,
+         * so every call produces a different token for the same input.
+         *
+         * @since 3.6.5
+         * @param string $plaintext The data to encrypt.
+         * @return string|null Hex-encoded token, or null on failure.
+         */
+        public static function encrypt(string $plaintext): ?string
+        {
+        }
+        /**
+         * Decrypts a hex-encoded token back to plaintext.
+         *
+         * @since 3.6.5
+         * @param string $token Hex-encoded token from encrypt().
+         * @return string|null The original plaintext, or null on failure.
+         */
+        public static function decrypt(string $token): ?string
+        {
+        }
+        /**
+         * Checks if encryption requirements are met.
+         *
+         * @since 3.6.5
+         * @return bool True if all requirements are available.
+         */
+        private static function requirements_met(): bool
+        {
+        }
+        /**
+         * Derives the encryption key from WordPress salts.
+         *
+         * @since 3.6.5
+         * @return string Binary encryption key.
+         */
+        private static function get_encryption_key(): string
+        {
+        }
+    }
     class EnvironmentChecker
     {
         /**
@@ -73938,6 +75738,105 @@ namespace EDD\Utils {
          * @throws \InvalidArgumentException
          */
         public function versionNumbersMatch($currentVersion, $compareVersion)
+        {
+        }
+        /**
+         * Determines if the provided condition is a PHP version condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $condition The condition to check.
+         *
+         * @return bool
+         */
+        protected function isPhpVersion($condition)
+        {
+        }
+        /**
+         * Determines if the current PHP version matches the condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $currentPhpVersion The current PHP version (e.g., "8.2.10").
+         * @param string $condition         The condition to match (e.g., "php-8-2" or "php-8-x").
+         *
+         * @return bool
+         */
+        public function phpVersionMatch($currentPhpVersion, $condition)
+        {
+        }
+        /**
+         * Determines if the provided condition is a WordPress version condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $condition The condition to check.
+         *
+         * @return bool
+         */
+        protected function isWordPressVersion($condition)
+        {
+        }
+        /**
+         * Determines if the current WordPress version matches the condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $currentWpVersion The current WordPress version (e.g., "6.4.2").
+         * @param string $condition        The condition to match (e.g., "wp-6-4" or "wp-6-x").
+         *
+         * @return bool
+         */
+        public function wordPressVersionMatch($currentWpVersion, $condition)
+        {
+        }
+        /**
+         * Determines if the provided condition is an EDD version condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $condition The condition to check.
+         *
+         * @return bool
+         */
+        protected function isEddVersion($condition)
+        {
+        }
+        /**
+         * Determines if the current EDD version matches the condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $currentEddVersion The current EDD version (e.g., "3.3.5").
+         * @param string $condition         The condition to match (e.g., "edd-3-3" or "edd-3-x").
+         *
+         * @return bool
+         */
+        public function eddVersionMatch($currentEddVersion, $condition)
+        {
+        }
+        /**
+         * Determines if the provided condition is a plugin condition.
+         *
+         * @since 3.6.5
+         *
+         * @param string $condition The condition to check.
+         *
+         * @return bool
+         */
+        protected function isPluginCondition($condition)
+        {
+        }
+        /**
+         * Determines if a plugin matching the condition is active.
+         *
+         * @since 3.6.5
+         *
+         * @param string $condition The condition to check (e.g., "plugin-edd-recurring").
+         *
+         * @return bool
+         */
+        public function pluginIsActive($condition)
         {
         }
     }
@@ -74198,6 +76097,196 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
+    /**
+     * Class Messages
+     *
+     * Handles all EDD error/success/info messaging via session storage with retrieval by code or type,
+     * and consistent HTML output using existing EDD alert CSS.
+     */
+    class Messages
+    {
+        /**
+         * Session key for the unified messages array.
+         *
+         * @var string
+         */
+        const SESSION_KEY = 'edd_messages';
+        /**
+         * Legacy session key for errors (migrated into edd_messages).
+         *
+         * @var string
+         */
+        const LEGACY_ERRORS_KEY = 'edd_errors';
+        /**
+         * Legacy session key for success messages (migrated into edd_messages).
+         *
+         * @var string
+         */
+        const LEGACY_SUCCESS_KEY = 'edd_success_errors';
+        /**
+         * Allowed message types (match CSS: edd-alert-error, edd-alert-success, edd-alert-info, edd-alert-warn).
+         *
+         * @var string[]
+         */
+        const TYPES = array('error', 'success', 'info', 'warn');
+        /**
+         * Default CSS wrapper class per type (without edd-alert-*).
+         *
+         * @var string[]
+         */
+        const WRAPPER_CLASSES = array('error' => 'edd-errors', 'success' => 'edd-success', 'info' => 'edd-info', 'warn' => 'edd-warn');
+        /**
+         * Add a message for a given type and code.
+         *
+         * @since 3.6.5
+         * @param string $type    One of error, success, info, warn.
+         * @param string $code    Unique code for the message (e.g. error_id).
+         * @param string $message Message text (will be sanitized for storage).
+         * @return void
+         */
+        public static function add($type, $code, $message)
+        {
+        }
+        /**
+         * Get messages for a single type.
+         *
+         * @since 3.6.5
+         * @param string $type One of error, success, info, warn.
+         * @return array<string, string> Map of code => message.
+         */
+        public static function get_by_type($type)
+        {
+        }
+        /**
+         * Get the first message matching the given code across any type.
+         *
+         * @since 3.6.5
+         * @param string $code Message code.
+         * @return array|null Associative array with 'type' and 'message', or null if not found.
+         */
+        public static function get_by_code($code): ?array
+        {
+        }
+        /**
+         * Get all messages, optionally filtered.
+         *
+         * @since 3.6.5
+         * @return array<string, array<string, string>> Full storage shape [ type => [ code => message ] ].
+         */
+        public static function get_all(): array
+        {
+        }
+        /**
+         * Remove a message by code. If type is omitted, only the error type is updated (backward compatibility with edd_unset_error).
+         *
+         * @since 3.6.5
+         * @param string      $code Message code.
+         * @param string|null $type Optional. One of error, success, info, warn. Default 'error'.
+         * @return void
+         */
+        public static function remove(string $code, ?string $type = 'error'): void
+        {
+        }
+        /**
+         * Clear all messages and legacy keys.
+         * If a type is provided, only clear that type.
+         * Otherwise, clear all types.
+         *
+         * @since 3.6.5
+         * @param string|null $type Optional. One of error, success, info, warn. Default null.
+         * @return void
+         */
+        public static function clear($type = null): void
+        {
+        }
+        /**
+         * Whether any messages exist (any type).
+         *
+         * @since 3.6.5
+         * @return bool
+         */
+        public static function has_any(): bool
+        {
+        }
+        /**
+         * Build HTML for messages. One block per type (error, success, info, warn) when present.
+         *
+         * Uses existing CSS: edd_errors/edd_success/edd_info/edd_warn, edd-alert, edd-alert-{type}.
+         * Applies edd_error_class filter for error block; edd_message_class for other types.
+         *
+         * @since 3.6.5
+         * @param string|null $type Optional. If provided, only output this type; otherwise all types.
+         * @return string HTML markup (escaped).
+         */
+        public static function to_html(?string $type = null): string
+        {
+        }
+        /**
+         * Build HTML for a raw array of messages (for backward compatibility with edd_build_errors_html / edd_build_successes_html).
+         * Uses the same markup as to_html() for the given type.
+         *
+         * @since 3.6.5
+         * @param array<string, string> $messages Map of code => message.
+         * @param string                $type    One of error, success, info, warn.
+         * @return string
+         */
+        public static function build_html_for_messages(array $messages, string $type = 'error'): string
+        {
+        }
+        /**
+         * Build HTML for a single message type block.
+         *
+         * @since 3.6.5
+         * @param string                $type    One of error, success, info, warn.
+         * @param array<string, string> $messages Map of code => message.
+         * @return string
+         */
+        private static function build_block_html(string $type, array $messages): string
+        {
+        }
+        /**
+         * Get translated label for a message type.
+         *
+         * @since 3.6.5
+         * @param string $type One of error, success, info, warn.
+         * @return string Translated label.
+         */
+        private static function get_translated_label(string $type): string
+        {
+        }
+        /**
+         * Get the full messages array from session, migrating legacy keys if present.
+         *
+         * @since 3.6.5
+         * @return array<string, array<string, string>> Shape: [ type => [ code => message ] ].
+         */
+        private static function get_storage(): array
+        {
+        }
+        /**
+         * Persist the full messages array to session.
+         *
+         * @since 3.6.5
+         * @param array<string, array<string, string>> $messages Full storage array.
+         * @return void
+         */
+        private static function persist(array $messages): void
+        {
+        }
+        /**
+         * Clear messages for a single type only (e.g. errors). Use this when callers
+         * intend to reset only one kind of message (e.g. "clear errors from previous attempt")
+         * without wiping success/info messages.
+         *
+         * @since 3.6.5
+         * @param string $type One of error, success, info, warn.
+         * @return void
+         */
+        private static function clear_by_type(string $type): void
+        {
+        }
+    }
     /**
      * Modal class.
      *
@@ -74230,7 +76319,8 @@ namespace EDD\Utils {
          * Render a reusable modal container.
          *
          * Outputs the HTML structure for a generic EDD modal that can be used
-         * with the EDDModal JavaScript class. Modal HTML is deferred to wp_footer.
+         * with the EDDModal JavaScript class. Modal HTML is deferred to wp_footer
+         * (frontend) or admin_footer (admin).
          *
          * Uses a custom <edd-modal> Web Component with Shadow DOM for style isolation.
          *
@@ -74581,6 +76671,16 @@ namespace EDD\Utils {
          * @return mixed
          */
         public function __get($key)
+        {
+        }
+        /**
+         * Magic isset.
+         *
+         * @since 3.6.5
+         * @param string $key The property name.
+         * @return bool
+         */
+        public function __isset($key)
         {
         }
         /**
@@ -74943,6 +77043,90 @@ namespace EDD\Utils {
          * @return bool
          */
         private function is_expired($option)
+        {
+        }
+    }
+}
+namespace EDD\Utils\Validators {
+    /**
+     * Rate Limiter class.
+     *
+     * Uses WordPress transients for atomic operations and cache compatibility.
+     * Callers pass a transient key prefix, max attempts, and window duration;
+     * each identifier (e.g. IP, session id) is hashed and scoped to that key.
+     */
+    class RateLimiter
+    {
+        /**
+         * Transient key prefix. Stored keys become `{prefix}_{md5(identifier)}`.
+         *
+         * @var string
+         */
+        private string $transient_key_prefix;
+        /**
+         * Maximum allowed attempts in the current window.
+         *
+         * @var int
+         */
+        private int $max_attempts;
+        /**
+         * Window duration in seconds (lockout / reset time).
+         *
+         * @var int
+         */
+        private int $window_seconds;
+        /**
+         * Constructor.
+         *
+         * @since 3.6.5
+         * @param string $transient_key_prefix Prefix for transient keys (e.g. 'edd_acr_restore_rate'). Used with md5(identifier).
+         * @param int    $max_attempts         Maximum allowed attempts per window. Default 5.
+         * @param int    $window_seconds       Window (lockout) duration in seconds. Default 1 hour.
+         */
+        public function __construct(string $transient_key_prefix, int $max_attempts = 5, int $window_seconds = HOUR_IN_SECONDS)
+        {
+        }
+        /**
+         * Checks rate limit and increments counter. Use for action-style limits (e.g. restore link clicks).
+         *
+         * Returns true if the attempt is allowed; returns WP_Error when the rate limit is exceeded,
+         * with a message indicating how long until the lockout resets.
+         *
+         * @since 3.6.5
+         * @param string $identifier Unique identifier to limit (e.g. IP address, user id, session id).
+         * @return true|WP_Error True if allowed, WP_Error if rate limited.
+         */
+        public function check(string $identifier)
+        {
+        }
+        /**
+         * Increments the attempt counter for the identifier. Use for quota-style limits (e.g. snapshots per session).
+         *
+         * @since 3.6.5
+         * @param string $identifier Unique identifier to limit (e.g. session id, IP).
+         * @return bool True if under the limit (counter incremented), false if rate limit exceeded.
+         */
+        public function increment(string $identifier): bool
+        {
+        }
+        /**
+         * Returns remaining seconds until the current window resets for the identifier.
+         *
+         * @since 3.6.5
+         * @param string $identifier Same identifier used for increment/check.
+         * @return int Seconds until reset, or 0 if no active window.
+         */
+        public function get_remaining_lockout_seconds(string $identifier): int
+        {
+        }
+        /**
+         * Builds the transient key for an identifier.
+         *
+         * @since 3.6.5
+         * @param string $identifier Identifier to hash (e.g. IP, session id).
+         * @return string Transient key.
+         */
+        private function get_transient_key(string $identifier): string
         {
         }
     }
@@ -77386,7 +79570,8 @@ namespace EDD\Reports {
      * Get the time zone converted dates for the query.
      *
      * @since 3.1.1.4
-     * @param string $column
+     * @since 3.6.5 This is a wrapper for the Utilities\Database::get_column_conversion method.
+     * @param string $column The column to convert.
      * @return string
      */
     function get_column_conversion($column = 'date_created')
@@ -81069,18 +83254,6 @@ namespace {
     {
     }
     /**
-     * Recapture Callback
-     *
-     * Renders Recapture Settings
-     *
-     * @since 2.10.2
-     * @param array $args Arguments passed by the setting.
-     * @return void
-     */
-    function edd_recapture_callback($args)
-    {
-    }
-    /**
      * Renders tax rates table.
      *
      * @since 1.6
@@ -81136,6 +83309,18 @@ namespace {
      * @return void
      */
     function edd_checkbox_toggle_callback($args)
+    {
+    }
+    /**
+     * Amount Type Callback
+     *
+     * Renders amount/type fields with a unit prefix or suffix.
+     *
+     * @since 3.6.5
+     * @param array $args Arguments passed by the setting.
+     * @return void
+     */
+    function edd_amounttype_callback($args)
     {
     }
     /**
@@ -85450,6 +87635,38 @@ namespace {
     function _edd_die_handler()
     {
     }
+    /**
+     * Recapture Callback
+     *
+     * Renders Recapture Settings
+     *
+     * @since 2.10.2
+     * @deprecated 3.6.5
+     * @param array $args Arguments passed by the setting.
+     * @return void
+     */
+    function edd_recapture_callback($args)
+    {
+    }
+    /**
+     * Handle installation and connection for Recapture via ajax
+     *
+     * @since 2.10.2
+     * @deprecated 3.6.5
+     */
+    function edd_recapture_remote_install_handler()
+    {
+    }
+    /**
+     * Maybe adds a notice to abandoned payments if Recapture isn't installed.
+     *
+     * @since 2.10.2
+     * @deprecated 3.6.5
+     * @param int $payment_id The ID of the abandoned payment, for which a Recapture notice is being thrown.
+     */
+    function maybe_add_recapture_notice_to_abandoned_payment($payment_id)
+    {
+    }
     // @codeCoverageIgnore
     /**
      * Add a discount.
@@ -86934,7 +89151,7 @@ namespace {
      * Note: recalculating download stats is an expensive query, so it's deferred intentionally.
      *
      * @since 3.1
-     * @param int $download_id
+     * @param int $download_id The download ID.
      * @return void
      */
     function edd_maybe_schedule_download_recalculation($download_id)
@@ -87137,25 +89354,6 @@ namespace {
     function edd_delete_email_meta_by_key($meta_key)
     {
     }
-    // @codeCoverageIgnore
-    /**
-     * Handle installation and connection for Recapture via ajax
-     *
-     * @since 2.10.2
-     */
-    function edd_recapture_remote_install_handler()
-    {
-    }
-    /**
-     * Maybe adds a notice to abandoned payments if Recapture isn't installed.
-     *
-     * @since 2.10.2
-     *
-     * @param int $payment_id The ID of the abandoned payment, for which a Recapture notice is being thrown.
-     */
-    function maybe_add_recapture_notice_to_abandoned_payment($payment_id)
-    {
-    }
     /**
      * Get registered emails.
      *
@@ -87199,7 +89397,7 @@ namespace {
     {
     }
     /**
-     * Enqueue scripts for clicking a tag inside of Thickbox.
+     * Enqueue scripts for the email tags inserter (dialog + tag list).
      *
      * @since 3.0
      * @param string $context The context to get tags for.
@@ -87209,9 +89407,10 @@ namespace {
     {
     }
     /**
-     * Output Thickbox content.
+     * Output the email tags inserter dialog content (native dialog, edd-modal pattern).
      *
      * @since 3.0
+     * @since 3.6.5 Moved from thickbox to native dialog.
      * @param string $context The context to get tags for.
      * @param string $recipient The recipient to get tags for.
      */
@@ -87612,7 +89811,6 @@ namespace {
     function edd_render_receipt_in_browser($data)
     {
     }
-    // @codeCoverageIgnore
     /**
      * Print Errors
      *
@@ -87620,8 +89818,8 @@ namespace {
      * If errors exist, they are returned.
      *
      * @since 1.0
-     * @uses edd_get_errors()
-     * @uses edd_clear_errors()
+     * @uses EDD\Utils\Messages::to_html()
+     * @uses EDD\Utils\Messages::clear()
      * @return void
      */
     function edd_print_errors()
@@ -87655,7 +89853,7 @@ namespace {
      * If errors exist, they are returned.
      *
      * @since 1.0
-     * @uses EDD\Sessions\Handler::get()
+     * @uses EDD\Utils\Messages::get_by_type()
      * @return mixed array if errors are present, false if none found
      */
     function edd_get_errors()
@@ -87667,7 +89865,7 @@ namespace {
      * Stores an error in a session var.
      *
      * @since 1.0
-     * @uses EDD\Sessions\Handler::get()
+     * @uses EDD\Utils\Messages::add()
      * @param int    $error_id ID of the error being set.
      * @param string $error_message Message to store with the error.
      * @return void
@@ -87679,7 +89877,7 @@ namespace {
      * Stores an array of success messages in a session variable.
      *
      * @since 3.1
-     * @uses EDD\Sessions\Handler::set()
+     * @uses EDD\Utils\Messages::add()
      * @param string $error_id      ID of the error being set.
      * @param string $error_message Message to store with the error.
      * @return void
@@ -87688,10 +89886,14 @@ namespace {
     {
     }
     /**
-     * Clears all stored errors.
+     * Clears all stored errors (error-type messages only).
+     *
+     * Success, info, and warn messages are left intact so that gateways and other
+     * code can clear errors from a previous attempt without wiping success notices
+     * (e.g. cart recovery restored).
      *
      * @since 1.0
-     * @uses EDD\Sessions\Handler::set()
+     * @uses EDD\Utils\Messages::clear_by_type()
      * @return void
      */
     function edd_clear_errors()
@@ -87701,8 +89903,9 @@ namespace {
      * Removes (unsets) a stored error
      *
      * @since 1.3.4
-     * @uses EDD\Sessions\Handler::set()
+     * @uses EDD\Utils\Messages::remove()
      * @param int $error_id ID of the error being set.
+     * @return void
      */
     function edd_unset_error($error_id)
     {
@@ -95101,7 +97304,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $string
+     * @param string $string The string to mask.
      *
      * @return string
      */
@@ -95115,7 +97318,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $domain
+     * @param string $domain The domain to mask.
      *
      * @return string
      */
@@ -95129,7 +97332,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param $email_address
+     * @param string $email_address The email address to mask.
      *
      * @return string
      */
@@ -95152,7 +97355,7 @@ namespace {
     function edd_log_terms_and_privacy_times($order_id = 0, $order_data = array())
     {
     }
-    /*
+    /**
      * Return an anonymized email address.
      *
      * While WP Core supports anonymizing email addresses with the wp_privacy_anonymize_data function,
@@ -95166,7 +97369,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address
+     * @param string $email_address The email address to anonymize.
      *
      * @return string
      */
@@ -95185,7 +97388,7 @@ namespace {
      *
      * Once completed, a note is left stating when the customer was anonymized.
      *
-     * @param int $customer_id Customer ID.
+     * @param int $customer_id The customer ID.
      *
      * @return array
      */
@@ -95203,7 +97406,7 @@ namespace {
      * - Address line 1 is made blank
      * - Address line 2 is made blank
      *
-     * @param int $order_id Order ID.
+     * @param int $order_id The order ID.
      * @return array
      */
     function _edd_anonymize_payment($order_id = 0)
@@ -95215,7 +97418,7 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to allow \EDD\Orders\Order objects to be passed.
      *
-     * @param EDD_Payment|\EDD\Orders\Order $order
+     * @param EDD_Payment|\EDD\Orders\Order $order The order object.
      *
      * @return string
      */
@@ -95229,7 +97432,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param $email_address
+     * @param string $email_address The email address to get the customer data for.
      *
      * @return EDD_Customer
      */
@@ -95243,7 +97446,7 @@ namespace {
      * @since 2.9.2
      *
      * @param array $exporters Privacy exporters.
-     * @return array
+     * @return array The available exporters.
      */
     function edd_register_privacy_exporters($exporters = array())
     {
@@ -95310,7 +97513,7 @@ namespace {
      * We are going to set an option of what customer we're currently deleting for what email address, so that after the
      * customer is anonymized we can still find them. Then we'll delete it.
      *
-     * @param array $erasers
+     * @param array $erasers The erasers to register.
      * @return array $erasers
      */
     function edd_register_privacy_eraser_customer_id_lookup($erasers = array())
@@ -95319,8 +97522,8 @@ namespace {
     /**
      * Lookup the customer ID for this email address so that we can use it later in the anonymization process.
      *
-     * @param     $email_address
-     * @param int $page
+     * @param string $email_address The email address to lookup the customer ID for.
+     * @param int    $page The page number.
      *
      * @return array
      */
@@ -95332,7 +97535,7 @@ namespace {
      *
      * We are now assumed done with our exporters, so we can go ahead and delete the customer ID we found for this eraser.
      *
-     * @param array $erasers
+     * @param array $erasers The erasers to register.
      * @return array $erasers
      */
     function edd_register_privacy_eraser_customer_id_removal($erasers = array())
@@ -95341,7 +97544,7 @@ namespace {
     /**
      * Delete the customer ID for this email address that was found in edd_privacy_prefetch_customer_id()
      *
-     * @param string $email_address
+     * @param string $email_address The email address to remove the customer ID for.
      * @param int    $page
      *
      * @return array
@@ -95356,8 +97559,8 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to use new query methods.
      *
-     * @param string $email_address The email address requesting anonymization/erasure
-     * @param int    $page          The page (not needed for this query)
+     * @param string $email_address The email address requesting anonymization/erasure.
+     * @param int    $page          The page (not needed for this query).
      *
      * @return array
      */
@@ -95369,7 +97572,7 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param array $erasers
+     * @param array $erasers The erasers to register.
      *
      * @return array
      */
@@ -95381,8 +97584,8 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param     $email_address
-     * @param int $page
+     * @param string $email_address The email address to anonymize the customer record for.
+     * @param int    $page The page number.
      *
      * @return array
      */
@@ -95392,8 +97595,8 @@ namespace {
     /**
      * Anonymize a payment record through the WP Core Privacy Data Eraser methods.
      *
-     * @param string $email_address
-     * @param int    $page
+     * @param string $email_address The email address to anonymize the payment record for.
+     * @param int    $page The page number.
      *
      * @return array
      */
@@ -95406,8 +97609,8 @@ namespace {
      * @since 2.9.2
      * @since 3.0 Updated to use new query methods.
      *
-     * @param string $email_address
-     * @param int    $page
+     * @param string $email_address The email address to anonymize the file download logs for.
+     * @param int    $page The page number.
      *
      * @return array
      */
@@ -95419,8 +97622,8 @@ namespace {
      *
      * @since 2.9.2
      *
-     * @param string $email_address
-     * @param int    $page
+     * @param string $email_address The email address to delete the API access logs for.
+     * @param int    $page The page number.
      *
      * @return array
      */
