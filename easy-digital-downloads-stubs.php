@@ -235,6 +235,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_API_Keys_Table Class
      *
@@ -397,6 +398,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Heartbeart Class
      *
@@ -1304,6 +1306,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Email_Summary_Admin Class.
      *
@@ -1350,6 +1353,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Batch_Import Class
      *
@@ -2359,6 +2363,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_API_Request_Log_Table List Table Class
      *
@@ -2397,6 +2402,7 @@ namespace {
          * Output Error Message column
          *
          * @since 1.5
+         * @since 3.6.9.1 Moved from thickbox to native dialog.
          * @param array $item Contains all the data of the log.
          * @return void
          */
@@ -2687,6 +2693,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Graph Class
      *
@@ -2795,6 +2802,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Graph Class
      *
@@ -2860,6 +2868,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Customers_Export Class
      *
@@ -2905,6 +2914,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Download_History_Export Class
      *
@@ -2948,6 +2958,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Payments_Export Class
      *
@@ -2991,6 +3002,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_File_Downloads_Log_Table Class
      *
@@ -3106,6 +3118,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Gateway_Error_Log_Table Class
      *
@@ -3139,10 +3152,21 @@ namespace {
          * Output Error Message Column
          *
          * @since 1.4.4
+         * @since 3.6.9.1 Moved from thickbox to native dialog.
          * @param array $item Contains all the data of the log.
          * @return void
          */
         public function column_message($item)
+        {
+        }
+        /**
+         * Output Error Column.
+         *
+         * @since 3.6.9.1
+         * @param array $item Contains all the data of the log.
+         * @return string
+         */
+        public function column_error($item)
         {
         }
         /**
@@ -3160,7 +3184,7 @@ namespace {
          * @since 1.4
          * @param array $log_query Query arguments.
          * @global object $edd_logs  EDD Logs Object.
-         * @return array $logs_data Array of all the Log entries
+         * @return array $logs_data Array of the log data for the current view.
          */
         public function get_logs($log_query = array())
         {
@@ -3171,6 +3195,16 @@ namespace {
          * @since 1.5
          */
         public function get_total($log_query = array())
+        {
+        }
+        /**
+         * Gets the log output for the current view
+         *
+         * @since 3.6.9.1
+         * @param array $item Log item.
+         * @return array $log_output Array of the log data for the current view.
+         */
+        private function get_log_output($item)
         {
         }
     }
@@ -3268,6 +3302,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Sales_Log_Table Class.
      *
@@ -3347,6 +3382,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Tools_Recount_All_Stats Class
      *
@@ -3415,6 +3451,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Tools_Recount_Stats Class
      *
@@ -3491,6 +3528,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Tools_Recount_Stats Class
      *
@@ -3681,6 +3719,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Tools_Recount_Store_Earnings Class
      *
@@ -3938,6 +3977,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_File_Download_Log_Migration Class
      *
@@ -4712,6 +4752,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_API_V1 Class
      *
@@ -4722,6 +4763,7 @@ namespace {
     class EDD_API_V1 extends \EDD_API
     {
     }
+    // @codeCoverageIgnore
     /**
      * EDD_API_V2 Class
      *
@@ -4775,6 +4817,7 @@ namespace {
     }
 }
 namespace EDD\Blocks\Downloads {
+    // @codeCoverageIgnore
     /**
      * Downloads query class.
      */
@@ -4806,6 +4849,7 @@ namespace EDD\Blocks\Downloads {
     }
 }
 namespace EDD\Blocks\Terms {
+    // @codeCoverageIgnore
     class Images
     {
         /**
@@ -4931,6 +4975,7 @@ namespace EDD\Blocks\Terms {
         {
         }
     }
+    // @codeCoverageIgnore
     class Query
     {
         /**
@@ -4954,6 +4999,7 @@ namespace EDD\Blocks\Terms {
     }
 }
 namespace {
+    // @codeCoverageIgnore
     /**
      * EDD_Cart Class
      *
@@ -6543,6 +6589,7 @@ namespace {
     }
 }
 namespace EDD\Database {
+    // @codeCoverageIgnore
     /**
      * The base class that all other database base classes extend.
      *
@@ -6704,6 +6751,7 @@ namespace EDD\Database {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Base class used for querying custom database tables.
      *
@@ -8080,6 +8128,7 @@ namespace {
     }
 }
 namespace EDD\Database {
+    // @codeCoverageIgnore
     /**
      * Base database row class.
      *
@@ -8146,6 +8195,7 @@ namespace EDD\Database\Rows {
     }
 }
 namespace {
+    // @codeCoverageIgnore
     /**
      * EDD_Customer Class.
      *
@@ -8671,6 +8721,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD DB base class
      *
@@ -8829,6 +8880,7 @@ namespace EDD\Database\Rows {
     }
 }
 namespace {
+    // @codeCoverageIgnore
     /**
      * EDD_Discount Class
      *
@@ -10444,6 +10496,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Register_Meta Class
      *
@@ -10576,6 +10629,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Roles Class
      *
@@ -10667,6 +10721,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Stats Class
      *
@@ -11479,6 +11534,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Email_Summary Class.
      *
@@ -11644,6 +11700,7 @@ namespace {
     }
 }
 namespace PayWithAmazon {
+    // @codeCoverageIgnore
     final class EDD_Amazon_Payments
     {
         private static $instance;
@@ -12007,6 +12064,7 @@ namespace PayWithAmazon {
         {
         }
     }
+    // @codeCoverageIgnore
     /* Interface class to showcase the public API methods for Pay With Amazon */
     interface ClientInterface
     {
@@ -14172,6 +14230,7 @@ namespace {
     interface EDD_Exception
     {
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Payment Class
      *
@@ -15340,6 +15399,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Payment_Stats Class.
      *
@@ -15457,6 +15517,7 @@ namespace {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Payments_Query Class.
      *
@@ -15701,6 +15762,7 @@ namespace EDD {
     }
 }
 namespace {
+    // @codeCoverageIgnore
     /*
     |--------------------------------------------------------------------------
     | FRONT-END WIDGETS
@@ -15904,6 +15966,7 @@ namespace EDD\API\WP {
     }
 }
 namespace EDD {
+    // @codeCoverageIgnore
     /**
      * Implements a base object to be extended by core objects.
      *
@@ -15977,6 +16040,7 @@ namespace EDD {
     }
 }
 namespace EDD\Adjustments {
+    // @codeCoverageIgnore
     /**
      * Adjustment Class.
      *
@@ -20214,6 +20278,7 @@ namespace EDD\Admin\Exports\Exporters {
     }
 }
 namespace EDD\Admin\Exports\Legacy {
+    // @codeCoverageIgnore
     /**
      * EDD_Export Class
      *
@@ -22785,6 +22850,7 @@ namespace EDD\Admin\Extensions {
     }
 }
 namespace EDD\Admin\Extensions\Legacy {
+    // @codeCoverageIgnore
     /**
      * Class AutoRegister
      *
@@ -23468,6 +23534,7 @@ namespace EDD\Admin\Menu {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class SecondaryNavigation
      *
@@ -23595,6 +23662,7 @@ namespace EDD\Admin\Menu {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class SubNav
      *
@@ -23924,6 +23992,7 @@ namespace EDD\Admin\Onboarding {
         {
         }
     }
+    // @codeCoverageIgnore
     trait Helpers
     {
         /**
@@ -23997,6 +24066,7 @@ namespace EDD\Admin\Onboarding {
     }
 }
 namespace EDD\Admin\Onboarding\Steps {
+    // @codeCoverageIgnore
     abstract class Step
     {
         use \EDD\Admin\Onboarding\Helpers;
@@ -24007,6 +24077,7 @@ namespace EDD\Admin\Onboarding\Steps {
          */
         abstract public function step_html();
     }
+    // @codeCoverageIgnore
     class BusinessInfo extends \EDD\Admin\Onboarding\Steps\Step
     {
         /**
@@ -24033,6 +24104,7 @@ namespace EDD\Admin\Onboarding\Steps {
         {
         }
     }
+    // @codeCoverageIgnore
     class PaymentMethods extends \EDD\Admin\Onboarding\Steps\Step
     {
         /**
@@ -24059,6 +24131,7 @@ namespace EDD\Admin\Onboarding\Steps {
         {
         }
     }
+    // @codeCoverageIgnore
     class Tools extends \EDD\Admin\Onboarding\Steps\Step
     {
         /**
@@ -24111,6 +24184,7 @@ namespace EDD\Admin\Onboarding {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Onboarding Class.
      *
@@ -24348,6 +24422,7 @@ namespace EDD\Admin\Onboarding {
     }
 }
 namespace EDD\Admin {
+    // @codeCoverageIgnore
     /**
      * Class for creating a vertically tabbed UI for reports.
      *
@@ -25321,6 +25396,7 @@ namespace EDD\Admin\Promos\Notices {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Empty Cart Behavior Upgrade Notice class.
      *
@@ -25918,6 +25994,7 @@ namespace EDD\Admin\Promos\Notices {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * VAT Handling Upgrade Notice class.
      *
@@ -26082,6 +26159,7 @@ namespace EDD\Admin\Promos {
     }
 }
 namespace EDD\Admin {
+    // @codeCoverageIgnore
     /**
      * Order_Items_Table Class.
      *
@@ -26386,6 +26464,7 @@ namespace EDD\Admin {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class for creating a vertically tabbed UI for reports.
      *
@@ -26518,6 +26597,7 @@ namespace EDD\Admin\Settings {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Empty Cart Behavior Settings Validation class.
      *
@@ -26806,6 +26886,7 @@ namespace EDD\Admin\Settings {
         {
         }
     }
+    // @codeCoverageIgnore
     class Register
     {
         /**
@@ -26945,6 +27026,7 @@ namespace EDD\Admin\Settings {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Sanitize class.
      *
@@ -26965,6 +27047,7 @@ namespace EDD\Admin\Settings {
     }
 }
 namespace EDD\Admin\Settings\Sanitize\Tabs {
+    // @codeCoverageIgnore
     /**
      * Base Section class for sanitization.
      *
@@ -27236,6 +27319,7 @@ namespace EDD\Admin\Settings\Sanitize\Tabs\Misc {
     }
 }
 namespace EDD\Admin\Settings\Sanitize\Tabs {
+    // @codeCoverageIgnore
     /**
      * Base Tab class for sanitization.
      *
@@ -27449,6 +27533,7 @@ namespace EDD\Admin\Settings {
     }
 }
 namespace EDD\Admin\Settings\Traits {
+    // @codeCoverageIgnore
     /**
      * Trait Helpers
      *
@@ -27489,6 +27574,7 @@ namespace EDD\Admin\Settings\Traits {
     }
 }
 namespace EDD\Admin\Settings\Tabs {
+    // @codeCoverageIgnore
     /**
      * Abstract class for a settings tab.
      *
@@ -27682,6 +27768,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Extensions settings tab class.
      *
@@ -27707,6 +27794,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway settings tab class.
      *
@@ -27824,6 +27912,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * General settings tab class.
      *
@@ -27857,6 +27946,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Licenses settings tab class.
      *
@@ -27882,6 +27972,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Marketing settings tab class.
      *
@@ -28028,6 +28119,7 @@ namespace EDD\Admin\Settings\Tabs {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Privacy settings tab class.
      *
@@ -28401,6 +28493,7 @@ namespace EDD\Admin\SiteHealth {
         {
         }
     }
+    // @codeCoverageIgnore
     abstract class Test
     {
         abstract public function get();
@@ -28427,6 +28520,7 @@ namespace EDD\Admin\SiteHealth {
         {
         }
     }
+    // @codeCoverageIgnore
     class Direct extends \EDD\Admin\SiteHealth\Test
     {
         public function get()
@@ -28618,6 +28712,7 @@ namespace EDD\Admin\SiteHealth {
         {
         }
     }
+    // @codeCoverageIgnore
     class Licenses extends \EDD\Admin\SiteHealth\Test
     {
         /**
@@ -29447,6 +29542,7 @@ namespace EDD\Admin\Tools {
     }
 }
 namespace EDD\Admin\Tools\Logs {
+    // @codeCoverageIgnore
     /**
      * Log Storage Calculator class.
      *
@@ -29956,6 +30052,7 @@ namespace EDD\Admin\Tools {
     }
 }
 namespace EDD\Admin\Upgrades\v3 {
+    // @codeCoverageIgnore
     /**
      * Base Class.
      *
@@ -30104,6 +30201,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Customer_Addresses Class.
      *
@@ -30140,6 +30238,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Customer_Email_Addresses Class.
      *
@@ -30176,6 +30275,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Customer_Notes Class.
      *
@@ -30352,6 +30452,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discounts Class.
      *
@@ -30388,6 +30489,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Logs Class.
      *
@@ -30424,6 +30526,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Order_Notes Class.
      *
@@ -30460,6 +30563,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Orders Class.
      *
@@ -30523,6 +30627,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Remove_Legacy_Data Class.
      *
@@ -30572,6 +30677,7 @@ namespace EDD\Admin\Upgrades\v3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Tax_Rates Class.
      *
@@ -30989,7 +31095,7 @@ namespace EDD\Admin\Utils {
     }
 }
 namespace EDD\Assets {
-    // @codingStandardsIgnoreLine
+    // @codeCoverageIgnore
     /**
      * Checkout scripts.
      */
@@ -31196,6 +31302,7 @@ namespace EDD\Blocks\Checkout\Elements {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Payment Details class.
      *
@@ -31263,6 +31370,7 @@ namespace EDD\Blocks\Checkout\Elements {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Purchase Form class.
      *
@@ -31405,6 +31513,7 @@ namespace EDD\Blocks {
     }
 }
 namespace EDD\CLI\Migration {
+    // @codeCoverageIgnore
     /**
      * CLI command to query for customers with missing email addresses after a migration.
      *
@@ -31421,6 +31530,7 @@ namespace EDD\CLI\Migration {
         {
         }
     }
+    // @codeCoverageIgnore
     class Discounts
     {
         /**
@@ -31438,6 +31548,7 @@ namespace EDD\CLI\Migration {
     }
 }
 namespace EDD\EventManagement {
+    // @codeCoverageIgnore
     /**
      * Class Subscriber
      *
@@ -32126,6 +32237,7 @@ namespace EDD\Captcha {
     }
 }
 namespace EDD\Cart {
+    // @codeCoverageIgnore
     /**
      * Cart Data class
      *
@@ -33716,6 +33828,7 @@ namespace EDD\Compat {
     }
 }
 namespace EDD\Compatibility\Hosts {
+    // @codeCoverageIgnore
     /**
      * Host compatibility
      *
@@ -33759,6 +33872,7 @@ namespace EDD\Compatibility\Hosts {
          */
         abstract protected function register_events();
     }
+    // @codeCoverageIgnore
     /**
      * Pantheon compatibility
      *
@@ -33796,6 +33910,7 @@ namespace EDD\Compatibility\Hosts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * WPEngine compatibility
      *
@@ -33912,6 +34027,7 @@ namespace EDD\Compatibility {
     }
 }
 namespace EDD\Compatibility\Plugins {
+    // @codeCoverageIgnore
     /**
      * Plugin compatibility
      *
@@ -33998,6 +34114,7 @@ namespace EDD\Compatibility\Plugins {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Wordfence compatibility
      *
@@ -34036,6 +34153,7 @@ namespace EDD\Compatibility\Plugins {
     }
 }
 namespace EDD\Compatibility\WP {
+    // @codeCoverageIgnore
     /**
      * WordPress performance compatibility
      *
@@ -34263,6 +34381,7 @@ namespace EDD {
     }
 }
 namespace EDD\Cron\Components {
+    // @codeCoverageIgnore
     /**
      * Component
      *
@@ -34327,6 +34446,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Cart Class for Cron Events.
      *
@@ -34361,6 +34481,7 @@ namespace EDD\Cron\Components {
     }
 }
 namespace EDD\Cron\Traits {
+    // @codeCoverageIgnore
     /**
      * Clear Trait
      */
@@ -34382,6 +34503,7 @@ namespace EDD\Cron\Traits {
     }
 }
 namespace EDD\Cron\Components {
+    // @codeCoverageIgnore
     /**
      * EmailSummaries Class.
      *
@@ -34472,6 +34594,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EmailSummariesBlurbs Class.
      *
@@ -34543,6 +34666,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Exports Class
      *
@@ -34699,6 +34823,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Notifications Class
      *
@@ -34731,6 +34856,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Orders Class
      *
@@ -34763,6 +34889,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Passes Class
      *
@@ -34823,6 +34950,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Store Class for Cron Events.
      *
@@ -34855,6 +34983,7 @@ namespace EDD\Cron\Components {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Stripe Class
      *
@@ -34897,6 +35026,7 @@ namespace EDD\Cron\Components {
     }
 }
 namespace EDD\Cron\Traits {
+    // @codeCoverageIgnore
     /**
      * NextScheduled Trait
      */
@@ -34922,6 +35052,7 @@ namespace EDD\Cron\Traits {
     }
 }
 namespace EDD\Cron\Events {
+    // @codeCoverageIgnore
     /**
      * Event Class
      *
@@ -35060,6 +35191,7 @@ namespace EDD\Cron\Events {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Daily Events
      *
@@ -35093,6 +35225,7 @@ namespace EDD\Cron\Events {
          */
         protected $schedule = 'daily';
     }
+    // @codeCoverageIgnore
     /**
      * LogPruning Event Class
      *
@@ -35196,6 +35329,7 @@ namespace EDD\Cron\Events {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Session Cleanup Event
      *
@@ -35338,6 +35472,7 @@ namespace EDD\Cron\Events {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Weekly Events
      *
@@ -35371,6 +35506,7 @@ namespace EDD\Cron\Events {
          */
         protected $schedule = 'hourly';
     }
+    // @codeCoverageIgnore
     /**
      * Weekly Events
      *
@@ -35564,6 +35700,7 @@ namespace EDD\Cron {
     }
 }
 namespace EDD\Cron\Schedulers {
+    // @codeCoverageIgnore
     /**
      * Scheduler Interface
      *
@@ -35838,6 +35975,7 @@ namespace EDD\Cron\Schedulers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Handler Class
      *
@@ -35932,6 +36070,7 @@ namespace EDD\Cron\Schedulers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * WP-Cron Scheduler Class
      *
@@ -36078,6 +36217,7 @@ namespace EDD\Cron\Schedulers {
     }
 }
 namespace EDD\Cron\Schedules {
+    // @codeCoverageIgnore
     /**
      * Schedule
      *
@@ -36143,6 +36283,7 @@ namespace EDD\Cron\Schedules {
          */
         abstract protected function get_display_name(): string;
     }
+    // @codeCoverageIgnore
     /**
      * Session Cleanup Schedule
      */
@@ -36377,6 +36518,7 @@ namespace EDD\Currency {
     }
 }
 namespace EDD\Customers {
+    // @codeCoverageIgnore
     /**
      * Customer Address Class.
      *
@@ -36512,6 +36654,7 @@ namespace EDD\Customers {
          */
         protected $is_primary;
     }
+    // @codeCoverageIgnore
     /**
      * Customer Email Address Class.
      *
@@ -36642,6 +36785,7 @@ namespace EDD\Customers {
     }
 }
 namespace EDD\Database {
+    // @codeCoverageIgnore
     /**
      * Base class used for each column for a custom table.
      *
@@ -37409,6 +37553,7 @@ namespace EDD\Database\Queries {
     class Meta extends \WP_Meta_Query
     {
     }
+    // @codeCoverageIgnore
     /**
      * Class used for generating SQL for compare clauses.
      *
@@ -40294,6 +40439,7 @@ namespace EDD\Database\Rows {
     }
 }
 namespace EDD\Database {
+    // @codeCoverageIgnore
     /**
      * A base database table schema class, which houses the collection of columns
      * that a table is made out of.
@@ -41329,6 +41475,7 @@ namespace EDD\Database\Schemas {
     }
 }
 namespace EDD\Database {
+    // @codeCoverageIgnore
     /**
      * A base database table class, which facilitates the creation of (and schema
      * changes to) individual database tables.
@@ -43524,6 +43671,7 @@ namespace EDD\Deprecated {
     }
 }
 namespace EDD\Discounts {
+    // @codeCoverageIgnore
     /**
      * Class ItemAmount.
      *
@@ -43743,6 +43891,7 @@ namespace EDD\Discounts {
     }
 }
 namespace EDD\Downloads {
+    // @codeCoverageIgnore
     /**
      * Downloads process class
      *
@@ -43773,6 +43922,7 @@ namespace EDD\Downloads {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Downloads query class.
      */
@@ -43900,6 +44050,7 @@ namespace EDD\Downloads {
         {
         }
     }
+    // @codeCoverageIgnore
     class Recalculations
     {
         /**
@@ -44046,6 +44197,7 @@ namespace EDD\Downloads {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Service
      *
@@ -44781,6 +44933,7 @@ namespace EDD\Elementor\Widgets\Config\Traits {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Common options trait for sharing helper methods.
      *
@@ -44836,6 +44989,7 @@ namespace EDD\Elementor\Widgets\Config\Traits {
     }
 }
 namespace EDD\Elementor\Widgets\Config {
+    // @codeCoverageIgnore
     /**
      * Abstract base class for control configurations.
      *
@@ -47694,6 +47848,7 @@ namespace EDD\Emails\Templates {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class PasswordReset
      * Note that this email is not registered by default. It is only registered if the login page is set.
@@ -50166,6 +50321,7 @@ namespace EDD\Extensions {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Handler Class
      */
@@ -53070,7 +53226,7 @@ namespace EDD\Forms\User {
     }
 }
 namespace EDD\Gateways {
-    // Exit if accessed directly.
+    // @codeCoverageIgnore
     /**
      * Abstract class for registered gateways.
      *
@@ -56670,6 +56826,7 @@ namespace EDD\Gateways\PayPal\V3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * MerchantStatus class.
      *
@@ -56908,6 +57065,7 @@ namespace EDD\Gateways\PayPal\V3 {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Resolves buyer identity and issues auth cookies for REST-based PayPal flows.
      *
@@ -57301,6 +57459,7 @@ namespace EDD\Gateways\PayPal\Webhooks\Events {
         {
         }
     }
+    // @codeCoverageIgnore
     class Customer_Dispute_Created extends \EDD\Gateways\PayPal\Webhooks\Events\Webhook_Event
     {
         /**
@@ -58283,6 +58442,7 @@ namespace EDD\Gateways\Square\Checkout\Transactions {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Subscription transaction class for the Square integration.
      *
@@ -58864,6 +59024,7 @@ namespace EDD\Gateways\Square\Helpers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Currency helper for the Square integration.
      *
@@ -58970,6 +59131,7 @@ namespace EDD\Gateways\Square\Helpers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Error message helper for the Square integration.
      *
@@ -59000,6 +59162,7 @@ namespace EDD\Gateways\Square\Helpers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Mode helper for the Square gateway.
      *
@@ -59444,6 +59607,7 @@ namespace EDD\Gateways\Square\Webhooks\Events {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * The Square Refund Updated event.
      */
@@ -59955,6 +60119,7 @@ namespace EDD\Gateways\Stripe\Admin {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class to handle the admin notifications.
      *
@@ -60838,6 +61003,7 @@ namespace EDD\Gateways\Stripe\Checkout {
     }
 }
 namespace EDD\Gateways\Stripe {
+    // @codeCoverageIgnore
     /**
      * The class to manage the Stripe Connect properties.
      */
@@ -60948,6 +61114,7 @@ namespace EDD\Gateways\Stripe {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class to handle the Stripe license data.
      *
@@ -63267,6 +63434,7 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
     }
 }
 namespace EDD\Gateways\Stripe {
+    // @codeCoverageIgnore
     /**
      * Class to handle the Stripe statement descriptor.
      *
@@ -63838,6 +64006,7 @@ namespace EDD\Globals {
     }
 }
 namespace EDD\HTML {
+    // @codeCoverageIgnore
     /**
      * Class Base
      *
@@ -64041,6 +64210,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Checkbox
      *
@@ -64068,6 +64238,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Checkbox
      *
@@ -64113,6 +64284,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Select
      *
@@ -64196,6 +64368,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class DiscountSelect
      *
@@ -64251,6 +64424,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Elements Class
      *
@@ -64559,6 +64733,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Number
      *
@@ -64629,6 +64804,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class ProductSelect
      *
@@ -64800,6 +64976,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Text
      *
@@ -64836,6 +65013,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Textarea
      *
@@ -64863,6 +65041,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Tooltip
      *
@@ -64927,6 +65106,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class TimelineTooltip
      *
@@ -65014,6 +65194,7 @@ namespace EDD\HTML {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class UserSelect
      *
@@ -65096,6 +65277,7 @@ namespace EDD\Integrations {
          */
         public function subscribe();
     }
+    // @codeCoverageIgnore
     /**
      * Elementor class
      *
@@ -65183,6 +65365,7 @@ namespace EDD\Integrations {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Handles registering the `easydigitaldownloads` username in the WPCode snippets library.
      *
@@ -65471,6 +65654,7 @@ namespace EDD\Licensing {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class to handle and normalize the license data.
      *
@@ -66645,6 +66829,7 @@ namespace EDD {
     }
 }
 namespace EDD\Logs {
+    // @codeCoverageIgnore
     /**
      * API Request Log Class.
      *
@@ -66753,6 +66938,7 @@ namespace EDD\Logs {
          */
         protected $date_modified;
     }
+    // @codeCoverageIgnore
     /**
      * EDD_File_Download_Log Class.
      *
@@ -66852,6 +67038,7 @@ namespace EDD\Logs {
          */
         protected $date_modified;
     }
+    // @codeCoverageIgnore
     /**
      * Log Class.
      *
@@ -67330,6 +67517,7 @@ namespace EDD\Models {
     }
 }
 namespace EDD\Notes {
+    // @codeCoverageIgnore
     /**
      * Note Class.
      *
@@ -68148,6 +68336,7 @@ namespace EDD\Orders {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Order Address Class.
      *
@@ -68283,6 +68472,7 @@ namespace EDD\Orders {
          */
         protected $date_modified;
     }
+    // @codeCoverageIgnore
     /**
      * Order_Adjustment Class.
      *
@@ -68416,6 +68606,7 @@ namespace EDD\Orders {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Order_Item Class.
      *
@@ -68629,6 +68820,7 @@ namespace EDD\Orders {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Order Transaction Class.
      *
@@ -68722,6 +68914,7 @@ namespace EDD\Orders {
     }
 }
 namespace EDD\Orders\Refunds {
+    // @codeCoverageIgnore
     /**
      * Class FormParser
      *
@@ -68756,6 +68949,7 @@ namespace EDD\Orders\Refunds {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class to build a number for a refund.
      *
@@ -69125,6 +69319,7 @@ namespace EDD\Profiler\Traits {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Settings trait.
      *
@@ -69201,6 +69396,7 @@ namespace EDD\Profiler\Traits {
     }
 }
 namespace EDD\Profiler {
+    // @codeCoverageIgnore
     /**
      * Profiler Class
      *
@@ -69331,6 +69527,7 @@ namespace EDD\Profiler {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Cart Profiler Class
      *
@@ -69389,6 +69586,7 @@ namespace EDD\Profiler {
     }
 }
 namespace EDD\REST\Controllers {
+    // @codeCoverageIgnore
     /**
      * Bounce Webhook controller class.
      *
@@ -69593,6 +69791,7 @@ namespace EDD\REST\Controllers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * LogPruning Controller class
      *
@@ -70123,6 +70322,7 @@ namespace EDD\REST {
     }
 }
 namespace EDD\Reports\Abstracts {
+    // @codeCoverageIgnore
     /**
      * Abstract base class for multi-dataset EDD Reports Chart builders.
      *
@@ -72261,6 +72461,7 @@ namespace EDD\Reports\Data {
     }
 }
 namespace EDD\Reports\Data\File_Downloads {
+    // @codeCoverageIgnore
     /**
      * Top_Five_Most_Downloaded_List_Table class.
      *
@@ -73610,6 +73811,7 @@ namespace EDD\Reports\Endpoints {
     }
 }
 namespace EDD\Reports\Endpoints\Traits {
+    // @codeCoverageIgnore
     /**
      * Trait Colors
      *
@@ -74069,6 +74271,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Earnings Chart class.
      *
@@ -74113,6 +74316,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discounts Chart class.
      *
@@ -74265,6 +74469,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Earnings Chart class.
      *
@@ -74302,6 +74507,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * File Downloads Chart class.
      *
@@ -74355,6 +74561,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Earnings Chart class.
      *
@@ -74392,6 +74599,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Sales Chart class.
      *
@@ -74436,6 +74644,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refund Revenue Chart class.
      *
@@ -74494,6 +74703,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refund Revenue Chart class.
      *
@@ -74547,6 +74757,7 @@ namespace EDD\Reports\Endpoints\Charts {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Sales Chart class.
      *
@@ -74845,6 +75056,7 @@ namespace EDD\Reports\Endpoints\Pies {
     }
 }
 namespace EDD\Reports\Endpoints\Pies\Traits {
+    // @codeCoverageIgnore
     /**
      * Trait DownloadVariations
      *
@@ -74893,6 +75105,7 @@ namespace EDD\Reports\Endpoints\Pies\Traits {
     }
 }
 namespace EDD\Reports\Endpoints\Pies {
+    // @codeCoverageIgnore
     /**
      * Download Earnings by Variations Pie Chart class.
      *
@@ -74947,6 +75160,7 @@ namespace EDD\Reports\Endpoints\Pies {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Sales Breakdown Pie Chart class.
      *
@@ -75003,6 +75217,7 @@ namespace EDD\Reports\Endpoints\Pies {
     }
 }
 namespace EDD\Reports\Endpoints\Pies\Traits {
+    // @codeCoverageIgnore
     /**
      * Trait Gateway
      *
@@ -75044,6 +75259,7 @@ namespace EDD\Reports\Endpoints\Pies\Traits {
     }
 }
 namespace EDD\Reports\Endpoints\Pies {
+    // @codeCoverageIgnore
     /**
      * Gateway Earnings Breakdown Pie Chart class.
      *
@@ -75089,6 +75305,7 @@ namespace EDD\Reports\Endpoints\Pies {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Sales Breakdown Pie Chart class.
      *
@@ -75651,6 +75868,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Average Tile class.
      *
@@ -75688,6 +75906,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Average Refund Amount Tile class.
      *
@@ -75725,6 +75944,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Average Refund Time Tile class.
      *
@@ -75762,6 +75982,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Average Sales/Earnings Tile class.
      *
@@ -75808,6 +76029,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Customer Average Tile class.
      *
@@ -75845,6 +76067,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Customer Average Tile class.
      *
@@ -75882,6 +76105,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * New Customers Tile class.
      *
@@ -75919,6 +76143,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discount Average Tile class.
      *
@@ -75956,6 +76181,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Most Popular Discount Tile class.
      *
@@ -75993,6 +76219,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discount Ratio Tile class.
      *
@@ -76030,6 +76257,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discount Savings Tile class.
      *
@@ -76067,6 +76295,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discount Usage Tile class.
      *
@@ -76104,6 +76333,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Discounts Used Tile class.
      *
@@ -76141,6 +76371,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Download Sales/Earnings Tile class.
      *
@@ -76178,6 +76409,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Earnings Tile class.
      *
@@ -76261,6 +76493,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * File Downloads Customer Tile class.
      *
@@ -76298,6 +76531,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * File Downloads Order Tile class.
      *
@@ -76335,6 +76569,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Most Downloaded Product Tile class.
      *
@@ -76372,6 +76607,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Fully Refunded Order Count Tile class.
      *
@@ -76409,6 +76645,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Fully Refunded Order Item Count Tile class.
      *
@@ -76446,6 +76683,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Average Gateway Earnings Tile class.
      *
@@ -76492,6 +76730,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Earnings Tile class.
      *
@@ -76529,6 +76768,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Refunds Tile class.
      *
@@ -76566,6 +76806,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Gateway Sales Tile class.
      *
@@ -76603,6 +76844,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Most Valuable Download Tile class.
      *
@@ -76640,6 +76882,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refund Amount Tile class.
      *
@@ -76677,6 +76920,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refund Count Tile class.
      *
@@ -76714,6 +76958,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refund Rate Tile class.
      *
@@ -76759,6 +77004,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Refunded Amount Tile class.
      *
@@ -76796,6 +77042,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Sales Tile class.
      *
@@ -76833,6 +77080,7 @@ namespace EDD\Reports\Endpoints\Tiles {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Tax Collected Tile class.
      *
@@ -77519,6 +77767,7 @@ namespace EDD\Sessions {
     }
 }
 namespace EDD\Sessions\Traits {
+    // @codeCoverageIgnore
     trait Legacy
     {
         /**
@@ -77592,6 +77841,7 @@ namespace EDD\Sessions\Traits {
         {
         }
     }
+    // @codeCoverageIgnore
     trait Cookie
     {
         /**
@@ -77684,6 +77934,7 @@ namespace EDD\Sessions\Traits {
     }
 }
 namespace EDD\Sessions {
+    // @codeCoverageIgnore
     /**
      * Handler Class
      *
@@ -77917,6 +78168,7 @@ namespace EDD\Sessions {
     }
 }
 namespace EDD\Sessions\Managers {
+    // @codeCoverageIgnore
     /**
      * Manager Class
      *
@@ -78130,6 +78382,7 @@ namespace EDD\Sessions\Managers {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * PHP Session Manager
      *
@@ -78312,6 +78565,7 @@ namespace EDD\Sessions {
     }
 }
 namespace EDD\Settings\Sanitize\Types {
+    // @codeCoverageIgnore
     /**
      * Base Type class for sanitizing a EDD setting type.
      *
@@ -78329,6 +78583,7 @@ namespace EDD\Settings\Sanitize\Types {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Sanitizes the Rich Editor setting type.
      *
@@ -78358,6 +78613,7 @@ namespace EDD\Settings\Sanitize\Types {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Sanitizes the text setting type.
      *
@@ -79635,6 +79891,7 @@ namespace EDD {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * EDD_Structured_Data Class.
      *
@@ -79831,6 +80088,7 @@ namespace EDD\Taxes {
     }
 }
 namespace EDD\Telemetry\Traits {
+    // @codeCoverageIgnore
     /**
      * Trait Anonymize
      *
@@ -79880,6 +80138,7 @@ namespace EDD\Telemetry\Traits {
     }
 }
 namespace EDD\Telemetry {
+    // @codeCoverageIgnore
     /**
      * Class Data
      *
@@ -79907,6 +80166,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Environment
      *
@@ -79974,6 +80234,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Integrations
      *
@@ -80068,6 +80329,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Orders
      *
@@ -80160,6 +80422,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Products
      *
@@ -80186,6 +80449,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Settings
      *
@@ -80292,6 +80556,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Class Stats
      *
@@ -80383,6 +80648,7 @@ namespace EDD\Telemetry {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Usage tracking
      *
@@ -81137,6 +81403,7 @@ namespace EDD\Upgrades\Orders {
     }
 }
 namespace EDD\Upgrades\Utilities {
+    // @codeCoverageIgnore
     /**
      * Migration Check Class.
      *
@@ -82153,6 +82420,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Colors utility class.
      *
@@ -82214,6 +82482,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Utility class to help convert and reformat data.
      *
@@ -82236,6 +82505,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Cookies Class
      *
@@ -82462,6 +82732,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Encryption class.
      *
@@ -83004,6 +83275,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     class ListHandler
     {
         /**
@@ -83250,6 +83522,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Modal class.
      *
@@ -83427,6 +83700,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     class ProgressBar
     {
         /**
@@ -83701,6 +83975,7 @@ namespace EDD\Utils {
         {
         }
     }
+    // @codeCoverageIgnore
     /**
      * Request class
      *
@@ -84053,6 +84328,20 @@ namespace EDD\Utils\Validators\FileType {
         {
         }
         /**
+         * Reduces a filename to a single extension.
+         *
+         * Folds any inner extensions into the base, so "shell.php.csv" becomes
+         * "shell-php.csv". Use after is_valid() has confirmed the extension.
+         *
+         * @since 3.6.9.1
+         *
+         * @param string $filename The client-supplied filename.
+         * @return string The sanitized filename.
+         */
+        public function sanitize_filename(string $filename): string
+        {
+        }
+        /**
          * Determines whether the file's contents match an accepted MIME type.
          *
          * @since 3.6.9
@@ -84097,9 +84386,13 @@ namespace EDD\Utils\Validators\FileType {
          */
         const MIME_TYPES = array('text/csv', 'text/comma-separated-values', 'text/plain', 'text/anytext', 'application/csv', 'application/excel', 'application/vnd.ms-excel', 'application/vnd.msexcel');
         /**
-         * Accepted filename extension for CSV files.
+         * Accepted filename extensions for delimited-text imports.
+         *
+         * Returned as an `extension => mime` map for wp_check_filetype(). Alongside
+         * comma-separated (.csv), the plain-text (.txt) variant is accepted.
          *
          * @since 3.6.9
+         * @since 3.6.9.1 Added the txt extension.
          *
          * @return array
          */
@@ -84378,6 +84671,7 @@ namespace EDD\Blocks\Admin\Notices {
  * @since 2.0
  */
 namespace EDD\Blocks\Recaptcha\Settings {
+    // @codeCoverageIgnore
     /**
      * Register the settings for reCAPTCHA keys.
      *
@@ -84653,6 +84947,7 @@ namespace EDD\Blocks\Checkout {
  * @since 2.0
  */
 namespace EDD\Blocks\Checkout\Forms {
+    // @codeCoverageIgnore
     /**
      * Outputs the purchase form for checkout.
      *
@@ -84724,6 +85019,7 @@ namespace EDD\Blocks\Checkout\Forms {
  * @since 2.0
  */
 namespace EDD\Blocks\Checkout\Functions {
+    // @codeCoverageIgnore
     /**
      * Whether the checkout page is using blocks.
      *
@@ -84764,6 +85060,7 @@ namespace EDD\Blocks\Checkout\Functions {
  * @since 2.0
  */
 namespace EDD\Blocks\Checkout\Gateways {
+    // @codeCoverageIgnore
     /**
      * Gets the accepted payment icons.
      *
@@ -85136,6 +85433,7 @@ namespace EDD\Blocks\Functions {
  * @since 2.0
  */
 namespace EDD\Blocks\Orders\Functions {
+    // @codeCoverageIgnore
     /**
      * Gets the order details/downloads link.
      * Also pulls data from the original order history row.
@@ -87058,6 +87356,7 @@ namespace EDD\Reports {
     }
 }
 namespace {
+    // @codeCoverageIgnore
     /**
      * Hooks EDD actions, when present in the $_GET superglobal. Every edd_action
      * present in $_GET is called using WordPress's do_action function. These
@@ -87299,6 +87598,7 @@ namespace {
     function edd_count_adjustments($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add meta data field to a adjustment.
      *
@@ -87472,6 +87772,7 @@ namespace {
     function edd_admin_print_payment_icons()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Maybe add the store status to the WordPress admin bar
      *
@@ -88234,6 +88535,7 @@ namespace {
     function edd_log_views()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get the admin pages.
      *
@@ -88378,6 +88680,7 @@ namespace {
     function edd_remove_customer_address()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Remove the admin bar edit profile link when the user is not verified
      *
@@ -88588,6 +88891,7 @@ namespace {
     function edd_verify_customer_notice($customer)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Registers the dashboard widgets
      *
@@ -88639,6 +88943,7 @@ namespace {
     function edd_dashboard_at_a_glance_widget($items)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Adds the Contextual Help for the Discount Codes Page
      *
@@ -88745,6 +89050,7 @@ namespace {
     function edd_discounts_page_content()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Adds the Contextual Help for the main Downloads page
      *
@@ -88754,6 +89060,7 @@ namespace {
     function edd_downloads_contextual_help()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Download Columns
      *
@@ -88865,6 +89172,7 @@ namespace {
     function edd_price_save_quick_edit($post_id)
     {
     }
+    // @codeCoverageIgnore
     /** All Downloads *************************************************************/
     /**
      * Returns default EDD Download meta fields.
@@ -89078,6 +89386,7 @@ namespace {
     function edd_render_product_notes_field($post_id, $download = \null)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a hook allowing extensions to register a hook on the batch export process
      *
@@ -89172,6 +89481,7 @@ namespace {
     function edd_get_importer_accepted_classes()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a note via AJAX.
      *
@@ -89256,6 +89566,7 @@ namespace {
     function edd_admin_get_notes_pagination($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Handle order item changes
      *
@@ -89367,6 +89678,7 @@ namespace {
     function edd_add_order_page_content()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Payments contextual help.
      *
@@ -89592,6 +89904,7 @@ namespace {
     function edd_view_order_details_title($admin_title, $title)
     {
     }
+    // @codeCoverageIgnore
     /** Header ******************************************************************/
     /**
      * Outputs Refund header region/notice of Refund vs. Order.
@@ -89644,6 +89957,7 @@ namespace {
     function edd_refund_details_related_refunds($refund)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Outputs the View Refund page.
      *
@@ -89652,6 +89966,7 @@ namespace {
     function edd_view_refund_page_content()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Plugins row action links
      *
@@ -89671,6 +89986,7 @@ namespace {
     function edd_plugin_list_styles()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Reports contextual help.
      *
@@ -89730,6 +90046,7 @@ namespace {
     function edd_do_ajax_export()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Show report graphs
      *
@@ -89777,6 +90094,7 @@ namespace {
     function edd_run_refresh_reports_transients($data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * The callback function which fetches the data for the overview_sales_earnings_chart reports endpoint.
      *
@@ -89815,6 +90133,7 @@ namespace {
     function edd_overview_refunds_chart()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Load a report early in the admin-area.
      *
@@ -90011,6 +90330,7 @@ namespace {
     function edd_show_earnings_by_taxonomy_report($data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Settings contextual help.
      *
@@ -90040,6 +90360,7 @@ namespace {
     function edd_license_settings_help_text()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get an option
      *
@@ -90638,6 +90959,7 @@ namespace {
     function edd_is_test_mode_forced()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Adds an "Insert Download" button above the TinyMCE Editor on add/edit screens.
      *
@@ -90759,6 +91081,7 @@ namespace {
     function edd_tools_tab_logs()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Register the recount batch processor
      * @since  2.5
@@ -91100,6 +91423,7 @@ namespace {
     function edd_v30_is_migration_complete()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Render Upgrades Screen
      *
@@ -91109,6 +91433,7 @@ namespace {
     function edd_upgrades_screen()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Handles the 3.0 upgrade process.
      *
@@ -91427,6 +91752,7 @@ namespace {
     function edd_admin_order_get_item_amounts()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Register Endpoints for for adding/removing items from the cart.
      *
@@ -91508,6 +91834,7 @@ namespace {
     function edd_process_cart_restore($data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get the contents of the cart
      *
@@ -92016,6 +92343,7 @@ namespace {
     function edd_generate_cart_token()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Builds the Cart by providing hooks and calling all the hooks for the Cart
      *
@@ -92365,6 +92693,7 @@ namespace {
     function edd_get_receipt_page_uri($order_id)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get Checkout Form
      *
@@ -92666,6 +92995,7 @@ namespace {
     function edd_uninstall_component_database_tables()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get Shop Base Country
      *
@@ -93019,6 +93349,7 @@ namespace {
     function edd_get_currency_name($code = 'USD')
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a customer.
      *
@@ -93824,6 +94155,7 @@ namespace {
     function edd_get_utc_date_string($date_string = 'now', $format = 'Y-m-d H:i:s')
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get Download Sales Log
      *
@@ -95790,6 +96122,7 @@ namespace {
     function edd_validate_discount($discount_id = 0, $download_ids = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Retrieve a download by a given field.
      *
@@ -96658,6 +96991,7 @@ namespace {
     function edd_delete_email_meta_by_key($meta_key)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get registered emails.
      *
@@ -96721,6 +97055,7 @@ namespace {
     function edd_email_tags_inserter_thickbox_content($context = '', $recipient = '')
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an email tag.
      *
@@ -97057,6 +97392,7 @@ namespace {
     function edd_get_email_names($user_info, $payment = \false)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Gets all the email templates that have been registerd. The list is extendable
      * and more templates can be added.
@@ -97232,6 +97568,7 @@ namespace {
     function edd_die($message = '', $title = '', $status = 400)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Sanitize a numeric value.
      *
@@ -97354,6 +97691,7 @@ namespace {
     function edd_get_address_type_label($address_type = 'billing')
     {
     }
+    // @codeCoverageIgnore
     /**
      * Processes gateway select on checkout. Only for users without ajax / javascript
      *
@@ -98159,6 +98497,7 @@ namespace {
     function edds_stripe_connect_admin_notices_print()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Adds a Stripe Connect site health test.
      *
@@ -100165,6 +100504,7 @@ namespace {
     function edds_modal($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Install
      *
@@ -100264,6 +100604,7 @@ namespace {
     function edd_install_roles_on_network()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an API request log.
      *
@@ -100394,6 +100735,7 @@ namespace {
     function edd_count_api_request_logs($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add meta data field to an api request log.
      *
@@ -100473,6 +100815,7 @@ namespace {
     function edd_delete_api_request_log_meta_by_key($meta_key)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a file download log.
      *
@@ -100607,6 +100950,7 @@ namespace {
     function edd_count_file_download_logs($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add meta data field to a file download log.
      *
@@ -100725,6 +101069,7 @@ namespace {
     function edd_debug_log_exception($exception)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a log.
      *
@@ -100857,6 +101202,7 @@ namespace {
     function edd_count_logs($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add meta data field to a log.
      *
@@ -100936,6 +101282,7 @@ namespace {
     function edd_delete_log_meta_by_key($meta_key)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Fetch allowed MIME types.
      *
@@ -100947,6 +101294,7 @@ namespace {
     function edd_allowed_mime_types($existing_mimes = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Return the base admin-area URL.
      *
@@ -101804,6 +102152,7 @@ namespace {
     function edd_get_assets_dir($path = ''): string
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add a note.
      *
@@ -101932,6 +102281,7 @@ namespace {
     function edd_count_notes($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add meta data field to a note.
      *
@@ -102011,6 +102361,7 @@ namespace {
     function edd_delete_note_meta_by_key($meta_key)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Manually add an order.
      *
@@ -102022,6 +102373,7 @@ namespace {
     function edd_add_manual_order($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an order address.
      *
@@ -102151,6 +102503,7 @@ namespace {
     function edd_count_order_addresses($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an order adjustment.
      *
@@ -102313,6 +102666,7 @@ namespace {
     function edd_get_order_adjustment_counts($args = array())
     {
     }
+    // @codeCoverageIgnore
     /**
      * Records an order dispute by changing the order status to on hold
      * and adding the dispute ID and reason to the order meta.
@@ -102356,6 +102710,7 @@ namespace {
     function edd_get_order_hold_reason_label($reason)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an order item.
      *
@@ -102526,6 +102881,7 @@ namespace {
     function edd_destroy_order_item($order_item_id)
     {
     }
+    // @codeCoverageIgnore
     /** Orders ********************************************************************/
     /**
      * Add meta data field to an order.
@@ -102778,6 +103134,7 @@ namespace {
     function edd_add_extra_fee_order_adjustment_meta($adjustment_id, $fee)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an order.
      *
@@ -103077,6 +103434,7 @@ namespace {
     function edd_set_order_number()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Check order can be refunded.
      *
@@ -103256,6 +103614,7 @@ namespace {
     function edd_get_deliverable_order_item_statuses()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add an order transaction.
      *
@@ -103456,6 +103815,7 @@ namespace {
     function edd_register_default_order_types($name = '')
     {
     }
+    // @codeCoverageIgnore
     /**
      * Add "Order" to the "+ New" admin menu bar.
      *
@@ -103519,6 +103879,7 @@ namespace {
     function edd_recovery_verify_logged_in($verified_data, $post_data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Retrieves an instance of EDD_Payment for a specified ID.
      *
@@ -104316,6 +104677,7 @@ namespace {
     function _edd_needs_v3_migration()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Disables admin sorting of Post Types Order
      *
@@ -104432,6 +104794,7 @@ namespace {
     function edd_rsssl_remove_mixed_content_filter()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Registers and sets up the Downloads custom post type
      *
@@ -104930,6 +105293,7 @@ namespace {
     function edd_privacy_api_access_logs_eraser($email_address, $page = 1)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Process Download
      *
@@ -105090,6 +105454,7 @@ namespace {
     function edd_redirect_file_download_after_login()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Process Purchase Form
      *
@@ -105316,6 +105681,7 @@ namespace {
     function edd_process_straight_to_gateway($data)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Blocks access to download attachments.
      *
@@ -105337,6 +105703,7 @@ namespace {
     function edd_refresh_permalinks_on_bad_404()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Return array of refundability types.
      *
@@ -105548,6 +105915,7 @@ namespace {
     function edd_load_admin_scripts($hook)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Purchase Link Shortcode
      *
@@ -106452,6 +106820,7 @@ namespace {
     function edd_get_theme_edd_templates()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Remove the "download" post class from single Download pages
      *
@@ -106466,6 +106835,7 @@ namespace {
     function edd_responsive_download_post_class($classes = array(), $class = '', $post_id = 0)
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get the current database version
      *
@@ -106555,6 +106925,7 @@ namespace {
     function edd_do_automatic_upgrades()
     {
     }
+    // @codeCoverageIgnore
     /**
      * Get Users Purchases
      *
@@ -106891,6 +107262,7 @@ namespace {
     function edd_update_user_api_key($user_id)
     {
     }
+    // @codeCoverageIgnore
     /**
      * While loading the template, see if an error was set for a filed login attempt and set the proper
      * HTTP status code if there was a failed login attempt.
