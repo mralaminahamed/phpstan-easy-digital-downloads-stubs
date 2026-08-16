@@ -614,8 +614,7 @@ namespace {
         {
         }
         /**
-         * Adds a notice if the Stripe Pro gateway is outdated.
-         * This is due to a name change in the gateway.
+         * Adds a notice if the site is running Stripe's legacy Card Elements.
          *
          * @since 3.2.1
          * @return void
@@ -16437,6 +16436,161 @@ namespace EDD\Admin\CartRecovery {
         }
     }
 }
+namespace EDD\Checkout\Templates\Traits {
+    /**
+     * Trait TemplateBrowserTrait
+     *
+     * Provides shared methods for Browser and ElementorEditor classes.
+     *
+     * @since 3.7.0
+     */
+    trait TemplateBrowserTrait
+    {
+        /**
+         * Get available page builders/editors on this site.
+         *
+         * @since 3.7.0
+         * @return array Array of available editors with their status.
+         */
+        private function get_available_editors(): array
+        {
+        }
+        /**
+         * Get information about the currently installed template.
+         *
+         * @since 3.7.0
+         * @param int|null $checkout_page Optional checkout page ID. Fetches from settings if not provided.
+         * @return array Template information.
+         */
+        private function get_current_template_info(?int $checkout_page = null): array
+        {
+        }
+        /**
+         * Enqueue browser scripts.
+         *
+         * @since 3.7.0
+         * @param array $extra_dependencies Additional script dependencies.
+         * @return void
+         */
+        protected function enqueue_browser_scripts(array $extra_dependencies = array()): void
+        {
+        }
+        /**
+         * Enqueue browser styles.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function enqueue_browser_styles(): void
+        {
+        }
+        /**
+         * Get base script data for the template browser.
+         *
+         * @since 3.7.0
+         * @param string   $utm_content      UTM content parameter for upgrade URL.
+         * @param int|null $checkout_page_id Optional checkout page ID.
+         * @return array Script localization data.
+         */
+        protected function get_base_script_data(string $utm_content = 'upgrade-prompt', ?int $checkout_page_id = null): array
+        {
+        }
+    }
+}
+namespace EDD\Admin\Checkout\Templates {
+    /**
+     * Browser class
+     *
+     * Manages the loading of React application assets for the
+     * Checkout Template Browser interface.
+     *
+     * @since 3.7.0
+     */
+    class Browser implements \EDD\EventManagement\SubscriberInterface
+    {
+        use \EDD\Checkout\Templates\Traits\TemplateBrowserTrait;
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         * @return array Array of event subscriptions.
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Conditionally enqueue assets on the EDD settings page.
+         *
+         * @since 3.7.0
+         * @param string $hook The current admin page hook.
+         * @return void
+         */
+        public function maybe_enqueue_assets($hook)
+        {
+        }
+        /**
+         * Enqueue JavaScript files.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private function enqueue_scripts()
+        {
+        }
+        /**
+         * Enqueue CSS files.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private function enqueue_styles()
+        {
+        }
+    }
+    /**
+     * Settings class
+     *
+     * Adds the "Browse Templates" button to the Settings > General > Pages section
+     * and renders the React mount container for the template browser.
+     *
+     * @since 3.7.0
+     */
+    class Settings implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         * @return array Array of event subscriptions.
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Add "Browse Templates" React mount point after the checkout page setting.
+         *
+         * The React application will mount here and render a button that opens
+         * the template browser modal using WordPress Modal component.
+         *
+         * @since 3.7.0
+         * @param string $html The setting HTML output.
+         * @param array  $args Setting arguments including 'id'.
+         * @return string Modified HTML with the React mount point added.
+         */
+        public function add_templates_button($html, $args)
+        {
+        }
+        /**
+         * Check if the current screen is the EDD settings page.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        private function is_settings_page()
+        {
+        }
+    }
+}
 namespace EDD\Admin\Customers {
     /**
      * Class Emails
@@ -22935,17 +23089,9 @@ namespace EDD\Admin\Extensions\Legacy {
          * Register the legacy EU VAT rates.
          *
          * @since 3.5.0
+         * @since 3.7.0 Initial tax rates are now imported with the latest data.
          */
         public function register_rates()
-        {
-        }
-        /**
-         * Get the legacy EU VAT rates.
-         *
-         * @since 3.5.0
-         * @return array
-         */
-        private function get_rates()
         {
         }
     }
@@ -26811,6 +26957,134 @@ namespace EDD\Admin\Settings {
         {
         }
     }
+}
+namespace EDD\Admin\Settings\ProductEducation {
+    // @codeCoverageIgnore
+    abstract class Setting
+    {
+        /**
+         * The configuration for the plugin.
+         *
+         * @var array
+         * @since 3.7.0
+         */
+        protected $config;
+        /**
+         * The Extension Manager.
+         *
+         * @var \EDD\Admin\Extensions\Extension_Manager
+         */
+        protected $manager;
+        /**
+         * Constructor.
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register the setting hook.
+         *
+         * @param array $settings The array of settings.
+         * @return array
+         */
+        abstract public function register_setting($settings): array;
+        /**
+         * Gets the description for the plugin.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        abstract protected function get_description(): string;
+        /**
+         * Whether the plugin is active.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        abstract protected function is_active(): bool;
+        /**
+         * Output the settings field (installation helper).
+         *
+         * @param array $args The setting field arguments.
+         * @return void
+         */
+        public function settings_field($args)
+        {
+        }
+        /**
+         * Gets the button parameters for the three states (install / activate / configure).
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        protected function get_button_parameters()
+        {
+        }
+        /**
+         * Gets the array of parameters for the link to configure ActiveLayer.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        protected function get_link_parameters()
+        {
+        }
+    }
+    /**
+     * Class ActiveLayer
+     *
+     * @since 3.7.0
+     */
+    class ActiveLayer extends \EDD\Admin\Settings\ProductEducation\Setting implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Array of configuration data for ActiveLayer.
+         *
+         * @var array
+         */
+        protected $config = array('name' => 'ActiveLayer', 'plugin' => 'activelayer-anti-spam-spam-protection-for-forms-comments/activelayer-anti-spam-spam-protection-for-forms-comments.php', 'wporg_url' => 'https://wordpress.org/plugins/activelayer-anti-spam-spam-protection-for-forms-comments/', 'download_url' => 'https://downloads.wordpress.org/plugin/activelayer-anti-spam-spam-protection-for-forms-comments.zip', 'settings' => 'admin.php?page=activelayer-settings');
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Append the ActiveLayer installer to the bottom of the Spam Protection (captcha) section.
+         *
+         * Runs as a callback on the `edd_settings_misc` filter, which the Misc tab applies after
+         * building the captcha section, so appending here lands at the bottom of that section.
+         *
+         * @param array $settings The settings array.
+         * @return array
+         */
+        public function register_setting($settings): array
+        {
+        }
+        /**
+         * Gets the description for the settings field.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_description(): string
+        {
+        }
+        /**
+         * Whether the ActiveLayer plugin is active.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        protected function is_active(): bool
+        {
+        }
+    }
+}
+namespace EDD\Admin\Settings {
     /**
      * Recurring Payments
      *
@@ -31178,6 +31452,19 @@ namespace EDD\Assets {
         {
         }
         /**
+         * Gets the file system path to the EDD stylesheet, mirroring get_stylesheet()'s lookup.
+         *
+         * Used to inline the stylesheet into the block editor iframe (see block_editor_settings_all
+         * in includes/blocks/includes/admin/scripts.php) without enqueuing it in the editor's admin
+         * chrome.
+         *
+         * @since 3.7.0
+         * @return string|false
+         */
+        public static function get_stylesheet_path()
+        {
+        }
+        /**
          * Enqueues an inline style if a custom stylesheet is being used.
          *
          * @since 3.3.0
@@ -31187,12 +31474,14 @@ namespace EDD\Assets {
         {
         }
         /**
-         * Gets the URL to the EDD stylesheet.
+         * Gets the URL (or, with $type set to 'path', the file system path) to the EDD stylesheet.
          *
          * @since 3.3.0
-         * @return string
+         * @since 3.7.0 Added the $type parameter.
+         * @param string $type Either 'url' or 'path'.
+         * @return string|false
          */
-        private static function get_stylesheet()
+        private static function get_stylesheet(string $type = 'url')
         {
         }
         /**
@@ -31207,6 +31496,32 @@ namespace EDD\Assets {
     }
 }
 namespace EDD\Blocks\Checkout {
+    // @codeCoverageIgnore
+    /**
+     * Renders the "Account Information" line for a logged-in customer.
+     *
+     * Shared by every checkout that renders it, so the block, inner-block and Elementor paths
+     * cannot drift apart in wording or markup.
+     *
+     * @since 3.7.0
+     */
+    class AccountLine
+    {
+        /**
+         * Emit the account line.
+         *
+         * Gated on the `logged_in` attribute rather than on data completeness, so a logged-in
+         * customer with incomplete details still gets the account context.
+         *
+         * @since 3.7.0
+         *
+         * @param array $attributes The resolved checkout block attributes.
+         * @return void
+         */
+        public static function render(array $attributes): void
+        {
+        }
+    }
     /**
      * Manages a cached version of checkout block attributes for the current request.
      *
@@ -31271,12 +31586,93 @@ namespace EDD\Blocks\Checkout {
         {
         }
         /**
+         * Recursively locates a block by name within a list of parsed blocks.
+         *
+         * @since 3.7.0
+         * @param array  $blocks     The parsed blocks to search.
+         * @param string $block_name The block name to find.
+         * @return array|null The matching block, or null if not found.
+         */
+        private static function find_block($blocks, $block_name)
+        {
+        }
+        /**
          * Returns default attribute values.
          *
          * @since 3.6.0
          * @return array The default attributes.
          */
         private static function get_defaults()
+        {
+        }
+    }
+    /**
+     * Cart class.
+     */
+    class Cart implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the cart block.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register(): void
+        {
+        }
+        /**
+         * Renders the checkout cart component.
+         *
+         * @since 3.7.0
+         * @param array     $block_attributes The block attributes.
+         * @param string    $content          The block inner content.
+         * @param \WP_Block $block            The block object.
+         * @return string Cart HTML.
+         */
+        public function render($block_attributes = array(), $content = '', $block = null)
+        {
+        }
+    }
+    /**
+     * DiscountForm class.
+     */
+    class DiscountForm implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the discount form block.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register(): void
+        {
+        }
+        /**
+         * Renders the checkout discount component.
+         *
+         * @since 3.7.0
+         * @param array $block_attributes The block attributes.
+         * @return string DiscountForm HTML.
+         */
+        public function render($block_attributes = array())
         {
         }
     }
@@ -31314,20 +31710,22 @@ namespace EDD\Blocks\Checkout\Elements {
          * Outputs the payment details form for checkout.
          *
          * @since 3.6.0
-         * @param array $block_attributes The block attributes.
+         * @param array     $block_attributes The block attributes.
+         * @param \WP_Block $block            The block object.
          * @return void
          */
-        public static function render($block_attributes)
+        public static function render($block_attributes, $block = null)
         {
         }
         /**
          * Outputs the payment details for the checkout form.
          *
          * @since 3.6.0
-         * @param array $block_attributes The block attributes.
+         * @param array     $block_attributes The block attributes.
+         * @param \WP_Block $block The block object.
          * @return void
          */
-        private static function do_details($block_attributes)
+        private static function do_details($block_attributes, $block = null)
         {
         }
     }
@@ -31340,6 +31738,16 @@ namespace EDD\Blocks\Checkout\Elements {
     class PersonalInfo
     {
         /**
+         * Wrapper modifier that pairs the first and last name fields on one line.
+         *
+         * The checkout block stylesheet and the Elementor editor-preview fidelity CSS both key their
+         * paired-name geometry off this class, so it is the single source for the string in PHP.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        public const CLASS_NAME_SINGLE_LINE = 'edd-checkout-block__personal-info--name-single-line';
+        /**
          * Shows the login and/or registration form for guest users in checkout.
          *
          * @since 3.6.0
@@ -31347,6 +31755,20 @@ namespace EDD\Blocks\Checkout\Elements {
          * @return void
          */
         public static function render($block_attributes)
+        {
+        }
+        /**
+         * Get the classes for the personal info wrapper.
+         *
+         * The single-line name modifier lives here rather than on the fieldset because the
+         * AJAX form swap re-renders the fieldset without the block attributes, and this
+         * wrapper is outside the swapped markup.
+         *
+         * @since 3.7.0
+         * @param array $block_attributes The block attributes.
+         * @return string
+         */
+        private static function get_wrapper_class($block_attributes)
         {
         }
         /**
@@ -31370,7 +31792,6 @@ namespace EDD\Blocks\Checkout\Elements {
         {
         }
     }
-    // @codeCoverageIgnore
     /**
      * Purchase Form class.
      *
@@ -31382,10 +31803,11 @@ namespace EDD\Blocks\Checkout\Elements {
          * Outputs the purchase form for checkout.
          *
          * @since 3.6.0
-         * @param array $block_attributes The block attributes.
+         * @param array     $block_attributes The block attributes.
+         * @param \WP_Block $block            The block object.
          * @return void
          */
-        public static function render($block_attributes)
+        public static function render($block_attributes, $block = null)
         {
         }
     }
@@ -31412,6 +31834,173 @@ namespace EDD\Blocks\Checkout\Elements {
          * @param array $block_attributes The block attributes.
          */
         public static function render($block_attributes)
+        {
+        }
+    }
+}
+namespace EDD\Blocks\Checkout {
+    /**
+     * Registers block patterns for the checkout block.
+     *
+     * @since 3.7.0
+     */
+    class Patterns implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the checkout layout patterns.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register(): void
+        {
+        }
+        /**
+         * Public accessor for the checkout layout pattern definitions.
+         *
+         * Exposes the same array the private get_patterns() returns (slug => title,
+         * blockTypes, serialized-markup content) so a single-source consumer — the
+         * Elementor checkout box's layout-picker drift-guard — can read the block's
+         * canonical pattern set instead of hand-copying it. The keys are namespaced
+         * (`edd-checkout/…`); a consumer comparing against bare Elementor slugs must
+         * strip the `edd-checkout/` prefix first.
+         *
+         * @since 3.7.0
+         * @return array The pattern definitions keyed by namespaced slug.
+         */
+        public function get_layout_patterns(): array
+        {
+        }
+        /**
+         * Get the pattern definitions.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private function get_patterns(): array
+        {
+        }
+        /**
+         * Serialized block markup for the single-column layout.
+         * Cart stacked above the purchase form.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        private function single_column(): string
+        {
+        }
+        /**
+         * Serialized block markup for a two-column layout.
+         * Purchase form on the left, cart on the right.
+         *
+         * @since 3.7.0
+         * @param string $form_width CSS width for the purchase form column (e.g. "70%").
+         * @param string $cart_width CSS width for the cart column (e.g. "30%").
+         * @return string
+         */
+        private function two_column(string $form_width, string $cart_width): string
+        {
+        }
+        /**
+         * Serialized block markup for the cart-top, two-column form layout.
+         * Cart spans full width; personal info and payment info sit side by side inside the purchase form.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        private function cart_top_two_column(): string
+        {
+        }
+    }
+    /**
+     * PaymentInfo class.
+     */
+    class PaymentInfo implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the payment info block.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register(): void
+        {
+        }
+        /**
+         * Renders the checkout cart component.
+         *
+         * @since 3.7.0
+         * @param array     $block_attributes The block attributes.
+         * @param string    $content          The block inner content.
+         * @param \WP_Block $block            The block object.
+         * @return string PaymentInfo HTML.
+         */
+        public function render($block_attributes = array(), $content = '', $block = null)
+        {
+        }
+        /**
+         * Render the payment details as a fallback in case the block is missing.
+         *
+         * @since 3.7.0
+         * @param array $block_attributes The block attributes.
+         * @return void
+         */
+        public function render_fallback($block_attributes = array())
+        {
+        }
+    }
+    /**
+     * PersonalInfo class.
+     */
+    class PersonalInfo implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Register the personal info block.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register(): void
+        {
+        }
+        /**
+         * Renders the checkout cart component.
+         *
+         * @since 3.7.0
+         * @param array     $block_attributes The block attributes.
+         * @param string    $content          The block inner content.
+         * @param \WP_Block $block            The block object.
+         * @return string PersonalInfo HTML.
+         */
+        public function render($block_attributes = array(), $content = '', $block = null)
         {
         }
     }
@@ -31465,6 +32054,24 @@ namespace EDD\Blocks {
     class Loader extends \EDD\EventManagement\MiniManager
     {
         /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Register the block metadata collection.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public static function register_block_metadata_collection()
+        {
+        }
+        /**
          * Get the event classes.
          *
          * @since 3.6.0
@@ -31486,19 +32093,21 @@ namespace EDD\Blocks {
          * Checks whether we are viewing content in the block editor.
          *
          * @since 3.6.0
-         * @param string $current_user_can Whether the current user needs to have a specific capability.
+         * @param string    $current_user_can Whether the current user needs to have a specific capability.
+         * @param \WP_Block $block The block object.
          * @return false|string
          */
-        public static function is_block_editor($current_user_can = '')
+        public static function is_block_editor($current_user_can = '', $block = null)
         {
         }
         /**
          * Whether the checkout page is being previewed as a guest.
          *
          * @since 3.6.0
+         * @param null|\WP_Block $block The block object.
          * @return bool
          */
-        public static function doing_guest_preview(): bool
+        public static function doing_guest_preview($block = null): bool
         {
         }
         /**
@@ -31508,6 +32117,17 @@ namespace EDD\Blocks {
          * @return void
          */
         public static function do_preview_purchase_button(): void
+        {
+        }
+        /**
+         * Triggers the `edd_checkout_form_top` hook. The hook is invoked from multiple blocks
+         * to ensure that whichever is first triggers it.
+         *
+         * @since 3.7.0
+         * @param array $block_attributes The array of block attributes.
+         * @return void
+         */
+        public static function do_checkout_form_top(array $block_attributes): void
         {
         }
     }
@@ -32237,6 +32857,88 @@ namespace EDD\Captcha {
     }
 }
 namespace EDD\Cart {
+    /**
+     * Add to Cart Redirect Cleanup subscriber.
+     *
+     * @since 3.7.0
+     */
+    class AddToCartRedirectCleanup implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The query arg that carries a preset discount from a buy link.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const DISCOUNT_ARG = 'discount';
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Removes the preset-discount and add-to-cart plumbing args from the URL.
+         *
+         * The priority (> 10) is load-bearing: the delayed add-to-cart action
+         * redirects and exits at `template_redirect` priority 10, so this never runs
+         * on the add-to-cart request itself. It only runs on the request the redirect
+         * lands on, where `edd_apply_preset_discount()` (init:999) has already consumed
+         * the discount, so scrubbing the URL here is safe. See
+         * https://github.com/awesomemotive/easy-digital-downloads-pro/issues/2609.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function clean_url()
+        {
+        }
+        /**
+         * Determines the URL to redirect to in order to clean the current request.
+         *
+         * Returns an empty string when there is nothing to do: non-GET requests (a
+         * POST add-to-cart is already redirected and carries its discount in the
+         * body), requests without the discount arg (the trigger and loop-breaker),
+         * or when removing the args would not change the URL.
+         *
+         * @since 3.7.0
+         *
+         * @param string $method The request method.
+         * @param string $url    The current request URL (may be relative).
+         * @return string The cleaned URL to redirect to, or an empty string.
+         */
+        public static function get_redirect_target(string $method, string $url)
+        {
+        }
+        /**
+         * Builds the URL with the preset-discount and add-to-cart plumbing args removed.
+         *
+         * The removal set deliberately includes `discount` — unlike the two call sites
+         * in edd_process_add_to_cart(), which keep it so it survives to this landing.
+         *
+         * @since 3.7.0
+         *
+         * @param string $url URL to clean.
+         * @return string Cleaned URL, or an empty string if nothing changed.
+         */
+        public static function get_cleaned_url(string $url)
+        {
+        }
+        /**
+         * Determines whether a URL carries the preset-discount query arg.
+         *
+         * @since 3.7.0
+         *
+         * @param string $url URL to inspect.
+         * @return bool
+         */
+        public static function url_has_preset_discount(string $url)
+        {
+        }
+    }
     // @codeCoverageIgnore
     /**
      * Cart Data class
@@ -32888,6 +33590,333 @@ namespace EDD\Checkout {
         {
         }
     }
+}
+namespace EDD\Checkout\Templates\Config {
+    // @codeCoverageIgnore
+    /**
+     * Constants class.
+     *
+     * Shared constants for the Checkout Template Imports feature.
+     *
+     * @since 3.7.0
+     */
+    final class Constants
+    {
+        /**
+         * Editor slug for Block Editor templates.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const EDITOR_BLOCKS = 'blocks';
+        /**
+         * The Elementor editor slug.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const EDITOR_ELEMENTOR = 'elementor';
+        /**
+         * Support URL for error messages.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const SUPPORT_URL = 'https://easydigitaldownloads.com/support/';
+        /**
+         * Marketing URL for upgrading from Lite to Pro.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const UPGRADE_URL = 'https://easydigitaldownloads.com/lite-upgrade/';
+        /**
+         * Account URL for managing licenses and downloads.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const ACCOUNT_URL = 'https://easydigitaldownloads.com/your-account/';
+        /**
+         * Meta key for the imported template ID.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_ID = '_edd_checkout_template_id';
+        /**
+         * Meta key for the imported template name.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_NAME = '_edd_checkout_template_name';
+        /**
+         * Meta key for the imported template version.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_VERSION = '_edd_checkout_template_version';
+        /**
+         * Meta key for the import timestamp.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_IMPORTED = '_edd_checkout_template_imported';
+        /**
+         * Meta key for the editor used to import the template.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_EDITOR = '_edd_checkout_template_editor';
+        /**
+         * Meta key for the page template in place before an Elementor import.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_PREVIOUS_PAGE_TEMPLATE = '_edd_checkout_template_previous_page_template';
+        /**
+         * Attachment meta key recording the remote URL a template asset was sideloaded from.
+         *
+         * Stored on media-library attachments created during import so a re-import of the same
+         * template reuses the existing attachment instead of downloading a duplicate.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const META_ASSET_SOURCE = '_edd_checkout_template_asset_source';
+    }
+    // @codeCoverageIgnore
+    /**
+     * EditorRegistry class.
+     *
+     * A static descriptor/config map for the supported checkout-template editors,
+     * a sibling of Constants. Despite the "Registry" name it is deliberately NOT an
+     * \ArrayObject-style registry object: it holds no instance state and is never
+     * instantiated. Descriptor arrays and availability are exposed through static
+     * accessors so availability can be computed at call time against the current
+     * runtime rather than frozen into a class constant.
+     *
+     * @since 3.7.0
+     */
+    final class EditorRegistry
+    {
+        /**
+         * Minimum required Elementor version.
+         *
+         * The single home for the Elementor version floor. Referenced by the Pro
+         * Elementor importer's own constant so bumping it here moves both.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        public const MIN_ELEMENTOR_VERSION = '3.35.0';
+        /**
+         * Minimum required WordPress version for block templates.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        public const MIN_WP_VERSION = '6.7';
+        /**
+         * Get the descriptor map for the supported editors.
+         *
+         * Each entry carries the editor's translated label, its current
+         * availability, a machine-readable unavailability reason, and the
+         * translated human string for that reason. Availability and the reason are
+         * resolved per editor at call time. The reason text is built here with
+         * __() so the admin UI can render it verbatim without owning a parallel
+         * copy of the strings.
+         *
+         * @since 3.7.0
+         * @return array Descriptor map keyed by editor slug.
+         */
+        public static function descriptors(): array
+        {
+        }
+        /**
+         * Build a single editor descriptor.
+         *
+         * @since 3.7.0
+         * @param string $slug  The editor slug.
+         * @param string $label The translated editor label.
+         * @return array Descriptor with label, availability, reason, and unavailable text.
+         */
+        private static function descriptor(string $slug, string $label): array
+        {
+        }
+        /**
+         * Get the machine-readable reason an editor is unavailable.
+         *
+         * Only called for editors that are not available. Elementor resolves to
+         * 'missing' (the plugin is not loaded) or 'version' (it is below the floor).
+         * The Block Editor has no importer yet, which is reported as 'missing' so
+         * an available editor is the only one with an empty reason.
+         *
+         * @since 3.7.0
+         * @param string $slug The editor slug.
+         * @return string One of 'missing' or 'version'.
+         */
+        private static function unavailable_reason(string $slug): string
+        {
+        }
+        /**
+         * Get the translated text explaining why an editor is unavailable.
+         *
+         * Single source for the card's unavailability copy so the admin UI renders
+         * it verbatim. Only called for editors that are not available.
+         *
+         * @since 3.7.0
+         * @param string $slug The editor slug.
+         * @return string The translated unavailability message.
+         */
+        private static function unavailable_text(string $slug): string
+        {
+        }
+        /**
+         * Browse-time message when Elementor's Flexbox Container feature is disabled.
+         *
+         * Elementor is version-available but the composable checkout needs the
+         * Flexbox Container experiment turned on. The runtime check for that state
+         * lives in the trait; this method only owns the copy so the admin UI can
+         * render it verbatim without holding a parallel string.
+         *
+         * @since 3.7.0
+         * @return string The translated container-disabled message.
+         */
+        public static function container_unavailable_text(): string
+        {
+        }
+        /**
+         * Determine whether an editor is available for import on this site.
+         *
+         * Elementor availability is computed against the loaded Elementor version
+         * and the minimum floor. The Block Editor returns a stored literal false:
+         * block import is not yet implemented, so it is advertised as unavailable to
+         * mirror the block importer's stubbed state. No WordPress-version comparison
+         * and no Pro runtime call are involved.
+         *
+         * @since 3.7.0
+         * @param string $slug The editor slug (see Constants::EDITOR_ELEMENTOR, Constants::EDITOR_BLOCKS).
+         * @return bool True when the editor can be used for import.
+         */
+        public static function is_available(string $slug): bool
+        {
+        }
+    }
+}
+namespace EDD\Checkout\Templates {
+    /**
+     * License class
+     *
+     * Provides static methods for checking license status and permissions
+     * for the Checkout Template Imports feature.
+     *
+     * @since 3.7.0
+     */
+    class License
+    {
+        /**
+         * Check if the current site can import templates.
+         *
+         * Requires any active Pro license to import templates.
+         * Free users can browse and preview, but cannot import.
+         *
+         * @since 3.7.0
+         * @return bool True if the site has an active Pro license.
+         */
+        public static function can_import(): bool
+        {
+        }
+        /**
+         * Get the current license status.
+         *
+         * Returns a simplified status string that can be used by the
+         * frontend to determine what UI to show.
+         *
+         * @since 3.7.0
+         * @return string One of: 'valid', 'inactive', 'expired', 'missing', or 'invalid'.
+         */
+        public static function get_status(): string
+        {
+        }
+        /**
+         * Get the license key.
+         *
+         * Returns the Pro license key for sending with API requests.
+         *
+         * @since 3.7.0
+         * @return string The license key, or empty string if not set.
+         */
+        public static function get_key(): string
+        {
+        }
+    }
+    /**
+     * RemoteAPI class
+     *
+     * Service class for fetching templates from the remote API,
+     * with caching support.
+     *
+     * @since 3.7.0
+     */
+    class RemoteAPI
+    {
+        /**
+         * Remote API base URL.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const API_URL = 'https://services.easydigitaldownloads.com/checkout-templates';
+        /**
+         * Cache key for template list.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const CACHE_KEY = 'edd_checkout_templates_list';
+        /**
+         * Cache timeout (1 hour).
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const CACHE_TIMEOUT = '+1 hour';
+        /**
+         * Get all available templates.
+         *
+         * Fetches templates from the remote API with caching.
+         *
+         * @since 3.7.0
+         * @param bool $force_refresh Whether to bypass the cache.
+         * @return array Array of template data.
+         */
+        public function get_templates(bool $force_refresh = false): array
+        {
+        }
+        /**
+         * Make an HTTP request to the remote API.
+         *
+         * Uses EDD\Utils\RemoteRequest for consistent HTTP handling.
+         *
+         * @since 3.7.0
+         * @param string $endpoint API endpoint path.
+         * @param array  $params   Request parameters.
+         * @param string $method   HTTP method (GET, POST).
+         * @param array  $args     Additional wp_remote_request args.
+         * @return array|\WP_Error Response data or error.
+         */
+        protected function make_request(string $endpoint, array $params = array(), string $method = 'GET', array $args = array())
+        {
+        }
+    }
+}
+namespace EDD\Checkout {
     // @codeCoverageIgnore
     /**
      * Class Validator
@@ -32935,9 +33964,20 @@ namespace EDD\Checkout {
          *
          * @since 3.3.8
          * @param int|null $post_id The ID of the post to check. Added in 3.5.0.
+         * @param string   $block   The block name to check for.
          * @return bool
          */
-        public static function has_block($post_id = null)
+        public static function has_block($post_id = null, $block = 'edd/checkout')
+        {
+        }
+        /**
+         * Checks whether a block exists in the block template currently rendering the page.
+         *
+         * @since 3.7.0
+         * @param string $block The block name to check for.
+         * @return bool
+         */
+        private static function has_block_in_current_template($block): bool
         {
         }
         /**
@@ -34289,15 +35329,26 @@ namespace EDD {
     }
 }
 namespace EDD\EventManagement {
+    // @codeCoverageIgnore
+    /**
+     * Registers EDD's service providers and attaches them to the event manager.
+     *
+     * @since 3.1.1
+     */
     abstract class Subscribers
     {
         /**
          * The pass handler.
          *
          * @since 3.1.1
-         * @var EDD\Admin\PassHandler\Handler
+         * @var \EDD\Admin\PassHandler\Handler
          */
         protected $pass_handler;
+        /**
+         * Constructor.
+         *
+         * @since 3.1.1
+         */
         public function __construct()
         {
         }
@@ -34313,6 +35364,7 @@ namespace EDD\EventManagement {
         /**
          * Gets providers that may be extended/replaced in lite/pro.
          *
+         * @since 3.1.1
          * @return array
          */
         protected function get_replaceable_providers()
@@ -34321,12 +35373,14 @@ namespace EDD\EventManagement {
         /**
          * Gets the service providers for EDD.
          *
+         * @since 3.1.1
          * @return array
          */
         abstract protected function get_service_providers();
         /**
          * Gets the admin service providers for EDD.
          *
+         * @since 3.1.1
          * @return array
          */
         abstract protected function get_admin_providers();
@@ -34905,6 +35959,9 @@ namespace EDD\Cron\Components {
         protected static $id = 'passes';
         /**
          * Gets the array of subscribed events.
+         *
+         * @since 3.3.0
+         * @since 3.7.0 Uses the Pro weekly hook when Pro is active.
          */
         public static function get_subscribed_events(): array
         {
@@ -35326,6 +36383,40 @@ namespace EDD\Cron\Events {
          * @return int Random offset in seconds.
          */
         private function get_random_offset($min = 900, $max = 2700): int
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * PayPalConnectSync Event Class
+     *
+     * @since 3.7.0
+     */
+    class PayPalConnectSync extends \EDD\Cron\Events\Event
+    {
+        /**
+         * Hook name.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        protected $hook = 'edd_paypal_v3_sync_connect';
+        /**
+         * Schedule.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        protected $schedule = 'daily';
+        /**
+         * Constructor.
+         *
+         * Stages a random first-run offset within the next day so existing
+         * connections do not all reconcile at the same moment (à la LogPruning).
+         *
+         * @since 3.7.0
+         */
+        public function __construct()
         {
         }
     }
@@ -44310,202 +45401,450 @@ namespace EDD\Downloads {
         }
     }
 }
-namespace EDD\Elementor {
+namespace EDD\Elementor\Checkout {
+    // @codeCoverageIgnore
     /**
-     * EDD Elementor Subscriber
+     * Checkout form-layer: per-render-pass engagement tracking and hook contract.
      *
-     * @package EDD\Elementor\Subscribers
+     * @since 3.7.0
      */
-    class Loader extends \EDD\EventManagement\MiniManager
+    class FormLayer
     {
         /**
-         * Get the event classes.
+         * The purchase form id, matching the block checkout (checkout.php).
          *
-         * @return array
+         * @since 3.7.0
+         *
+         * @var string
          */
-        protected function get_event_classes(): array
+        const FORM_ID = 'edd_purchase_form';
+        /**
+         * The outer wrapper id the block checkout emits (checkout.php).
+         *
+         * @since 3.7.0
+         *
+         * @var string
+         */
+        const WRAP_ID = 'edd_checkout_form_wrap';
+        /**
+         * The Elementor element id of the single checkout box that engaged this page render.
+         *
+         * Exactly one purchase form is rendered per Elementor document render pass.
+         * The subscriber records the first engaging box here (mark_engaged) and clears
+         * it when that box closes (clear_engaged). The engaged box's print_content()
+         * consults is_engaged_element() so only that box fires the checkout section
+         * hooks — a second box or a nested checkout-flagged container never does.
+         *
+         * @since 3.7.0
+         *
+         * @var string
+         */
+        private static $engaged_element_id = '';
+        /**
+         * Record the element id of the checkout box that engaged this page render.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The engaged box's Elementor element id.
+         * @return void
+         */
+        public static function mark_engaged(string $element_id): void
+        {
+        }
+        /**
+         * Clear the engaged element id when the given box closes.
+         *
+         * Only clears when the id matches the currently-engaged box, so a stray close
+         * for a non-engaging element cannot drop a still-open engagement.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The Elementor element id whose render is closing.
+         * @return void
+         */
+        public static function clear_engaged(string $element_id): void
+        {
+        }
+        /**
+         * Unconditionally clear the engaged element id.
+         *
+         * Unlike clear_engaged(), which only clears when the given id matches the
+         * currently-engaged box, this resets the engaged-element state regardless of
+         * which box (if any) is recorded. It is called at the start of each new
+         * document render pass (reset_for_new_render_pass) so a pass that leaked its
+         * teardown — a child threw before after_render's finally ran, leaving a stale
+         * engaged id — cannot make a later pass see is_engaged_element() as still true.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function reset_engaged(): void
+        {
+        }
+        /**
+         * Whether the given element id is the single engaged checkout box.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The Elementor element id to test.
+         * @return bool True when this element is the page's engaged checkout box.
+         */
+        public static function is_engaged_element(string $element_id): bool
+        {
+        }
+        /**
+         * Whether a checkout box is currently engaged (actively rendering its children).
+         *
+         * True only while an edd-checkout-box is engaged for this render pass — i.e.
+         * between the box's before_render (mark_engaged) and its after_render
+         * (clear_engaged), which is exactly when the engaged box's print_content()
+         * renders its own child section widgets. The section dedupe (SectionGuard) gates
+         * on this so a section widget rendered standalone — before, after, or outside any
+         * engaged box — renders normally and never claims a type slot; only a section
+         * rendering inside the engaged box's own render can consume (and thereby
+         * de-duplicate) a slot.
+         *
+         * @since 3.7.0
+         *
+         * @return bool True when a checkout box is engaged for the current render.
+         */
+        public static function is_box_engaged(): bool
+        {
+        }
+        /**
+         * Whether the single page-level purchase form has opened for this render pass.
+         *
+         * Exactly one #edd_purchase_form is emitted per Elementor document render pass,
+         * since EDD core's gateway JS targets a single form of that id on the page. The
+         * subscriber sets this the first time checkout content in the
+         * region opens the form and consults it so no later box (or nested container)
+         * opens a second form. Unlike the box-engagement state ($engaged_element_id,
+         * which is per-box-close), this flag is per-PASS: it is set when the page form
+         * opens, is NOT cleared when a box closes, and is reset once per render pass by
+         * reset_for_new_render_pass() (and by the subscriber's shutdown failsafe). It is
+         * static so the Subscriber, the SectionGuard trait, and widget classes can all
+         * read it via FormLayer:: with no shared instance.
+         *
+         * @since 3.7.0
+         *
+         * @var bool
+         */
+        private static $page_form_open = false;
+        /**
+         * Mark the single page-level purchase form as opened for this render pass.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function open_page_form(): void
+        {
+        }
+        /**
+         * Whether the single page-level purchase form has already opened this pass.
+         *
+         * @since 3.7.0
+         *
+         * @return bool True once the page's purchase form has opened for this pass.
+         */
+        public static function is_page_form_open(): bool
+        {
+        }
+        /**
+         * Reset the page-form-open flag at the start of each render pass.
+         *
+         * Called by reset_for_new_render_pass() and the subscriber's shutdown failsafe
+         * so the per-pass "one form opened" guard never leaks across passes or, on a
+         * persistent worker, across requests.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function reset_page_form_open(): void
+        {
+        }
+        /**
+         * The Elementor element id of the checkout box that owns the empty-cart notice.
+         *
+         * On an empty cart no box opens a purchase form (mirroring the block checkout,
+         * which renders the empty-cart message and no form). The first qualifying box is
+         * recorded here so its print_content() renders the empty-cart notice exactly
+         * once, while any other checkout box on the page renders nothing. Reset per
+         * document render pass alongside the engaged-element state.
+         *
+         * @since 3.7.0
+         *
+         * @var string
+         */
+        private static $empty_cart_element_id = '';
+        /**
+         * Record the checkout box that owns the empty-cart notice for this render.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The Elementor element id of the notice-owning box.
+         * @return void
+         */
+        public static function mark_empty_cart(string $element_id): void
+        {
+        }
+        /**
+         * Clear the empty-cart notice owner.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function clear_empty_cart(): void
+        {
+        }
+        /**
+         * Whether the given element id owns the page's empty-cart notice.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The Elementor element id to test.
+         * @return bool True when this element should render the empty-cart notice.
+         */
+        public static function is_empty_cart_element(string $element_id): bool
+        {
+        }
+        /**
+         * The checkout section widget types already rendered in this render pass.
+         *
+         * A per-render-pass registry keyed by section widget type (e.g.
+         * edd-checkout-payment-info). The FIRST instance of a given type to render
+         * claims its slot here; any later same-type instance inside the engaged box
+         * renders nothing, so the page never emits a duplicate payment-info gateway
+         * selector, a duplicate #edd_purchase_form_wrap, or a duplicated field id — the
+         * duplicate-section defect that breaks the gateway switch. Lives for one render
+         * pass alongside the engaged/empty-cart markers: cleared by
+         * reset_for_new_render_pass() at the start of each pass and by the subscriber's
+         * shutdown failsafe, so a persistent worker never carries a claim into the next
+         * request.
+         *
+         * @since 3.7.0
+         *
+         * @var array<string, bool>
+         */
+        private static $rendered_section_types = array();
+        /**
+         * Claim the render slot for a checkout section type, first-instance-wins.
+         *
+         * Records the type as rendered and returns true when this is the FIRST
+         * instance of that type in the current render pass; returns false when the
+         * type has already rendered, signalling a duplicate the caller must skip. An
+         * empty type is never tracked and always allowed (it cannot be a tracked
+         * duplicate). Editor/preview exemption is the CALLER's responsibility — this
+         * registry is only consulted on the front end.
+         *
+         * @since 3.7.0
+         *
+         * @param string $type The section widget type (get_name()).
+         * @return bool True when this is the first render of the type (slot claimed).
+         */
+        public static function claim_section_render(string $type): bool
+        {
+        }
+        /**
+         * Whether a checkout section type has already rendered this render pass.
+         *
+         * @since 3.7.0
+         *
+         * @param string $type The section widget type to test.
+         * @return bool True when the type has claimed its slot this render pass.
+         */
+        public static function has_section_rendered(string $type): bool
+        {
+        }
+        /**
+         * Clear the per-render-pass rendered-section registry.
+         *
+         * Called at the start of each document render pass (reset_for_new_render_pass)
+         * and by the shutdown failsafe so section claims never leak across passes or
+         * requests.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function clear_rendered_sections(): void
+        {
+        }
+        /**
+         * Reset all shared per-render-pass form-layer state in one call.
+         *
+         * Clears the engaged-element id, the empty-cart notice owner, the rendered-section
+         * registry, and the page-level form-open guard. It does NOT touch the subscriber's
+         * per-box depth map or its fallback closures — those are instance state the
+         * subscriber tears down itself. Called when the outermost document render pass ends
+         * and by the subscriber's shutdown failsafe.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function reset_all(): void
+        {
+        }
+        /**
+         * Fire the checkout section hooks that belong at the TOP of the purchase form.
+         *
+         * Called from the engaged box's print_content() so the output lands INSIDE the
+         * <form> tag (the before_render/after_render actions fire outside it — see
+         * CheckoutBox::print_content()). edd_elementor_checkout_sections signals the
+         * Elementor checkout context the box-scoped fallback subscribers gate on;
+         * edd_checkout_form_top mirrors the block purchase form's top hook
+         * (PurchaseForm.php) so co-hooked renderers emit the same markup they do on
+         * block checkout.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function render_form_top(): void
+        {
+        }
+        /**
+         * Fire the checkout section hook that belongs at the BOTTOM of the purchase form.
+         *
+         * Called from the engaged box's print_content() after its child widgets so the
+         * output lands INSIDE the <form> tag, mirroring the block purchase form order
+         * (PurchaseForm.php). Intentionally mirrors the CLASSIC (no-arg) signature.
+         *
+         * The captcha renders here, after the bottom hook, mirroring the block purchase
+         * form: the classic/gateway-AJAX purchase form (edd_show_purchase_form) never
+         * emits it, so the Elementor path would otherwise omit the checkout captcha.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public static function render_form_bottom(): void
+        {
+        }
+        /**
+         * Whether the given elements tree contains an edd-checkout-box (box detection).
+         *
+         * A box-DETECTION helper: it answers "is this element an edd-checkout-box?", not
+         * "should the purchase form open" — the page-level form now opens at the checkout
+         * region boundary, independently of this check. Detection and completeness are
+         * separate concerns: a box missing a required section (personal-info or
+         * payment-info) is still detected as a box so the fallback renderer can fill the
+         * gap inside the purchase form. A plain native container that merely holds EDD
+         * section widgets is NOT an edd-checkout-box, so this returns false for it (the
+         * box's before_render/after_render bookkeeping only tracks real boxes).
+         *
+         * @since 3.7.0
+         *
+         * @param array $elements Raw element-data arrays (elType/widgetType/elements).
+         * @return bool True when the tree contains an edd-checkout-box element.
+         */
+        public static function should_engage(array $elements): bool
+        {
+        }
+        /**
+         * Build the opening outer-wrapper div (#edd_checkout_form_wrap).
+         *
+         * Mirrors the block checkout wrapper (checkout.php): the wrapper carries
+         * the required wp-block-edd-checkout class so the compound CSS selector
+         * (style.scss) and the Stripe payment-request target (edd-prb--is-active)
+         * match. Echoed directly at the engaged element's before_render() by the
+         * subscriber (the echoed-wrapper approach), wrapping the native <form> it renders next.
+         *
+         * The block checkout's layout modifier and logged-in classes (e.g. is-two-column,
+         * edd-blocks__checkout--is-logged-in) are intentionally omitted: Elementor supplies
+         * its own layout for the box, so only the classes the shared CSS/JS selectors require
+         * are emitted here.
+         *
+         * @since 3.7.0
+         *
+         * @return string The opening wrapper div markup.
+         */
+        public static function wrap_open(): string
+        {
+        }
+        /**
+         * Build the closing outer-wrapper div.
+         *
+         * @since 3.7.0
+         *
+         * @return string The closing wrapper div markup.
+         */
+        public static function wrap_close(): string
+        {
+        }
+        /**
+         * Build the opening purchase-form tag (<form id="edd_purchase_form">).
+         *
+         * Mirrors the block checkout's purchase form (checkout.php): the FORM_ID and the
+         * edd_form / edd-blocks-form classes match so the shared checkout JS (form
+         * validation, gateway switch) and CSS resolve the same on the Elementor front
+         * end as on the block checkout. Echoed directly at the region boundary's
+         * before_render() by the subscriber (no output buffer), wrapping the checkout
+         * content the region renders next; the matching form_close() is echoed at the
+         * region after_render().
+         *
+         * The form carries no inline style at all: the layout lives in the box's seeded
+         * inner-container tree, and the account line now renders inside the box, so it needs
+         * no width hint to align with it.
+         *
+         * @since 3.7.0
+         *
+         * @param string $action The form action URL (edd_get_checkout_uri()).
+         * @return string The opening <form> tag markup.
+         */
+        public static function form_open(string $action): string
+        {
+        }
+        /**
+         * Build the closing purchase-form tag.
+         *
+         * @since 3.7.0
+         *
+         * @return string The closing </form> tag markup.
+         */
+        public static function form_close(): string
         {
         }
     }
 }
-namespace EDD\Elementor\Subscribers {
+namespace EDD\Elementor\Controls {
+    // @codeCoverageIgnore
     /**
-     * Class Checkout
+     * EDD Checkout box layout-picker control — a data-less panel mount point.
      *
-     * @package EDD\Elementor\Subscribers
+     * @since 3.7.0
      */
-    class Checkout implements \EDD\EventManagement\SubscriberInterface
+    class LayoutPicker extends \Elementor\Base_UI_Control
     {
         /**
-         * Get the subscribed events.
+         * Control type.
          *
-         * @since 3.6.0
+         * Must equal the type passed to add_control() in CheckoutBox::register_controls()
+         * and the type the JS view is registered against via elementor.addControlView().
          *
-         * @return array
-         */
-        public static function get_subscribed_events()
-        {
-        }
-        /**
-         * Enqueue editor styles for Elementor Checkout Widget.
-         *
-         * @since 3.6.0
-         */
-        public function enqueue_preview_assets()
-        {
-        }
-        /**
-         * Prevent the checkout block from rendering.
-         *
-         * @since 3.6.0
+         * @since 3.7.0
          *
          * @return string
          */
-        public function prevent_checkout_block_render($pre_render, $parsed_block, $parent_block)
-        {
-        }
-    }
-    /**
-     * Class Widget
-     *
-     * @since 3.6.0
-     */
-    class Widget implements \EDD\EventManagement\SubscriberInterface
-    {
-        /**
-         * Get the subscribed events.
-         *
-         * @since 3.6.0
-         * @return array
-         */
-        public static function get_subscribed_events()
+        public function get_type()
         {
         }
         /**
-         * Add EDD widget category
+         * Render the control template in the editor.
          *
-         * @since 3.6.0
+         * Intentionally empty: the registered JS control view builds the picker UI in
+         * onRender, so no server-side Underscore template is needed. The method is
+         * required because Base_Control declares content_template() abstract.
+         *
+         * @since 3.7.0
+         *
+         * @return void
          */
-        public function register_widget_category($elements_manager)
-        {
-        }
-        /**
-         * Register EDD widgets
-         *
-         * @since 3.6.0
-         */
-        public function register_widgets($widgets_manager)
-        {
-        }
-    }
-}
-namespace EDD\Elementor\Utils {
-    /**
-     * Page utility class.
-     *
-     * @since 3.6.0
-     */
-    class Page
-    {
-        /**
-         * Get the page data.
-         *
-         * @since 3.6.0
-         *
-         * @param int|null $current_page Current page ID.
-         * @return array|false
-         */
-        public static function get_page_data($current_page = null)
-        {
-        }
-        /**
-         * Check if the page has a widget.
-         *
-         * @since 3.6.0
-         *
-         * @param string $widget_type Widget type.
-         * @param array  $elements Page elements data.
-         * @return bool
-         */
-        public static function has_widget(string $widget_type, $elements = null): bool
-        {
-        }
-        /**
-         * Get the widget data.
-         *
-         * @since 3.6.0
-         *
-         * @param string $widget_type Widget type.
-         * @param array  $elements Page elements data.
-         * @param int    $occurrence  Occurrence number.
-         * @return array
-         */
-        public static function get_widget_data(string $widget_type, $elements = null, int $occurrence = 1): array
-        {
-        }
-        /**
-         * Check if the page is in edit mode.
-         *
-         * @since 3.6.0
-         *
-         * @return bool
-         */
-        public static function is_edit_mode(): bool
-        {
-        }
-        /**
-         * Get the current page ID.
-         *
-         * @since 3.6.0
-         * @return int The page ID, or 0 if not found.
-         */
-        private static function get_id(): int
-        {
-        }
-        /**
-         * Get the current page ID from Elementor request parameters.
-         *
-         * @since 3.6.0
-         * @return int The page ID, or 0 if not found.
-         */
-        private static function get_current_page_by_elementor_request(): int
-        {
-        }
-    }
-}
-namespace EDD\Elementor\Widgets {
-    /**
-     * Abstract base class for EDD Elementor widgets.
-     *
-     * @since 3.6.0
-     */
-    abstract class Base extends \Elementor\Widget_Base
-    {
-        /**
-         * Get widget categories
-         *
-         * @since 3.6.0
-         * @return array Widget categories
-         */
-        public function get_categories(): array
-        {
-        }
-        /**
-         * Get widget keywords
-         *
-         * @since 3.6.0
-         * @return array Widget keywords
-         */
-        public function get_keywords(): array
-        {
-        }
-        /**
-         * Whether the widget has a widget inner wrapper.
-         *
-         * @since 3.6.0
-         * @return bool Whether the widget has a widget inner wrapper.
-         */
-        public function has_widget_inner_wrapper(): bool
+        public function content_template()
         {
         }
     }
@@ -44623,11 +45962,1442 @@ namespace EDD\Elementor\Widgets\Traits {
         }
     }
 }
+namespace EDD\Elementor\Elements {
+    /**
+     * EDD Checkout container element — extends the native Elementor Container.
+     *
+     * @since 3.7.0
+     */
+    class CheckoutBox extends \Elementor\Includes\Elements\Container
+    {
+        // FormElements controls register on the box so their CSS scopes to {{WRAPPER}}, which wraps
+        // the whole #edd_purchase_form and cascades to every inner section's inputs.
+        use \EDD\Elementor\Widgets\Traits\ConfigurableControls;
+        /**
+         * Selector prefix for the box's config-driven (FormElements) controls.
+         *
+         * The form renders outside this box's wrapper, so `{{WRAPPER}}` cannot out-specify EDD's
+         * defaults. Id and both classes on one element (FormLayer::wrap_open()) buy the specificity
+         * that clears the blocks stylesheet's input rules.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_selector_prefix(): string
+        {
+        }
+        /**
+         * Element type.
+         *
+         * The elType used by the JS model factory and the serialized element data.
+         * Must equal get_name() so the panel elType, the registered JS element
+         * type, and the serialized elType all resolve to the same key.
+         *
+         * @since 3.7.0
+         *
+         * @return string
+         */
+        public static function get_type()
+        {
+        }
+        /**
+         * Element name.
+         *
+         * The config.elements key and the panel item name. Must equal get_type()
+         * so the panel elType resolves to the registered JS element type.
+         *
+         * @since 3.7.0
+         *
+         * @return string
+         */
+        public function get_name()
+        {
+        }
+        /**
+         * Panel title.
+         *
+         * @since 3.7.0
+         *
+         * @return string
+         */
+        public function get_title()
+        {
+        }
+        /**
+         * Panel icon.
+         *
+         * @since 3.7.0
+         *
+         * @return string
+         */
+        public function get_icon()
+        {
+        }
+        /**
+         * Panel search keywords.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        public function get_keywords()
+        {
+        }
+        /**
+         * Replace the inherited native-container panel preset so no "Grid" tile appears.
+         *
+         * The native Container's get_panel_presets() returns a `container_grid` preset
+         * that renders as a "Grid" tile. Because this element extends the native
+         * Container and is forced into the EDD category, the INHERITED preset surfaces
+         * as a stray "Grid" tile under Easy Digital Downloads (the recurring
+         * regression). Overriding the method REPLACES that inherited list; returning the
+         * base-class empty list (element-base.php default) means this element
+         * contributes NO panel preset of its own.
+         *
+         * The box therefore shows exactly ONE panel tile: its own base "EDD Checkout"
+         * tile (the element is in the widgets config with show_in_panel + the `edd`
+         * category). Adding a custom single preset here would NOT collapse into that
+         * base tile — Elementor's panel builds a base tile from the widgets config AND a
+         * separate tile per preset, so a self-referential preset renders a SECOND,
+         * duplicate "EDD Checkout" tile (proven in the editor e2e). Layout is chosen by
+         * the editor-JS pattern picker, not a preset, so no structure preset is needed:
+         * the base tile adds the box as a flex container (native default) with the
+         * `edd-checkout` css class (the control default), after which the JS seed hook
+         * auto-seeds the default single-column pattern.
+         *
+         * @since 3.7.0
+         *
+         * @return array<string, array<string, mixed>> Always empty — no scoped preset,
+         *         so the inherited native "Grid" preset never surfaces.
+         */
+        public function get_panel_presets()
+        {
+        }
+        /**
+         * Provide a server-side fallback default for the `css_classes` setting.
+         *
+         * This is a shallow-merged fallback only; it does not authoritatively seed
+         * the class at create time. The authoritative create-time seed is the
+         * `css_classes` control default (set in register_controls()) combined with
+         * the JS after-create seed hook in the editor. This server default acts as
+         * a backstop when the data array has no settings key at all.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        protected function get_default_data()
+        {
+        }
+        /**
+         * Add the panel-hosted layout picker and re-default `css_classes`.
+         *
+         * The box keeps ALL of the native Elementor Container controls at their
+         * defaults (Content Layout, Direction, Content Width, Width, Min Height,
+         * Justify Content, Align Items, Gaps, Wrap) — nothing is hidden. On top of
+         * those, the box's layout can also be chosen by a five-pattern picker that
+         * lives IN the box's Elementor options panel (the settings side-panel) as its
+         * OWN dedicated "Checkout Layout" controls section, registered here via the
+         * custom `edd-layout-picker` control. The control is a data-less mount point:
+         * its editor JS view (see checkout-box.js) renders the five block-parity
+         * thumbnails (single-column plus the four two-column / cart-top variants) and the
+         * passive "Switching layouts replaces all inner blocks." text, and wires each
+         * thumbnail to the layout switch (delete the current inner widgets and re-seed the
+         * chosen pattern). Alongside the picker, this section also registers a NATIVE
+         * Elementor `switcher` control per non-required section (Cart, Discount Form) — the
+         * same slider toggle the monolith legacy checkout widget uses for section show/hide;
+         * the editor JS listens on the box's settings change for these control ids and
+         * re-seeds (ON) or removes (OFF) the section's child widget, keeping each switcher in
+         * sync with the section's actual presence. The two-column patterns still drive
+         * the box's own `flex_direction` to `row`
+         * through the now-visible native Direction control. A fresh box auto-seeds the
+         * `single-column` pattern; per-pattern column widths are seeded onto the inner
+         * containers by the picker.
+         *
+         * The `css_classes` re-default is a create-time default (the control's default
+         * value), so newly added instances carry the `edd-checkout` class through every
+         * creation path without overwriting a user's later edits.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        protected function register_controls()
+        {
+        }
+        /**
+         * Keep the panel-visibility and widgets-config flags.
+         *
+         * `include_in_widgets_config => true` is the flag that merges this element
+         * into the widgets cache the Add Element panel reads, so the element shows
+         * up in the panel under the EDD category.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        protected function get_initial_config()
+        {
+        }
+        /**
+         * Mark the checkout box as dynamic so Elementor never element-caches its output.
+         *
+         * The native Container returns false here, so Elementor's element cache
+         * (elementor_element_cache_ttl, active by default) stores the box's rendered
+         * HTML as a static string in the document cache and replays it for the TTL
+         * (default 24h) WITHOUT re-running print_element() — its before_render()/
+         * print_content() never fire. The checkout box's output is inherently
+         * request-dependent (cart contents, the process-checkout nonce, chosen gateway,
+         * logged-in state, and the empty-cart notice), so a cached copy goes stale: a box
+         * first rendered with an empty cart would keep showing "Your cart is empty." even
+         * after items are added. Returning true makes Elementor emit the box as an
+         * [elementor-element] shortcode in the document cache, which re-renders fresh on
+         * every request, so the purchase form / empty-cart notice always reflects the
+         * current cart. Mirrors how dynamic widgets opt out of the element cache.
+         *
+         * @since 3.7.0
+         *
+         * @return bool Always true — the checkout box must never be statically cached.
+         */
+        protected function is_dynamic_content(): bool
+        {
+        }
+        /**
+         * Fire one of the box's slot hooks and wrap whatever it printed.
+         *
+         * Anything printed here is a sibling of the box's columns, so in a row layout it becomes a
+         * flex item and competes with them for width. The wrapper makes it span the row instead, and
+         * is emitted only when the hook printed something.
+         *
+         * @since 3.7.0
+         *
+         * @param string $hook       The action to fire.
+         * @param string $element_id The engaged box's Elementor element id.
+         * @param string $position   Slot position, `top` or `bottom`.
+         * @return void
+         */
+        private function print_slot(string $hook, string $element_id, string $position)
+        {
+        }
+        /**
+         * Print the box content: render the child widgets when this box is engaged.
+         *
+         * The form-layer subscriber opens the #edd_checkout_form_wrap div and the
+         * <form id="edd_purchase_form"> around this box, and fires the section hooks
+         * (edd_checkout_form_top/_bottom) INSIDE that form, at the box's
+         * before_render/after_render ACTIONS. Elementor buffers print_content() output
+         * and echoes it BETWEEN those actions, so the engaged box simply renders its
+         * child widgets here (parent::print_content()) and they land as descendants of
+         * <form id="edd_purchase_form">, mirroring the block purchase form topology
+         * (EDD\Blocks\Checkout\Elements\PurchaseForm) where the sections are the form's
+         * $content. The box no longer becomes the form or fires the section hooks
+         * itself. Children render only when the form-layer engaged THIS box (exactly
+         * one purchase form is rendered per Elementor document render pass).
+         *
+         * A box the form-layer did not engage falls into one of three cases on the
+         * front end: (1) the Elementor editor/preview, where every box renders in full
+         * so authors can see and edit it; (2) the empty-cart notice owner, which emits
+         * the empty-cart message in place of a form (mirroring the block checkout); or
+         * (3) a second/duplicate or nested checkout-flagged box, which renders nothing
+         * so the page holds a single checkout form with no duplicated section
+         * widgets or field ids.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        protected function print_content()
+        {
+        }
+        /**
+         * Emit the box's Custom CSS control value inside a single style block.
+         *
+         * The value is authored via the Checkout Layout section's Custom CSS
+         * control and is output verbatim so template CSS keeps using global
+         * selectors (it is not scoped to the element wrapper). A surrounding
+         * <style> wrapper is stripped so the value works whether it was
+         * authored with or without one; both the start- and end-tag sequences
+         * are stripped repeatedly until stable so the value cannot reconstruct
+         * either tag and break out of the emitted style element. Raw markup in
+         * the stored value still requires the unfiltered_html capability at
+         * save time; non-privileged saves are run through wp_kses_post by
+         * Elementor's document save, which also HTML-entity-encodes CSS
+         * combinators such as `>`, so the value is entity-decoded before the
+         * stripping runs below.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        protected function print_custom_css()
+        {
+        }
+    }
+}
+namespace EDD\Elementor {
+    /**
+     * EDD Elementor Subscriber
+     *
+     * @package EDD\Elementor\Subscribers
+     */
+    class Loader extends \EDD\EventManagement\MiniManager
+    {
+        /**
+         * Get the event classes.
+         *
+         * @return array
+         */
+        protected function get_event_classes(): array
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * MarkerBuilder class.
+     *
+     * @since 3.7.0
+     */
+    final class MarkerBuilder
+    {
+        /**
+         * The outer checkout block name, shared by every section marker.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const OUTER_BLOCK = 'edd/checkout';
+        /**
+         * Default cart thumbnail width, in pixels.
+         *
+         * @since 3.7.0
+         * @var int
+         */
+        private const DEFAULT_THUMBNAIL_WIDTH = 25;
+        /**
+         * Minimum cart thumbnail width the control allows, in pixels.
+         *
+         * @since 3.7.0
+         * @var int
+         */
+        private const MIN_THUMBNAIL_WIDTH = 10;
+        /**
+         * Maximum cart thumbnail width the control allows, in pixels.
+         *
+         * @since 3.7.0
+         * @var int
+         */
+        private const MAX_THUMBNAIL_WIDTH = 100;
+        /**
+         * The layout values the checkout block recognizes.
+         *
+         * Anything else (including a hostile string pulled from a downloaded template)
+         * normalizes to the empty single-column default, so a free-form value can never
+         * reach the marker and break its HTML-comment delimiter.
+         *
+         * @since 3.7.0
+         * @var string[]
+         */
+        private const ALLOWED_LAYOUTS = array('', 'half', 'two-thirds', 'four-fifths', 'half-bottom', 'two-thirds-bottom');
+        /**
+         * Map of checkout widget type to the inner block name its marker carries.
+         *
+         * The four composable section widgets each map to their matching inner block.
+         * The deprecated monolith widget (edd-checkout) is an all-in-one section with
+         * no inner block, so it maps to an empty string (outer marker only).
+         *
+         * @since 3.7.0
+         * @var array<string,string>
+         */
+        private const SECTION_WIDGETS = array('edd-checkout' => '', 'edd-checkout-cart' => 'edd/checkout-cart', 'edd-checkout-personal-info' => 'edd/checkout-personal-info', 'edd-checkout-payment-info' => 'edd/checkout-payment-info', 'edd-checkout-discount-form' => 'edd/checkout-discount-form');
+        /**
+         * Build the checkout marker set from an ordered list of sections.
+         *
+         * Each section emits the shared outer edd/checkout marker (its reconstructed
+         * page-persistent attributes) immediately followed by its own inner
+         * self-closing marker, with no separator between them or between sections,
+         * matching how Elementor concatenates each widget's render_plain_content()
+         * output. A composable checkout yields the outer marker plus an inner marker
+         * per section; the deprecated monolith yields a single outer marker; an empty
+         * list yields an empty string.
+         *
+         * @since 3.7.0
+         *
+         * @param array $sections Ordered list of sections, each an array with a
+         *                        'block' inner-block-name string and an 'attrs' array.
+         * @return string The concatenated marker set, or an empty string when no sections.
+         */
+        public static function build(array $sections): string
+        {
+        }
+        /**
+         * Reconstruct the section list from a saved Elementor element tree.
+         *
+         * Walks the tree depth-first in document order (the same order Elementor's
+         * plain-text save pipeline visits widgets), collecting each checkout section
+         * widget it recognizes, then attaches the page-persistent outer attributes to
+         * every section so the emitted set matches the live-widget save path.
+         *
+         * @since 3.7.0
+         *
+         * @param array $elements The saved Elementor element tree.
+         * @return array The section list for build(), or an empty array when the tree
+         *               carries no checkout widget.
+         */
+        public static function from_elements(array $elements): array
+        {
+        }
+        /**
+         * Emit the outer marker (and inner marker when present) for one section.
+         *
+         * @since 3.7.0
+         *
+         * @param string $inner_block The inner block name, or '' for an outer-only section.
+         * @param array  $attrs       The raw attributes to normalize onto the outer marker.
+         * @return string The section's marker(s).
+         */
+        private static function section_markers(string $inner_block, array $attrs): string
+        {
+        }
+        /**
+         * Constrain the outer marker attributes to numeric/enum/const values only.
+         *
+         * The three page-persistent attributes the block layer honors: an
+         * enum-validated layout, a boolean discount-form toggle, and a clamped integer
+         * thumbnail width. Emitting only these guarantees no free-form string from a
+         * downloaded template can reach the marker and break its HTML-comment delimiter.
+         * Key order is fixed so the serialized output is deterministic and identical
+         * across every emit site.
+         *
+         * @since 3.7.0
+         *
+         * @param array $attrs The raw attributes.
+         * @return array The constrained attributes in a fixed key order.
+         */
+        private static function normalize_attributes(array $attrs): array
+        {
+        }
+        /**
+         * Normalize a layout value to a recognized enum member.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $layout The raw layout value.
+         * @return string A recognized layout value, or '' when unrecognized.
+         */
+        private static function normalize_layout($layout): string
+        {
+        }
+        /**
+         * Normalize then clamp a raw thumbnail width to the control's allowed range.
+         *
+         * Accepts both the widget-setting array shape (`array( 'size' => 42 )`) and a
+         * bare scalar. An empty value falls back to the default; otherwise the value is
+         * clamped between the minimum and maximum the control allows.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $value The raw thumbnail width (array with a 'size' key or scalar).
+         * @return int The clamped thumbnail width.
+         */
+        private static function clamp_thumbnail_width($value): int
+        {
+        }
+        /**
+         * Reconstruct the page-persistent outer attributes from the element tree.
+         *
+         * Layout is structural in the composable model, so the marker carries the block
+         * default; the discount-form widget is control-less, so the toggle is always
+         * true. Only the thumbnail width is read from the tree -- from the cart section
+         * for a composable checkout, or the monolith widget's own settings for the
+         * deprecated widget -- and it is clamped to an integer by the builder.
+         *
+         * @since 3.7.0
+         *
+         * @param array $elements The saved Elementor element tree.
+         * @return array The raw outer attributes.
+         */
+        private static function reconstruct_attributes(array $elements): array
+        {
+        }
+        /**
+         * Collect the inner block names of every checkout section widget, in order.
+         *
+         * Depth-first, pre-order walk mirroring Elementor's plain-text save traversal,
+         * so the collected order matches the live-widget emit order exactly.
+         *
+         * @since 3.7.0
+         *
+         * @param array $elements The element tree to walk.
+         * @param array $blocks   Accumulator of inner block names (by reference).
+         * @return void
+         */
+        private static function collect_section_blocks(array $elements, array &$blocks): void
+        {
+        }
+        /**
+         * Recursively find the settings array for the first element of a given type.
+         *
+         * Matches a widget by its widgetType (or a container element by its elType),
+         * mirroring how the element data is serialized.
+         *
+         * @since 3.7.0
+         *
+         * @param array  $elements The element tree to search.
+         * @param string $type     The widgetType or elType to match.
+         * @return array|null The matching element's settings, or null when not found.
+         */
+        private static function find_settings(array $elements, string $type)
+        {
+        }
+    }
+}
+namespace EDD\Elementor\Subscribers {
+    /**
+     * Class Checkout
+     *
+     * Handles the pieces of Elementor checkout support that the plain-content block
+     * markers do not cover: it enqueues the editor preview styles and prevents the
+     * edd/checkout Gutenberg block (and its inner edd/checkout-* markers) from
+     * rendering when an Elementor checkout is present on the page.
+     *
+     * @package EDD\Elementor\Subscribers
+     */
+    class Checkout implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.0
+         *
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Enqueue editor styles for Elementor Checkout Widget.
+         *
+         * @since 3.6.0
+         */
+        public function enqueue_preview_assets()
+        {
+        }
+        /**
+         * Prevent the checkout block from rendering.
+         *
+         * Suppresses the edd/checkout Gutenberg block and its inner edd/checkout-*
+         * markers when an Elementor checkout widget or checkout box is present on the
+         * page. The markers stay in post_content (has_block(), Attributes, and core
+         * purchase-field de-dup all read post_content statically, so those are
+         * unaffected); only their render output is short-circuited. This stops the
+         * throwaway do_blocks pass from firing edd_cc_billing_top before the visible
+         * Elementor pass renders the billing address, so the address renders exactly
+         * once on the composable Elementor checkout.
+         *
+         * @since 3.6.0
+         * @since 3.7.0 Extended to the edd-checkout-box container and the four inner edd/checkout-* markers.
+         *
+         * @param string|null $pre_render   Short-circuit value for block rendering.
+         * @param array       $parsed_block Parsed block data.
+         * @param WP_Block    $parent_block Parent block instance.
+         * @return string|null
+         */
+        public function prevent_checkout_block_render($pre_render, $parsed_block, $parent_block)
+        {
+        }
+    }
+    /**
+     * Loads the checkout block stylesheets ahead of Elementor's generated CSS.
+     *
+     * Enqueued at priority 10, against Elementor's own 20: a widget enqueueing its stylesheet as it
+     * renders lands after wp_head, so the block CSS won every tie and the controls did nothing.
+     *
+     * @since 3.7.0
+     */
+    class CheckoutAssets implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Widget type => the widget class that owns its stylesheet.
+         *
+         * @since 3.7.0
+         * @var array
+         */
+        private const WIDGETS = array('edd-checkout-personal-info' => \EDD\Elementor\Widgets\CheckoutInner\PersonalInfo::class, 'edd-checkout-payment-info' => \EDD\Elementor\Widgets\CheckoutInner\PaymentInfo::class, 'edd-checkout-cart' => \EDD\Elementor\Widgets\CheckoutInner\Cart::class, 'edd-checkout-discount-form' => \EDD\Elementor\Widgets\CheckoutInner\DiscountForm::class);
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Enqueue the stylesheet for every checkout section on the page.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function enqueue_checkout_styles()
+        {
+        }
+        /**
+         * Enqueue the checkout stylesheet shared by the box and every section.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private static function enqueue_shared_style()
+        {
+        }
+    }
+    /**
+     * Class CheckoutBox
+     *
+     * @since 3.7.0
+     */
+    class CheckoutBox implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Register the checkout box's custom Elementor controls.
+         *
+         * Registers the data-less layout-picker control type so the box's
+         * register_controls() can add it to the options panel (the panel-hosted
+         * five-pattern picker + re-add affordance that replaces the native Container
+         * layout controls). The control is guarded on the controls manager exposing a
+         * register() method so a shape change degrades to a no-op.
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Controls_Manager $controls_manager The Elementor controls manager.
+         * @return void
+         */
+        public function register_controls($controls_manager)
+        {
+        }
+        /**
+         * Register the EDD Checkout container element with the elements manager.
+         *
+         * Gated on the Container experiment via Page::is_container_active(): the box
+         * extends the native Container, so it is only registered when containers are on.
+         * The native Container and element classes are then force-autoloaded; the element
+         * load is retried on every call (the Composer autoloader includes the file, not
+         * include_once) so it still defines once Container is present.
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Includes\Managers\Elements_Manager $elements_manager The elements manager.
+         * @return void
+         */
+        public function register_element($elements_manager)
+        {
+        }
+    }
+    /**
+     * Class CheckoutEditorPreview
+     *
+     * @since 3.7.0
+     */
+    class CheckoutEditorPreview implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The inline-only style handle for the editor-preview inert rule.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const HANDLE = 'edd-elementor-checkout-editor-preview';
+        /**
+         * Get the subscribed events.
+         *
+         * `elementor/preview/enqueue_styles` fires only inside the editor preview iframe,
+         * never on the front end, so the rule is inherently editor-scoped.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Add the inline style that neutralizes the checkout form's controls in the preview.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function enqueue_inert_styles()
+        {
+        }
+        /**
+         * Build the CSS that disables pointer events on the checkout form's controls.
+         *
+         * Only the interactive controls are disabled, not the whole form: a click on a
+         * control then falls through to its containing widget, so Elementor still selects
+         * the section (its edit overlay carries pointer-events: none, so selection relies on
+         * the click reaching the widget), while the control itself never fires. Disabling the
+         * whole form would inherit down to the widget wrappers and break click-to-select.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        private function get_inert_css(): string
+        {
+        }
+        /**
+         * Build the CSS that makes the canvas reflect form-scoped controls the editor cannot see.
+         *
+         * Some checkout styling is scoped to `#edd_purchase_form`, which the front end injects around the
+         * box but the editor canvas lacks, so those rules never apply and a toggle looks ignored. Supplying
+         * the missing pieces, scoped to the same classes, lets the existing rules work in the editor too.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        private function get_fidelity_css(): string
+        {
+        }
+    }
+    /**
+     * Class CheckoutFormLayer
+     *
+     * @since 3.7.0
+     */
+    class CheckoutFormLayer implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The per-element engaged-render depth, keyed by Elementor element id.
+         *
+         * Each engaged checkout box gets its own entry so multiple boxes on one page
+         * engage independently (a single scalar/bool would collide across boxes). The
+         * value is the re-entrancy depth for that element id: 0 at the engaging call,
+         * incremented on a nested re-entrant call on the same id, and decremented on
+         * each matching after_render. When it returns to 0 the wrapper is closed for
+         * that box.
+         *
+         * @since 3.7.0
+         *
+         * @var array<string, int>
+         */
+        private $engaged_depth_map = array();
+        /**
+         * The registered personal-info fallback callbacks, keyed by Elementor element id.
+         *
+         * Each engaged box stores the exact closure it registered on edd_checkout_form_top
+         * so after_render() can pass the SAME instance to remove_action(). Passing a fresh
+         * inline closure to remove_action() would not match (PHP builds a new object each
+         * time), leaking the subscriber to later hooks.
+         *
+         * @since 3.7.0
+         *
+         * @var array<string, callable>
+         */
+        private $pi_fallback_cb = array();
+        /**
+         * The registered payment-info fallback callbacks, keyed by Elementor element id.
+         *
+         * Stored per box so the exact closure registered on edd_checkout_form_bottom can be
+         * passed back to remove_action() in after_render().
+         *
+         * @since 3.7.0
+         *
+         * @var array<string, callable>
+         */
+        private $pay_fallback_cb = array();
+        /**
+         * Whether the shutdown failsafe has been registered for this request.
+         *
+         * Ensures the shutdown action is added at most once, even when multiple
+         * containers are processed in the same request.
+         *
+         * @since 3.7.0
+         *
+         * @var bool
+         */
+        private $failsafe_registered = false;
+        /**
+         * The Elementor document-id render stack for the current request.
+         *
+         * A document id is pushed when a document render begins
+         * (before_get_builder_content) and popped when it ends (get_builder_content).
+         * Shared form-layer state is torn down only when the stack returns to empty
+         * (the outermost pass is done), so a nested document rendered mid-outer-render
+         * cannot wipe the outer box's still-open wrapper. The matching-id pop also
+         * discards an unbalanced entry left by Elementor's empty-data early return (a
+         * nested document that fired the push but returned before its pop).
+         *
+         * @since 3.7.0
+         *
+         * @var string[]
+         */
+        private $document_stack = array();
+        /**
+         * Get the subscribed events.
+         *
+         * Hooks the edd-checkout-box element render hooks: Elementor fires
+         * `elementor/frontend/{get_type()}/before_render`, and the edd-checkout-box
+         * element reports its own type, so these hooks fire for the box. A plain
+         * native container does not engage the form layer, so the container render
+         * hooks are not subscribed. The paired document hooks
+         * `elementor/frontend/before_get_builder_content` (push) and
+         * `elementor/frontend/get_builder_content` (pop) bracket every document render
+         * pass; the subscriber tracks that nesting on a stack so shared state is reset
+         * only when the outermost pass ends, never mid-nested-render.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Begin a document render pass (the push half of the paired document hooks).
+         *
+         * Fires once at the start of every document render, including a nested render
+         * started mid-outer-render. Only the OUTERMOST pass (an empty stack) tears down
+         * the shared form-layer state, so each independent top-level pass opens its own
+         * purchase form while a nested render never wipes the outer box's open wrapper or
+         * its page-form-open guard. The document id is pushed so its paired
+         * end_document_pass() can detect when the outermost pass finishes.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $document The Elementor document beginning its render (nullable, BC).
+         * @return void
+         */
+        public function reset_for_new_render_pass($document = null): void
+        {
+        }
+        /**
+         * End a document render pass (the pop half of the paired document hooks).
+         *
+         * Pops this document's entry off the stack. When the id is resolvable it pops
+         * back through any entries stacked above it, discarding an unbalanced push left
+         * by Elementor's empty-data early return (a nested document that fired the push
+         * but returned before this pop). Once the stack empties the outermost pass is
+         * done, so the shared form-layer state is torn down here.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $document The Elementor document ending its render (nullable, BC).
+         * @return void
+         */
+        public function end_document_pass($document = null): void
+        {
+        }
+        /**
+         * Tear down the shared and per-box render-pass state.
+         *
+         * Removes each leaked box's fallback closures and clears its shared engaged
+         * state, drops the per-box depth-map entries, then resets the shared FormLayer
+         * state via FormLayer::reset_all(). Called when the outermost document pass
+         * begins or ends.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        private function tear_down_render_state(): void
+        {
+        }
+        /**
+         * Resolve a stable string id for a document on the render stack.
+         *
+         * Prefers the document's get_id() (its post id), falling back to the object
+         * hash for an id-less object and the scalar value for a plain identifier (the
+         * form the tests pass). Returns an empty string when unresolvable.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $document The Elementor document (or a test stand-in).
+         * @return string The document id, or an empty string when unresolved.
+         */
+        private function get_document_id($document): string
+        {
+        }
+        /**
+         * Open the single page-level purchase form at the checkout region boundary.
+         *
+         * If the element qualifies (is an edd-checkout-box and edd checkout context is
+         * available) AND no purchase form has opened yet this pass (exactly one purchase
+         * form per Elementor document render pass, because EDD core's gateway JS targets
+         * a single #edd_purchase_form on the page), this: sets the page-level
+         * FormLayer::open_page_form() guard, marks this box as THE engaged box
+         * (box-engagement bookkeeping for the dedupe path), registers the box-scoped
+         * section fallbacks, and echoes the outer #edd_checkout_form_wrap div,
+         * fires edd_before_purchase_form, then echoes the <form id="edd_purchase_form"> open
+         * directly at this hook point (no output buffer), emits the logged-in account block
+         * at the top of the form (mirroring the block checkout), then fires
+         * edd_checkout_form_top INSIDE the form via FormLayer::render_form_top(). The box then
+         * renders its children as a plain container between here and after_render(), so they
+         * land inside the form; after_render() fires edd_checkout_form_bottom, closes the form,
+         * fires edd_after_purchase_form, then closes the wrapper.
+         * Re-entrant calls on the same element id only increment that id's depth so the
+         * form opens exactly once per box; a subsequent box or a nested checkout box is
+         * refused so exactly one form exists per render pass.
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Element_Base $element The element being rendered.
+         * @return void
+         */
+        public function before_render($element): void
+        {
+        }
+        /**
+         * Close the page-level purchase form: fire the bottom hook, close form + wrapper.
+         *
+         * Once the engaging element id's depth returns to 0 this fires
+         * edd_checkout_form_bottom (+ captcha) INSIDE the form via
+         * FormLayer::render_form_bottom(), echoes FormLayer::form_close(), fires
+         * edd_after_purchase_form BETWEEN the form close and the wrapper close (matching the
+         * block checkout.php), then echoes FormLayer::wrap_close().
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Element_Base $element The element being rendered.
+         * @return void
+         */
+        public function after_render($element): void
+        {
+        }
+        /**
+         * Render everything that belongs at the top of the checkout, inside the box.
+         *
+         * The account line, the required-fields notice and any missing-section fallbacks render inside
+         * the box rather than beside it, which is what aligns them with it. The account line comes first
+         * (matching the inner-blocks checkout), so a template must keep page chrome — a heading, checkout
+         * steps — in a container BEFORE the box, not inside it.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public function render_box_top(): void
+        {
+        }
+        /**
+         * Render everything that belongs at the bottom of the checkout, inside the box.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public function render_box_bottom(): void
+        {
+        }
+        /**
+         * Register the box-scoped per-section Elementor fallback subscribers.
+         *
+         * Each fallback fills a required section that this box omits, so a partial box
+         * still renders a complete purchase form. The gate is box-scoped: it consults
+         * Page::has_widget( $section, $box_elements ) against THIS box's own subtree, so a
+         * complete box on the page never suppresses another box's fallback. The closures
+         * are stored per element id so the exact instance can be removed in after_render()
+         * (a fresh inline closure would not match remove_action()).
+         *
+         * The block section renderers echo their markup directly into the active output
+         * stream, so each is called directly at its hook point (the echoed-wrapper
+         * approach — no output buffer, matching the wrapper echoes). They are called with
+         * Attributes::get() (non-empty defaults) on purpose: the block's own
+         * UserDetails/PaymentDetails hook subscribers render nothing on the Elementor path
+         * not because of a has_block() gate but because UserDetails::render early-returns on
+         * empty $block_attributes (UserDetails.php), the arguments those subscribers receive there.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id   The engaged box's Elementor element id.
+         * @param array  $box_elements The engaged box's own child element-data subtree.
+         * @return void
+         */
+        private function register_section_fallbacks(string $element_id, array $box_elements): void
+        {
+        }
+        /**
+         * Remove the box-scoped fallback subscribers registered for an element id.
+         *
+         * Passes the SAME stored closure instance to remove_action() so the removal
+         * matches, then clears the stored references. Idempotent when nothing was stored.
+         *
+         * @since 3.7.0
+         *
+         * @param string $element_id The engaged box's Elementor element id.
+         * @return void
+         */
+        private function unregister_section_fallbacks(string $element_id): void
+        {
+        }
+        /**
+         * Register a one-time shutdown action that clears any leaked engagement state.
+         *
+         * Guards against the case where a child element render throws an uncaught
+         * exception after before_render has engaged but before after_render's finally
+         * block can run. The shutdown callback iterates the per-element engaged-depth map
+         * so a leak from ANY box (not just the first) is cleared: for each leaked id it
+         * removes that id's stored personal-info and payment-info fallback closures from
+         * edd_checkout_form_top/_bottom (so a leaked fallback cannot echo stale
+         * $box_elements on a persistent worker) and clears that id from the shared
+         * FormLayer engaged-element state, then resets the page-level form-open guard
+         * (persistent-worker hardening so the next request can open a purchase form
+         * again). The callback is idempotent: if after_render already cleared everything,
+         * the maps are empty and the guard reset is a no-op. Registered at most once per
+         * request via $failsafe_registered.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        private function register_shutdown_failsafe(): void
+        {
+        }
+        /**
+         * Whether the EDD cart is empty (no items and no fees).
+         *
+         * Mirrors the block checkout's empty-cart gate (checkout.php): an empty cart
+         * shows the empty-cart notice instead of the purchase form.
+         *
+         * @since 3.7.0
+         *
+         * @return bool True when the cart holds no items and no fees.
+         */
+        private function cart_is_empty(): bool
+        {
+        }
+        /**
+         * Resolve the Elementor element id for the map key.
+         *
+         * Prefers the raw element-data id (present for both the real Elementor node
+         * and the test fake), falling back to get_id() when available. Returns an
+         * empty string when neither is resolvable so the caller can skip engagement.
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Element_Base $element The element being rendered.
+         * @return string The element id, or an empty string when unresolved.
+         */
+        private function get_element_id($element): string
+        {
+        }
+        /**
+         * Build the raw element-data node for the detection helper.
+         *
+         * Elementor's Element_Base::get_raw_data() yields the node shape
+         * (elType/widgetType/elements) the Elementor-free helper expects.
+         *
+         * @since 3.7.0
+         *
+         * @param \Elementor\Element_Base $element The element being rendered.
+         * @return array The raw element-data node.
+         */
+        private function get_raw_element_data($element): array
+        {
+        }
+    }
+    /**
+     * CheckoutTemplates class
+     *
+     * Integrates the template browser with Elementor's editor interface.
+     * Provides a "Browse Templates" button in the Elementor panel footer
+     * when the user is editing the EDD checkout page.
+     *
+     * @since 3.7.0
+     */
+    class CheckoutTemplates implements \EDD\EventManagement\SubscriberInterface
+    {
+        use \EDD\Checkout\Templates\Traits\TemplateBrowserTrait;
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         * @return array Array of event subscriptions.
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Check if we're editing the checkout page.
+         *
+         * @since 3.7.0
+         * @return bool True if editing the checkout page.
+         */
+        private function is_checkout_page(): bool
+        {
+        }
+        /**
+         * Enqueue assets for the Elementor editor.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function enqueue_assets()
+        {
+        }
+        /**
+         * Enqueue the Elementor panel "Browse Templates" button script.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private function enqueue_elementor_button_script(): void
+        {
+        }
+        /**
+         * Enqueue the Elementor panel button stylesheet.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private function enqueue_elementor_button_styles(): void
+        {
+        }
+        /**
+         * Get data to pass to the JavaScript.
+         *
+         * @since 3.7.0
+         * @return array Script localization data.
+         */
+        private function get_script_data(): array
+        {
+        }
+    }
+    /**
+     * Class EditorAssets
+     *
+     * @since 3.7.0
+     */
+    class EditorAssets implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.7.0
+         *
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Enqueue the EDD Checkout box editor script.
+         *
+         * Registers the EDD Checkout container JS element type and the section-widget
+         * seeding hook. The built bundle is emitted by webpack from
+         * assets/src/js/elementor/checkout-box.entry.js to the path enqueued here.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public function enqueue_editor_scripts()
+        {
+        }
+    }
+    /**
+     * Class Widget
+     *
+     * @since 3.6.0
+     */
+    class Widget implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Get the subscribed events.
+         *
+         * @since 3.6.0
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Add EDD widget category
+         *
+         * @since 3.6.0
+         */
+        public function register_widget_category($elements_manager)
+        {
+        }
+        /**
+         * Register EDD widgets
+         *
+         * @since 3.6.0
+         * @since 3.7.0 Added the four CheckoutInner section widgets.
+         */
+        public function register_widgets($widgets_manager)
+        {
+        }
+    }
+}
+namespace EDD\Elementor\Utils {
+    /**
+     * Page utility class.
+     *
+     * @since 3.6.0
+     */
+    class Page
+    {
+        /**
+         * Get the page data.
+         *
+         * @since 3.6.0
+         *
+         * @param int|null $current_page Current page ID.
+         * @return array|false
+         */
+        public static function get_page_data($current_page = null)
+        {
+        }
+        /**
+         * Check if the page has a widget.
+         *
+         * @since 3.6.0
+         *
+         * @param string $widget_type Widget type.
+         * @param array  $elements Page elements data.
+         * @return bool
+         */
+        public static function has_widget(string $widget_type, $elements = null): bool
+        {
+        }
+        /**
+         * Get the widget data.
+         *
+         * @since 3.6.0
+         * @since 3.7.0 Added elType match for container elements (e.g. edd-checkout-box).
+         *
+         * @param string $widget_type Widget type (widgetType) or container element type (elType).
+         * @param array  $elements    Page elements data.
+         * @param int    $occurrence  Occurrence number.
+         * @return array
+         */
+        public static function get_widget_data(string $widget_type, $elements = null, int $occurrence = 1): array
+        {
+        }
+        /**
+         * Check if the page is in edit mode.
+         *
+         * @since 3.6.0
+         *
+         * @return bool
+         */
+        public static function is_edit_mode(): bool
+        {
+        }
+        /**
+         * Check if Elementor's Container experiment is active.
+         *
+         * The composable checkout (edd-checkout-box container and its section
+         * widgets) requires Elementor containers. When the experiment is
+         * unreachable we default to true, because containers are the norm on
+         * current Elementor installs and the composable path is the default.
+         *
+         * @since 3.7.0
+         *
+         * @return bool
+         */
+        public static function is_container_active(): bool
+        {
+        }
+        /**
+         * Get the current page ID.
+         *
+         * @since 3.6.0
+         * @since 3.7.0 Added a singular queried-post fallback so suppression engages on a normal front-end pageview.
+         * @return int The page ID, or 0 if not found.
+         */
+        private static function get_id(): int
+        {
+        }
+        /**
+         * Get the current page ID from Elementor request parameters.
+         *
+         * @since 3.6.0
+         * @return int The page ID, or 0 if not found.
+         */
+        private static function get_current_page_by_elementor_request(): int
+        {
+        }
+    }
+}
 namespace EDD\Elementor\Widgets {
+    /**
+     * Abstract base class for EDD Elementor widgets.
+     *
+     * @since 3.6.0
+     */
+    abstract class Base extends \Elementor\Widget_Base
+    {
+        /**
+         * Render widget plain content.
+         *
+         * Elementor's plain-text save pipeline (Db::save_plain_text) invokes this for
+         * every widget node and writes the echoed output to the post_content column.
+         * Emitting real block-comment markers here makes the composable Elementor
+         * checkout discoverable by has_block(), so the block-gated checkout behavior
+         * (Validator::has_block, Attributes::get, core purchase-field de-duplication)
+         * treats the Elementor checkout as a first-class checkout block.
+         *
+         * Two markers are emitted per inner widget:
+         *
+         *  - The outer `edd/checkout` marker, identical across all four inner widgets.
+         *    Attributes::parse_attributes() reads the first `edd/checkout` block in
+         *    document order, so keeping the marker identical makes the parsed attributes
+         *    deterministic regardless of the order Elementor serializes the widgets.
+         *    Its attributes are reconstructed from the whole document: `thumbnail_width`
+         *    is read from the Cart widget, while `show_discount_form` is always true —
+         *    that widget is control-less (its visibility is governed by the box's
+         *    discount section switcher, not a per-widget toggle, and the widget itself
+         *    never renders when absent), so the marker carries no per-widget setting to
+         *    read. `layout` is structural
+         *    in the checkout box's composable model (chosen by the pattern picker, not a
+         *    box control), so the marker carries the block default.
+         *  - The widget's own inner marker (`edd/checkout-cart`,
+         *    `edd/checkout-personal-info`, `edd/checkout-payment-info`,
+         *    `edd/checkout-discount-form`), which satisfies the inner-name has_block()
+         *    checks such as the cart's duplicate-discount guard.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function render_plain_content()
+        {
+        }
+        /**
+         * Whether this widget's own element node is inside an edd-checkout-box at save.
+         *
+         * The marker-write gate for render_plain_content(). render_plain_content()
+         * fires inside Elementor's plain-text save pipeline (Db::save_plain_text),
+         * where the document being saved is the current document — the same save-time
+         * context get_checkout_block_attributes() already relies on. This walks that
+         * document's element tree for this widget's own id (get_id()) and reports
+         * whether any ancestor of that node is an edd-checkout-box. A loose section
+         * placed outside a box (copy/paste, template/API import, a pre-existing page,
+         * or a drag out of the box) therefore writes no wp:edd/checkout marker, which
+         * is what keeps has_block() false and prevents the standalone-widget gateway
+         * crash: gateway JS (PayPal, etc.) does getElementById( 'edd_purchase_form' )
+         * then scopes into it, and a widget with no wrapping form has nothing to scope
+         * to. Resolving no current document (never the case in the real
+         * save pipeline) is treated as "not within a box" so the gate fails closed.
+         *
+         * @since 3.7.0
+         * @return bool True when this widget's node is inside an edd-checkout-box.
+         */
+        protected function is_within_checkout_box(): bool
+        {
+        }
+        /**
+         * Recursively test whether a target element id sits inside an edd-checkout-box.
+         *
+         * Pure walk over the saved element-data tree: it descends the tree tracking
+         * whether the current branch is already inside an edd-checkout-box (an
+         * edd-checkout-box node turns the flag on for its whole subtree), and returns
+         * that flag's value for the node whose id matches the target. Kept side-effect
+         * free and static so the marker-write gate is unit-testable without Elementor.
+         *
+         * @since 3.7.0
+         *
+         * @param array  $elements  The element-data tree to search.
+         * @param string $target_id The widget element id to locate.
+         * @param bool   $inside    Whether the current branch is already inside a box.
+         * @return bool True when the target id is found inside an edd-checkout-box.
+         */
+        private static function element_id_within_box(array $elements, string $target_id, bool $inside): bool
+        {
+        }
+        /**
+         * Get the inner block name emitted by this widget's plain-content marker.
+         *
+         * The composable widget names mirror the block names, differing only in the
+         * namespace separator (`edd-checkout-cart` widget maps to the `edd/checkout-cart`
+         * block), so the block name is derived from the widget name.
+         *
+         * @since 3.7.0
+         * @return string The inner block name.
+         */
+        protected function get_inner_block_name(): string
+        {
+        }
+        /**
+         * Reconstruct the outer checkout block attributes from the saved document.
+         *
+         * The attribute values the block layer honors come from the saved document:
+         * `thumbnail_width` is read from the Cart widget. `show_discount_form` is always
+         * true — that widget is control-less, so its own settings never hold a value for
+         * it; the box's discount section switcher governs its presence and its render is
+         * presence-gated independently of this marker.
+         * This walks the document being saved (set as the current document by the editor
+         * save flow) so every inner widget serializes the same, complete attribute set.
+         * `layout` is structural in the checkout box's composable model (chosen by the
+         * pattern picker, which seeds the inner-widget arrangement), so it is emitted as
+         * the block default rather
+         * than read from the retired `edd_layout` control. Only the page-persistent
+         * attributes are emitted; request-time values (`logged_in`,
+         * `show_register_form`) are intentionally omitted so Attributes::get() overlays
+         * the fresh runtime defaults.
+         *
+         * @since 3.7.0
+         * @return array The reconstructed block attributes.
+         */
+        protected static function get_checkout_block_attributes(): array
+        {
+        }
+        /**
+         * Recursively find the settings array for the first element of a given type.
+         *
+         * Matches a widget by its `widgetType` (or a container element by its `elType`),
+         * mirroring how the element data is serialized.
+         *
+         * @since 3.7.0
+         *
+         * @param array  $elements The element data tree to search.
+         * @param string $type     The widgetType or elType to match.
+         * @return array|null The matching element's settings, or null if not found.
+         */
+        private static function find_element_settings(array $elements, string $type)
+        {
+        }
+        /**
+         * Get widget categories
+         *
+         * @since 3.6.0
+         * @return array Widget categories
+         */
+        public function get_categories(): array
+        {
+        }
+        /**
+         * Get widget keywords
+         *
+         * @since 3.6.0
+         * @return array Widget keywords
+         */
+        public function get_keywords(): array
+        {
+        }
+        /**
+         * Whether the widget has a widget inner wrapper.
+         *
+         * @since 3.6.0
+         * @return bool Whether the widget has a widget inner wrapper.
+         */
+        public function has_widget_inner_wrapper(): bool
+        {
+        }
+    }
     /**
      * EDD Checkout Widget for Elementor
      *
-     * @since 3.6.0
+     * @since      3.6.0
+     * @deprecated 3.7.0 Superseded by the edd-checkout-box container and section widgets.
      */
     class Checkout extends \EDD\Elementor\Widgets\Base
     {
@@ -44656,6 +47426,21 @@ namespace EDD\Elementor\Widgets {
          * @return string Widget title
          */
         public function get_title(): string
+        {
+        }
+        /**
+         * Control whether the deprecated widget appears in the Add-widget panel.
+         *
+         * When Elementor's Container experiment is active the composable
+         * edd-checkout-box supersedes this widget, so it is hidden from the panel
+         * (existing saved instances still register, render, and edit). When the
+         * Container experiment is off the composable path is unavailable, so this
+         * legacy monolith is exposed again as the checkout fallback.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        public function show_in_panel(): bool
         {
         }
         /**
@@ -44789,15 +47574,6 @@ namespace EDD\Elementor\Widgets {
         {
         }
         /**
-         * Get the thumbnail width.
-         *
-         * @since 3.6.0
-         * @return int The thumbnail width.
-         */
-        private function get_thumbnail_width()
-        {
-        }
-        /**
          * Get the selectors for the widget.
          *
          * @since 3.6.0
@@ -44816,6 +47592,666 @@ namespace EDD\Elementor\Widgets {
          * @return string The mapped selectors for the widget.
          */
         private function mapped_selectors($selector)
+        {
+        }
+    }
+}
+namespace EDD\Elementor\Widgets\CheckoutInner\Concerns {
+    /**
+     * EditorPreview trait.
+     *
+     * Activate the EDD block editor preview context when rendering inside the
+     * Elementor editor. Safe to call multiple times — the flag is set only once
+     * per request (idempotent).
+     *
+     * @since 3.7.0
+     */
+    trait EditorPreview
+    {
+        /**
+         * Maybe set up the EDD block editor preview context.
+         *
+         * When the current request is an Elementor editor edit-mode render, set the
+         * edd_blocks_is_block_editor GET parameter to the md5 hash of the current
+         * user's email address. This causes \EDD\Blocks\Utility::is_block_editor() to
+         * return true and the shared Elements renderers to emit sample preview content.
+         *
+         * The flag is set only once per request: if it is already present (because
+         * another section widget rendered first), this method returns immediately so
+         * the value is not recalculated unnecessarily.
+         *
+         * It also applies the "Preview as Guest" toggle here, once, before any section
+         * widget's first Attributes::get() call (see checkout_previews_as_guest()).
+         *
+         * This method MUST NOT be called outside of an is_edit_mode() guard — it is
+         * intentionally a no-op on the frontend.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function maybe_setup_editor_preview(): void
+        {
+        }
+        /**
+         * Whether the checkout's Personal Info section is set to preview as a guest.
+         *
+         * The "Preview as Guest" toggle lives on the Personal Info section. When this render IS
+         * that widget, read its live editor setting from $this so a just-changed (still unsaved)
+         * toggle is honored — the same way the monolith Checkout widget reads it. For any other
+         * section that happens to run this setup first, fall back to the saved document data.
+         * An absent setting means the control default (on); an explicit empty value means the
+         * author turned it off. Returns false when the checkout has no Personal Info section.
+         *
+         * @since 3.7.0
+         * @return bool True when the checkout should preview as a guest.
+         */
+        private function checkout_previews_as_guest(): bool
+        {
+        }
+    }
+    /**
+     * SectionGuard trait.
+     *
+     * Two front-end render gates for a checkout section widget: the render-inert
+     * backstop (a section outside an engaged box renders nothing) and the
+     * duplicate-section dedupe (a second same-type section inside an engaged box
+     * renders nothing). Editor/preview renders are always allowed so every instance
+     * stays visible and editable.
+     *
+     * @since 3.7.0
+     */
+    trait SectionGuard
+    {
+        /**
+         * Whether this section render must be inert (render nothing) — the backstop.
+         *
+         * Returns false in the Elementor editor/preview so every instance renders and
+         * stays editable. On the front end it returns true when NO checkout box is
+         * engaged for the current render pass: a section widget rendered outside an
+         * engaged box (placed standalone via copy/paste, template/API import, a
+         * pre-existing page, or dragged out of the box) has no purchase form to live in,
+         * so it must render nothing rather than emit a gateway selector or
+         * #edd_purchase_form_wrap with no form around it: gateway JS (PayPal, etc.)
+         * does getElementById( 'edd_purchase_form' ) then scopes into it, and a widget
+         * with no wrapping form has nothing to scope to. Each widget's render() calls
+         * this FIRST, ahead of
+         * is_duplicate_section(): the two gates read FormLayer::is_box_engaged() in
+         * opposite senses, so a loose widget must bail here before it could consult or
+         * claim a dedupe slot it should never touch.
+         *
+         * @since 3.7.0
+         *
+         * @return bool True when this render must emit nothing.
+         */
+        protected function is_render_inert(): bool
+        {
+        }
+        /**
+         * Whether this section widget render is a duplicate that must be skipped.
+         *
+         * Returns false in the Elementor editor/preview so every instance renders
+         * (authors must see and be able to delete a duplicate). The dedupe applies ONLY
+         * while a checkout box is actively engaged (rendering its own children): a
+         * section widget rendered standalone — before, after, or outside any engaged box
+         * (the section widget carries the generic `edd` category and can be placed
+         * anywhere) — renders normally and never claims a type slot, so it cannot consume
+         * the box's real same-type section's slot and silently blank the checkout. Inside
+         * the engaged box it consults the per-render-pass FormLayer registry: the first
+         * instance of this widget's type claims the slot and renders; any later same-type
+         * instance returns true here so its render() short-circuits, emitting no duplicate
+         * markup or field ids.
+         *
+         * @since 3.7.0
+         *
+         * @return bool True when this render is a duplicate and should be skipped.
+         */
+        protected function is_duplicate_section(): bool
+        {
+        }
+    }
+}
+namespace EDD\Elementor\Widgets\CheckoutInner {
+    /**
+     * EDD Checkout Cart Widget for Elementor.
+     *
+     * @since 3.7.0
+     */
+    class Cart extends \EDD\Elementor\Widgets\Base
+    {
+        use \EDD\Elementor\Widgets\Traits\ConfigurableControls;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\EditorPreview;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\SectionGuard;
+        /**
+         * Enqueue the checkout style.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public static function enqueue_style()
+        {
+        }
+        /**
+         * Get widget name.
+         *
+         * @since 3.7.0
+         * @return string Widget name.
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Get widget title.
+         *
+         * @since 3.7.0
+         * @return string Widget title.
+         */
+        public function get_title(): string
+        {
+        }
+        /**
+         * Get widget icon.
+         *
+         * @since 3.7.0
+         * @return string Widget icon.
+         */
+        public function get_icon(): string
+        {
+        }
+        /**
+         * Get widget keywords.
+         *
+         * @since 3.7.0
+         * @return array Widget keywords.
+         */
+        public function get_keywords(): array
+        {
+        }
+        /**
+         * Get the style dependencies for the widget.
+         *
+         * @since 3.7.0
+         * @return array The style dependencies for the widget.
+         */
+        public function get_style_depends()
+        {
+        }
+        /**
+         * Hide the checkout section widget from the Add-widget panel.
+         *
+         * The composable checkout sections are seeded into the edd-checkout-box, not
+         * placed individually; hiding them from the panel prevents a loose section
+         * being dropped onto a page where it cannot render safely: a loose section has
+         * no purchase form wrapping it, and gateway JS that does
+         * getElementById( 'edd_purchase_form' ) then scopes into it would find nothing
+         * to scope to. Existing
+         * saved instances continue to register, render, and edit; this only removes the
+         * widget from the panel so it is not chosen for new layouts.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        public function show_in_panel(): bool
+        {
+        }
+        /**
+         * Register widget controls.
+         *
+         * Owns the cart display toggles (section_cart minus the retired
+         * show_discount_form control) and the cart styling group.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function register_controls()
+        {
+        }
+        /**
+         * Get the selector prefix for this widget.
+         *
+         * The cart widget wrapper wraps only the cart markup (#edd_checkout_cart_form
+         * and its #edd_checkout_cart child), so {{WRAPPER}} is the correct prefix; the
+         * source selectors' leading `form ` ancestor is mapped away below since the
+         * form element lives on the parent Container, outside this child's wrapper.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_selector_prefix(): string
+        {
+        }
+        /**
+         * Get the selector mappings for this widget.
+         *
+         * Strips the `form ` ancestor from the cart styling selectors so they resolve
+         * relative to this child widget's wrapper.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        protected function get_selector_mappings(): array
+        {
+        }
+        /**
+         * Render the widget output on the frontend.
+         *
+         * Delegates to the shared cart render class. The buffered output is already
+         * escaped by the underlying template.
+         *
+         * In the Elementor editor, activates the EDD block editor preview context and
+         * seeds sample cart items via the block checkout helper so the cart section
+         * renders preview content rather than an empty cart.
+         *
+         * @since 3.7.0
+         */
+        protected function render()
+        {
+        }
+    }
+    /**
+     * EDD Checkout Discount Form Widget for Elementor.
+     *
+     * @since 3.7.0
+     */
+    class DiscountForm extends \EDD\Elementor\Widgets\Base
+    {
+        use \EDD\Elementor\Widgets\Traits\ConfigurableControls;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\EditorPreview;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\SectionGuard;
+        /**
+         * Enqueue the checkout style.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public static function enqueue_style()
+        {
+        }
+        /**
+         * Get widget name.
+         *
+         * @since 3.7.0
+         * @return string Widget name.
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Register the discount form's style controls.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function register_controls()
+        {
+        }
+        /**
+         * Get the selector prefix for this widget.
+         *
+         * The widget wraps the discount form, so its own wrapper is the right scope.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_selector_prefix(): string
+        {
+        }
+        /**
+         * Get widget title.
+         *
+         * @since 3.7.0
+         * @return string Widget title.
+         */
+        public function get_title(): string
+        {
+        }
+        /**
+         * Get widget icon.
+         *
+         * @since 3.7.0
+         * @return string Widget icon.
+         */
+        public function get_icon(): string
+        {
+        }
+        /**
+         * Get widget keywords.
+         *
+         * @since 3.7.0
+         * @return array Widget keywords.
+         */
+        public function get_keywords(): array
+        {
+        }
+        /**
+         * Get the style dependencies for the widget.
+         *
+         * @since 3.7.0
+         * @return array The style dependencies for the widget.
+         */
+        public function get_style_depends()
+        {
+        }
+        /**
+         * Hide the checkout section widget from the Add-widget panel.
+         *
+         * The composable checkout sections are seeded into the edd-checkout-box, not
+         * placed individually; hiding them from the panel prevents a loose section
+         * being dropped onto a page where it cannot render safely: a loose section has
+         * no purchase form wrapping it, and gateway JS that does
+         * getElementById( 'edd_purchase_form' ) then scopes into it would find nothing
+         * to scope to. Existing
+         * saved instances continue to register, render, and edit; this only removes the
+         * widget from the panel so it is not chosen for new layouts.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        public function show_in_panel(): bool
+        {
+        }
+        /**
+         * Render the widget output on the frontend.
+         *
+         * Delegates to the shared discount view template. The buffered output is
+         * already escaped by the underlying template. The widget carries no visibility
+         * toggle: its presence in the checkout box is the gate, so a present widget
+         * always renders the discount form (subject to the render-inert and dedupe
+         * backstops below).
+         *
+         * @since 3.7.0
+         */
+        protected function render()
+        {
+        }
+    }
+    /**
+     * EDD Checkout Payment Info Widget for Elementor.
+     *
+     * @since 3.7.0
+     */
+    class PaymentInfo extends \EDD\Elementor\Widgets\Base
+    {
+        use \EDD\Elementor\Widgets\Traits\ConfigurableControls;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\EditorPreview;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\SectionGuard;
+        /**
+         * Enqueue the checkout style.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public static function enqueue_style()
+        {
+        }
+        /**
+         * Get widget name.
+         *
+         * @since 3.7.0
+         * @return string Widget name.
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Get widget title.
+         *
+         * @since 3.7.0
+         * @return string Widget title.
+         */
+        public function get_title(): string
+        {
+        }
+        /**
+         * Get widget icon.
+         *
+         * @since 3.7.0
+         * @return string Widget icon.
+         */
+        public function get_icon(): string
+        {
+        }
+        /**
+         * Get widget keywords.
+         *
+         * @since 3.7.0
+         * @return array Widget keywords.
+         */
+        public function get_keywords(): array
+        {
+        }
+        /**
+         * Get the style dependencies for the widget.
+         *
+         * @since 3.7.0
+         * @return array The style dependencies for the widget.
+         */
+        public function get_style_depends()
+        {
+        }
+        /**
+         * Get the script dependencies for the widget.
+         *
+         * Returns the checkout global and AJAX scripts needed by the gateway reload
+         * mechanism that targets #edd_purchase_form_wrap. The guard suppresses these
+         * scripts in the editor preview so front-end checkout JS is not loaded there.
+         *
+         * @since 3.7.0
+         * @return array The script dependencies, or an empty array in edit mode.
+         */
+        public function get_script_depends()
+        {
+        }
+        /**
+         * Hide the checkout section widget from the Add-widget panel.
+         *
+         * The composable checkout sections are seeded into the edd-checkout-box, not
+         * placed individually; hiding them from the panel prevents a loose section
+         * being dropped onto a page where it cannot render safely: a loose section has
+         * no purchase form wrapping it, and gateway JS that does
+         * getElementById( 'edd_purchase_form' ) then scopes into it would find nothing
+         * to scope to. Existing
+         * saved instances continue to register, render, and edit; this only removes the
+         * widget from the panel so it is not chosen for new layouts.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        public function show_in_panel(): bool
+        {
+        }
+        /**
+         * Register widget controls.
+         *
+         * Owns the payment-method and card title toggles, the purchase button styling
+         * group, and the payment-method and card section styling. The personal-info
+         * and billing-details titles are excluded (they live on the Personal Info
+         * widget, which now owns the billing address).
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function register_controls()
+        {
+        }
+        /**
+         * Get the selector prefix for this widget.
+         *
+         * This widget owns the gateway content wrapper (#edd_purchase_form_wrap),
+         * which contains the payment-method and card fieldsets and the purchase
+         * button, so {{WRAPPER}} is the correct prefix. The source selectors' `form `
+         * and `form#edd_purchase_form ` ancestors are mapped away below since the form
+         * element lives on the parent Container. The billing-address (#edd_cc_address)
+         * selector lives on the Personal Info widget, which now owns that fieldset.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_selector_prefix(): string
+        {
+        }
+        /**
+         * Get the selector mappings for this widget.
+         *
+         * Swaps the form ancestors (owned by the parent Container) for this widget's own
+         * `#edd_purchase_form_wrap`. A bare id would drop the selector to one id and lose to EDD's own
+         * two-id rules in edd.min.css; keeping a second id restores those controls.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        protected function get_selector_mappings(): array
+        {
+        }
+        /**
+         * Render the widget output on the frontend.
+         *
+         * Delegates to the shared payment details render class, which owns the
+         * #edd_purchase_form_wrap element (empty on initial load; the gateway content
+         * fills it via AJAX). The nonce and hidden fields are intentionally NOT
+         * emitted here. The buffered output is already escaped by the underlying
+         * template.
+         *
+         * @since 3.7.0
+         */
+        protected function render()
+        {
+        }
+    }
+    /**
+     * EDD Checkout Personal Info Widget for Elementor.
+     *
+     * @since 3.7.0
+     */
+    class PersonalInfo extends \EDD\Elementor\Widgets\Base
+    {
+        use \EDD\Elementor\Widgets\Traits\ConfigurableControls;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\EditorPreview;
+        use \EDD\Elementor\Widgets\CheckoutInner\Concerns\SectionGuard;
+        /**
+         * Enqueue the checkout style.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public static function enqueue_style()
+        {
+        }
+        /**
+         * Get widget name.
+         *
+         * @since 3.7.0
+         * @return string Widget name.
+         */
+        public function get_name(): string
+        {
+        }
+        /**
+         * Get widget title.
+         *
+         * @since 3.7.0
+         * @return string Widget title.
+         */
+        public function get_title(): string
+        {
+        }
+        /**
+         * Get widget icon.
+         *
+         * @since 3.7.0
+         * @return string Widget icon.
+         */
+        public function get_icon(): string
+        {
+        }
+        /**
+         * Get widget keywords.
+         *
+         * @since 3.7.0
+         * @return array Widget keywords.
+         */
+        public function get_keywords(): array
+        {
+        }
+        /**
+         * Get the style dependencies for the widget.
+         *
+         * @since 3.7.0
+         * @return array The style dependencies for the widget.
+         */
+        public function get_style_depends()
+        {
+        }
+        /**
+         * Hide the checkout section widget from the Add-widget panel.
+         *
+         * The composable checkout sections are seeded into the edd-checkout-box, not
+         * placed individually; hiding them from the panel prevents a loose section
+         * being dropped onto a page where it cannot render safely: a loose section has
+         * no purchase form wrapping it, and gateway JS that does
+         * getElementById( 'edd_purchase_form' ) then scopes into it would find nothing
+         * to scope to. Existing
+         * saved instances continue to register, render, and edit; this only removes the
+         * widget from the panel so it is not chosen for new layouts.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        public function show_in_panel(): bool
+        {
+        }
+        /**
+         * Register widget controls.
+         *
+         * Owns the account alignment control, the personal-info and billing-details
+         * title toggles, and the personal-information and billing-details section
+         * styling.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        protected function register_controls()
+        {
+        }
+        /**
+         * Get the selector prefix for this widget.
+         *
+         * This widget wraps the personal-info slot (.edd-checkout-block__personal-info,
+         * which holds whichever of the guest, log in and register forms is showing) and
+         * the billing-address fieldset (#edd_cc_address, which now renders with the
+         * personal info), so {{WRAPPER}} is the correct prefix. The Sections group's
+         * `form#edd_purchase_form ` ancestor is mapped away below.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_selector_prefix(): string
+        {
+        }
+        /**
+         * Get the selector mappings for this widget.
+         *
+         * Strips the `form#edd_purchase_form ` ancestor from every section selector. The form is an
+         * ANCESTOR of {{WRAPPER}} here, so an unmapped selector would compile to
+         * `{{WRAPPER}} form#edd_purchase_form …` and match nothing. Derived from the section configs.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        protected function get_selector_mappings(): array
+        {
+        }
+        /**
+         * Render the widget output on the frontend.
+         *
+         * Delegates to the shared UserDetails coordinator, which renders the
+         * personal-info fieldset AND the billing-address fields inside the block's
+         * .edd-blocks__user-details wrapper — the same DOM the block checkout emits on
+         * edd_checkout_form_top. The buffered output is already escaped by the
+         * underlying templates.
+         *
+         * @since 3.7.0
+         */
+        protected function render()
         {
         }
     }
@@ -45124,6 +48560,19 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
     class Cart extends \EDD\Elementor\Widgets\Config\Base
     {
         /**
+         * The composable box's row-divider variant of the cart item border.
+         *
+         * Scoped to all but the last item so a divider and the container's own border never stack into a
+         * double line. Composable-only (registered by CheckoutInner\Controls) so the shipped monolithic
+         * widget's "Border" control keeps its 3.6.0 definition and existing saved values.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_row_divider_control(): array
+        {
+        }
+        /**
          * Get cart style controls configuration.
          *
          * @since 3.6.0
@@ -45206,6 +48655,106 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
         }
     }
     /**
+     * Discount Form style controls.
+     *
+     * The widget exposed no controls, so every designed template restyled the field and the apply button
+     * in custom CSS a store owner could not edit. These cover what those templates set.
+     *
+     * @since 3.7.0
+     */
+    class DiscountForm extends \EDD\Elementor\Widgets\Config\Base
+    {
+        /**
+         * The discount code input.
+         *
+         * Every selector in this group is anchored on `#edd_discount_code` so it carries two ids.
+         * EDD styles the same nodes from `#edd_checkout_form_wrap #edd-discount-code-wrap`, and a
+         * single-id control selector loses to that, which left the panel with no effect.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const FIELD = '#edd_discount_code #edd-discount';
+        /**
+         * The apply button, which EDD renders as a link.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const BUTTON = '#edd_discount_code .edd-apply-discount';
+        /**
+         * The row holding the field and the button.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const ROW = '#edd_discount_code #edd-discount-code-wrap';
+        /**
+         * The link that reveals the discount field.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const LINK = '#edd_discount_code #edd_show_discount .edd_discount_link';
+        /**
+         * Get the discount form controls configuration.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_controls(): array
+        {
+        }
+        /**
+         * Controls for whether the discount field starts open or behind the link.
+         *
+         * EDD hides the field until the link is clicked. A designed template often shows it inline, so
+         * this trades the link for the field. The override beats the inline style EDD's script sets.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_display_controls(): array
+        {
+        }
+        /**
+         * Controls for the link that reveals the discount field.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_link_controls(): array
+        {
+        }
+        /**
+         * Controls for the row that holds the field and the button.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_row_controls(): array
+        {
+        }
+        /**
+         * Controls for the discount code input.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_field_controls(): array
+        {
+        }
+        /**
+         * Controls for the apply button.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_button_controls(): array
+        {
+        }
+    }
+    /**
      * Form Elements Style Controls Configuration for Checkout Widget.
      *
      * @since 3.6.0
@@ -45214,6 +48763,10 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
     {
         /**
          * Get form elements style controls configuration.
+         *
+         * Field selectors double their class (`.edd-input.edd-input`) instead of qualifying with
+         * `form`: the editor renders the box client-side with no `<form>` ancestor, and the repeat
+         * buys back the specificity that qualifier contributed.
          *
          * @since 3.6.0
          * @return array
@@ -45236,6 +48789,129 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
          * @return array
          */
         public static function get_controls(): array
+        {
+        }
+    }
+    /**
+     * Account form-switch button style controls.
+     *
+     * The "Log In" / "Register for a new account" buttons that swap the guest, login and register forms
+     * had no controls, so a template could not restyle or reposition them without custom CSS. A lone
+     * button defaults to an absolute top corner that assumes a section title beside it; the Layout
+     * control drops it into normal flow for templates that hide the title.
+     *
+     * @since 3.7.0
+     */
+    class FormSwitcher extends \EDD\Elementor\Widgets\Config\Base
+    {
+        /**
+         * The row that holds the form-switch buttons.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const WRAP = '#edd-account-forms';
+        /**
+         * A form-switch button (Log In or Register).
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const BUTTON = '#edd-account-forms button';
+        /**
+         * Get the account form switcher style controls configuration.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_controls(): array
+        {
+        }
+        /**
+         * Controls for the row that holds the switch buttons.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_layout_controls(): array
+        {
+        }
+        /**
+         * Controls for the switch buttons themselves.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_button_controls(): array
+        {
+        }
+    }
+    /**
+     * Gateway selector style controls.
+     *
+     * The gateway selector only renders when a store has two or more gateways enabled, and it had no
+     * controls, so every designed template restyled the tiles in custom CSS. These cover the wrapper
+     * layout, the tile box model and the selected state.
+     *
+     * @since 3.7.0
+     */
+    class GatewayTiles extends \EDD\Elementor\Widgets\Config\Base
+    {
+        /**
+         * The row of gateway options.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const WRAP = '#edd-payment-mode-wrap';
+        /**
+         * A single gateway option, which EDD renders as a label.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const TILE = '#edd-payment-mode-wrap .edd-gateway-option';
+        /**
+         * The selected gateway option.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const SELECTED = '#edd-payment-mode-wrap .edd-gateway-option.edd-gateway-option-selected';
+        /**
+         * Get the gateway selector style controls configuration.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_controls(): array
+        {
+        }
+        /**
+         * Controls for the row that holds the gateway options.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_wrap_controls(): array
+        {
+        }
+        /**
+         * Controls for a gateway option tile.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_tile_controls(): array
+        {
+        }
+        /**
+         * Controls for the selected gateway option.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_selected_controls(): array
         {
         }
     }
@@ -45264,21 +48940,56 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
     class Sections extends \EDD\Elementor\Widgets\Config\Base
     {
         /**
+         * The purchase-form ancestor every section selector is written against.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const FORM_ANCESTOR = 'form#edd_purchase_form ';
+        /**
+         * The personal-info slot's legend, named per form so the selector keeps an id.
+         *
+         * The slot's box is styled on the wrapper so one card covers whichever form renders, but a
+         * wrapper class alone is outranked by the block stylesheet's
+         * `#edd_purchase_form .edd-blocks-form legend { margin: 0 }`.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        private const PERSONAL_INFO_LEGENDS = 'form#edd_purchase_form .edd-checkout-block__personal-info #edd_checkout_user_info legend, form#edd_purchase_form .edd-checkout-block__personal-info #edd_register_fields legend, form#edd_purchase_form .edd-checkout-block__personal-info #edd_login_fields legend';
+        /**
+         * Get selector mappings that strip the purchase-form ancestor from every section selector.
+         *
+         * A widget whose {{WRAPPER}} sits INSIDE the purchase form needs this: its selectors would
+         * otherwise compile to `{{WRAPPER}} form#edd_purchase_form …` and match nothing, silently. Derived
+         * from the section configs rather than hand-listed, so adding a section cannot leave its controls dead.
+         *
+         * @since 3.7.0
+         * @return array Map of full selector to form-relative selector.
+         */
+        public static function get_form_ancestor_mappings(): array
+        {
+        }
+        /**
          * Get sections style controls configuration.
          *
          * @since 3.6.0
+         *
+         * @param string $context The checkout context: 'composable' (default) or 'monolith'.
          * @return array
          */
-        public static function get_controls(): array
+        public static function get_controls(string $context = 'composable'): array
         {
         }
         /**
          * Get section configurations.
          *
          * @since 3.6.0
+         *
+         * @param string $context The checkout context: 'composable' (default) or 'monolith'.
          * @return array Section configurations.
          */
-        protected static function get_section_configs(): array
+        protected static function get_section_configs(string $context = 'composable'): array
         {
         }
         /**
@@ -45287,9 +48998,11 @@ namespace EDD\Elementor\Widgets\Config\Checkout\Styles {
          * @since 3.6.0
          * @param string $section_name     Section name.
          * @param string $section_selector Section selector.
+         * @param string $title_selector   Optional. Selector for the section's title, when the section
+         *                                 selector alone would not reach it or would be outranked.
          * @return array Section controls.
          */
-        protected static function get_section_controls(string $section_name, string $section_selector): array
+        protected static function get_section_controls(string $section_name, string $section_selector, string $title_selector = ''): array
         {
         }
     }
@@ -45311,6 +49024,149 @@ namespace EDD\Elementor\Widgets\Config\Checkout {
         public static function get_controls(): array
         {
         }
+        /**
+         * Build a section-title visibility switcher.
+         *
+         * Toggles the legend's display only. The fieldset's own display is left alone: a flex column here
+         * overrode the block grid. Templates that need the legend lifted out of the fieldset border slot
+         * apply that float themselves as custom CSS.
+         *
+         * @since 3.7.0
+         * @param string $label    Control label.
+         * @param string $selector Fieldset selector; the legend is styled beneath it.
+         * @return array
+         */
+        private static function create_title_switcher(string $label, string $selector): array
+        {
+        }
+    }
+}
+namespace EDD\Elementor\Widgets\Config\CheckoutInner {
+    /**
+     * Per-widget control configuration for the composed checkout widgets.
+     *
+     * @since 3.7.0
+     */
+    class Controls
+    {
+        /**
+         * Get the control configuration for the Cart widget.
+         *
+         * Owns the cart display toggles (section_cart minus the retired
+         * `show_discount_form` control), the sample-cart-item preview control (re-homed
+         * from General), and the cart styling group.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_cart_controls(): array
+        {
+        }
+        /**
+         * Get the control configuration for the Personal Info widget.
+         *
+         * Billing controls live here because billing renders inside the personal-info section, and
+         * guest preview because the editor renders each section in its own request, making this
+         * widget's render the only place that filter can apply.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_personal_info_controls(): array
+        {
+        }
+        /**
+         * Get the control that pairs First Name and Last Name on one row.
+         *
+         * Declares no spacing: the fieldset's own `gap` applies to flex too, so the pair keeps the
+         * template's rhythm. Flex, not a grid, whose `auto-fit` track count leaves an empty track when
+         * wide. Only the name groups share a row, so disabling Last Name keeps one full-width field.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        private static function get_single_line_name_control(): array
+        {
+        }
+        /**
+         * Get the control configuration for the Discount Form widget.
+         *
+         * The widget registered nothing, so templates styled the field and the apply button in custom CSS.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_discount_form_controls(): array
+        {
+        }
+        /**
+         * Get the control configuration for the Payment Info widget.
+         *
+         * The personal-info and billing-details title toggles are excluded: they belong to the
+         * Personal Info widget, which owns the billing address.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_payment_info_controls(): array
+        {
+        }
+        /**
+         * Slice a single section down to only the named controls.
+         *
+         * Preserves the section label and tab, returning a one-section config array
+         * containing only the requested control keys (in source order).
+         *
+         * @since 3.7.0
+         * @param array  $config         The source group config (section_id => section).
+         * @param string $section_id     The section id to slice.
+         * @param array  $control_keys   The control keys to keep.
+         * @param string $new_section_id Optional. Re-key the sliced section under this
+         *                               id so split fragments stay unique per widget.
+         *                               Default '' (keep the source id).
+         * @return array
+         */
+        private static function slice_section_controls(array $config, string $section_id, array $control_keys, string $new_section_id = ''): array
+        {
+        }
+        /**
+         * Remove the named controls from a section, keeping the rest.
+         *
+         * @since 3.7.0
+         * @param array  $config       The source group config (section_id => section).
+         * @param string $section_id   The section id to filter.
+         * @param array  $control_keys The control keys to remove.
+         * @return array
+         */
+        private static function remove_section_controls(array $config, string $section_id, array $control_keys): array
+        {
+        }
+        /**
+         * Slice a multi-section group down to only the named section ids.
+         *
+         * Used for the Styles\Sections group, which returns four `*_section_style`
+         * entries from one call.
+         *
+         * @since 3.7.0
+         * @param array $config      The source group config (section_id => section).
+         * @param array $section_ids The section ids to keep.
+         * @return array
+         */
+        private static function slice_sections(array $config, array $section_ids): array
+        {
+        }
+        /**
+         * Filter a controls array by key, keeping or removing the named keys.
+         *
+         * @since 3.7.0
+         * @param array $controls     The controls array (control_id => config).
+         * @param array $control_keys The control keys to act on.
+         * @param bool  $keep         True to keep only the named keys; false to remove them.
+         * @return array
+         */
+        private static function filter_controls(array $controls, array $control_keys, bool $keep): array
+        {
+        }
     }
 }
 namespace EDD\Elementor\Widgets\Controls {
@@ -45322,10 +49178,10 @@ namespace EDD\Elementor\Widgets\Controls {
     class Registry
     {
         /**
-         * The widget instance.
+         * The widget or container element instance.
          *
          * @since 3.6.0
-         * @var Base
+         * @var Controls_Stack
          */
         private $widget;
         /**
@@ -45346,11 +49202,11 @@ namespace EDD\Elementor\Widgets\Controls {
          * Constructor.
          *
          * @since 3.6.0
-         * @param Base   $widget The widget instance.
-         * @param string $selector_prefix Optional. Selector prefix. Default '{{WRAPPER}}'.
-         * @param array  $selector_mappings Optional. Widget-specific selector mappings. Default empty array.
+         * @param Controls_Stack $widget The widget or container element instance (any Controls_Stack).
+         * @param string         $selector_prefix Optional. Selector prefix. Default '{{WRAPPER}}'.
+         * @param array          $selector_mappings Optional. Widget-specific selector mappings. Default empty array.
          */
-        public function __construct(\EDD\Elementor\Widgets\Base $widget, string $selector_prefix = '{{WRAPPER}}', array $selector_mappings = array())
+        public function __construct(\Elementor\Controls_Stack $widget, string $selector_prefix = '{{WRAPPER}}', array $selector_mappings = array())
         {
         }
         /**
@@ -45422,6 +49278,18 @@ namespace EDD\Elementor\Widgets\Controls {
          * @return string Processed selector.
          */
         public function process_selector(string $selector): string
+        {
+        }
+        /**
+         * Split a selector list on its top-level commas.
+         *
+         * Commas inside `:not(.a, .b)` belong to that selector and must not split the list.
+         *
+         * @since 3.7.0
+         * @param string $selector Selector or comma-joined selector list.
+         * @return array Individual selectors, trimmed, empties dropped.
+         */
+        private function split_selector_list(string $selector): array
         {
         }
         /**
@@ -51347,6 +55215,16 @@ namespace EDD\Forms\Checkout\PersonalInfo {
         {
         }
         /**
+         * Get the wrapper element ID (without the edd- prefix and -wrap suffix).
+         * Subclasses override this to match the legacy shortcode wrapper IDs.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_wrapper_id(): string
+        {
+        }
+        /**
          * Get the classes for the field.
          *
          * @since 3.3.9
@@ -51436,6 +55314,15 @@ namespace EDD\Forms\Checkout\PersonalInfo {
         {
         }
         /**
+         * Get the wrapper element ID for the shortcode context.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_wrapper_id(): string
+        {
+        }
+        /**
          * Whether the field is required.
          *
          * @since 3.3.9
@@ -51496,6 +55383,15 @@ namespace EDD\Forms\Checkout\PersonalInfo {
         protected function get_key(): string
         {
         }
+        /**
+         * Get the wrapper element ID for the shortcode context.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_wrapper_id(): string
+        {
+        }
     }
     // @codeCoverageIgnore
     /**
@@ -51546,6 +55442,15 @@ namespace EDD\Forms\Checkout\PersonalInfo {
          * @return string
          */
         protected function get_key(): string
+        {
+        }
+        /**
+         * Get the wrapper element ID for the shortcode context.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        protected function get_wrapper_id(): string
         {
         }
     }
@@ -51832,6 +55737,15 @@ namespace EDD\Forms\Login {
     class Password extends \EDD\Forms\Fields\Field
     {
         /**
+         * Render the field.
+         *
+         * @since 3.3.8
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
          * Get the field ID.
          *
          * @since 3.3.8
@@ -51881,6 +55795,14 @@ namespace EDD\Forms\Login {
          * @return string
          */
         protected function get_key(): string
+        {
+        }
+        /**
+         * Renders the field for the shortcode checkout, using legacy wrapper IDs and classes.
+         *
+         * @since 3.7.0
+         */
+        private function render_shortcode(): void
         {
         }
     }
@@ -51953,6 +55875,15 @@ namespace EDD\Forms\Login {
     class Username extends \EDD\Forms\Fields\Field
     {
         /**
+         * Render the field.
+         *
+         * @since 3.3.8
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
          * Get the field ID.
          *
          * @since 3.3.8
@@ -52002,6 +55933,14 @@ namespace EDD\Forms\Login {
          * @return string
          */
         protected function get_key(): string
+        {
+        }
+        /**
+         * Renders the field for the shortcode checkout, using legacy wrapper IDs.
+         *
+         * @since 3.7.0
+         */
+        private function render_shortcode(): void
         {
         }
     }
@@ -52075,6 +56014,15 @@ namespace EDD\Forms\Register {
     class Password extends \EDD\Forms\Fields\Field
     {
         /**
+         * Render the field.
+         *
+         * @since 3.3.9
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
          * Get the field ID.
          *
          * @since 3.3.9
@@ -52133,6 +56081,14 @@ namespace EDD\Forms\Register {
          * @return array
          */
         protected function get_form_group_classes(): array
+        {
+        }
+        /**
+         * Renders the field for the shortcode checkout, using legacy wrapper IDs.
+         *
+         * @since 3.7.0
+         */
+        private function render_shortcode(): void
         {
         }
     }
@@ -52144,6 +56100,15 @@ namespace EDD\Forms\Register {
     class PasswordConfirm extends \EDD\Forms\Fields\Field
     {
         /**
+         * Render the field.
+         *
+         * @since 3.3.9
+         * @return void
+         */
+        public function render(): void
+        {
+        }
+        /**
          * Get the field ID.
          *
          * @since 3.3.9
@@ -52204,6 +56169,14 @@ namespace EDD\Forms\Register {
         protected function get_form_group_classes(): array
         {
         }
+        /**
+         * Renders the field for the shortcode checkout, using legacy wrapper IDs and field names.
+         *
+         * @since 3.7.0
+         */
+        private function render_shortcode(): void
+        {
+        }
     }
     /**
      * Registration Username Field.
@@ -52212,6 +56185,15 @@ namespace EDD\Forms\Register {
      */
     class Username extends \EDD\Forms\Fields\Field
     {
+        /**
+         * Render the field.
+         *
+         * @since 3.3.9
+         * @return void
+         */
+        public function render(): void
+        {
+        }
         /**
          * Get the field ID.
          *
@@ -52262,6 +56244,14 @@ namespace EDD\Forms\Register {
          * @return string
          */
         protected function get_key(): string
+        {
+        }
+        /**
+         * Renders the field for the shortcode checkout, using legacy wrapper IDs.
+         *
+         * @since 3.7.0
+         */
+        private function render_shortcode(): void
         {
         }
     }
@@ -53517,6 +57507,40 @@ namespace EDD\Gateways\PayPal {
         }
     }
 }
+namespace EDD\Gateways\PayPal\Admin {
+    // @codeCoverageIgnore
+    /**
+     * Builds the branded PayPal Connect button markup.
+     *
+     * @since 3.7.0
+     */
+    class ConnectButton
+    {
+        /**
+         * Returns the branded "Connect with PayPal" button markup.
+         *
+         * The markup is returned as a single line so it survives `wpautop()`.
+         * The v3 connect JS binds to the `edd-paypal-commerce-v3-connect` id and
+         * reads the `data-nonce` attribute; both are always rendered.
+         *
+         * @since 3.7.0
+         *
+         * @param array $args {
+         *     Optional. Arguments to customize the button.
+         *
+         *     @type string $text    Button label. Defaults to "Connect with PayPal in {mode} mode".
+         *     @type array  $classes Additional CSS classes to add to the button.
+         *     @type array  $data    Additional `data-*` attributes, as `key => value` pairs
+         *                           (without the `data-` prefix).
+         * }
+         * @return string The button markup, or an empty string if the current user
+         *                cannot manage shop settings.
+         */
+        public static function get(array $args = array()): string
+        {
+        }
+    }
+}
 namespace EDD\Gateways\PayPal\Admin\Settings {
     /**
      * PaymentMethodsField class.
@@ -53593,6 +57617,29 @@ namespace EDD\Gateways\PayPal\Admin\Settings {
     }
 }
 namespace EDD\Gateways\PayPal {
+    /**
+     * Provides the brand name to display on PayPal approval screens.
+     *
+     * @since 3.7.0
+     */
+    class BrandName
+    {
+        /**
+         * Returns the brand name to send to PayPal.
+         *
+         * PayPal requires a non-empty brand_name with a maximum length of 127 characters.
+         * Prefers the EDD business name (Entity Name), falling back to the WordPress Site
+         * Title, and finally to the normalized host of home_url() when both are blank, so
+         * checkout never fails with INVALID_STRING_LENGTH.
+         *
+         * @since 3.7.0
+         *
+         * @return string Non-empty brand name, truncated to 127 characters (mb-safe).
+         */
+        public static function get(): string
+        {
+        }
+    }
     /**
      * Commerce Version class.
      *
@@ -55527,6 +59574,46 @@ namespace EDD\Gateways\PayPal {
         {
         }
     }
+    /**
+     * Fetches and caches the PayPal SDK client token.
+     *
+     * @since 3.7.0
+     */
+    class SdkToken
+    {
+        /**
+         * Per-request in-memory cache keyed by request tuple hash.
+         *
+         * Stored as an array (rather than a single string) because the key is derived
+         * from (mode, customer_id, domain) — inputs that are stable within a typical
+         * page request but not hard-coded to a single value. This mirrors the wp_cache
+         * key structure and correctly handles edge cases where those inputs differ
+         * across calls (e.g. guest vs. vaulted customer) without any code change.
+         *
+         * @since 3.7.0
+         *
+         * @var array<string, string>
+         */
+        private static array $cache = array();
+        /**
+         * Fetches the PayPal SDK client token, with static and object-cache memoization.
+         *
+         * The token is keyed on (mode, customer_id, domain). Those inputs are stable
+         * within a typical page request, so in practice only one token is fetched per
+         * request. The array cache mirrors the wp_cache key structure and handles edge
+         * cases where inputs differ across calls without requiring a code change.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode        PayPal mode ('live' or 'sandbox').
+         * @param string $customer_id Vaulted PayPal customer ID, or empty string.
+         * @param string $domain      Publicly-resolvable root domain.
+         * @return string Client token string, or empty string on failure.
+         */
+        public static function fetch(string $mode, string $customer_id, string $domain): string
+        {
+        }
+    }
     class Token
     {
         /**
@@ -55958,6 +60045,25 @@ namespace EDD\Gateways\PayPal\V3\ApplePay {
          */
         const ERROR_OPTION = 'edd_paypal_applepay_domain_error';
         /**
+         * Option flag marking the PayPal account as terminally ineligible for
+         * Apple Pay (the Connect API returned `applepay_not_available`).
+         *
+         * Once set, verification stops retrying until the merchant reconnects or
+         * re-verifies — there is nothing the store can do per-request to change a
+         * missing PAYMENT_METHODS subscription, so retrying on every admin page
+         * load just burns Connect API calls and error logs.
+         *
+         * @since 3.7.0
+         */
+        const INELIGIBLE_OPTION = 'edd_paypal_applepay_ineligible';
+        /**
+         * Option storing the earliest Unix timestamp the next registration retry
+         * is allowed, used to back off after a transient (non-terminal) failure.
+         *
+         * @since 3.7.0
+         */
+        const RETRY_OPTION = 'edd_paypal_applepay_next_retry';
+        /**
          * Transient storing the file contents fetched from the Connect service.
          *
          * Used as a fallback when the docroot copy isn't readable (PHP serving
@@ -56026,7 +60132,11 @@ namespace EDD\Gateways\PayPal\V3\ApplePay {
          * intentionally leave the CONTENT_TRANSIENT alone — re-installing
          * after a fresh connect doesn't need a fresh fetch.
          *
+         * Also clears the ineligible and retry-backoff guards so a reconnecting
+         * merchant (whose account may now be approved) gets a fresh attempt.
+         *
          * @since 3.6.9
+         * @since 3.7.0 Clears the ineligible and retry-backoff guards.
          *
          * @return void
          */
@@ -56212,6 +60322,8 @@ namespace EDD\Gateways\PayPal\V3\ApplePay {
          * PayPal. Runs on every admin page load (cheap when already valid).
          *
          * @since 3.6.9
+         * @since 3.7.0 Skips when the account is terminally ineligible
+         *                       and backs off after transient failures.
          *
          * @return void
          */
@@ -56517,6 +60629,178 @@ namespace EDD\Gateways\PayPal\V3 {
         }
     }
     /**
+     * ConnectSync class.
+     *
+     * Owns all "reconcile local state to the Connect API" logic: license sync
+     * (on immediate license events) and URL sync (on home-URL change and via a
+     * daily reconciliation cron).
+     *
+     * @since 3.7.0
+     */
+    class ConnectSync implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Option key that persists the last URL successfully registered per mode.
+         *
+         * Used as a cheap steady-state drift baseline when the Connect API status GET is
+         * unavailable.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const REGISTERED_URL_OPTION = 'edd_paypal_%s_connect_url';
+        /**
+         * The hook fired by the daily reconciliation cron and the deferred one-off.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const SYNC_HOOK = 'edd_paypal_v3_sync_connect';
+        /**
+         * Returns the events this subscriber wants to listen to.
+         *
+         * @since 3.7.0
+         *
+         * @return array Hook => method mappings.
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Forwards the store's current Pro license to the Connect API for each onboarded mode.
+         *
+         * Fires on immediate license save/delete events. Relocated unchanged from
+         * the former Onboarding::sync_license_to_connect().
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public function sync_license(): void
+        {
+        }
+        /**
+         * Schedules a deferred reconciliation when the site's home URL changes.
+         *
+         * Fires when WP Settings -> General saves a new Site Address (home option).
+         * The Connect API round-trip is deferred to a one-off cron so it never blocks the
+         * admin Settings save.
+         *
+         * @since 3.7.0
+         *
+         * @param mixed $old_value Previous option value.
+         * @param mixed $new_value New option value.
+         * @return void
+         */
+        public function on_home_url_changed($old_value, $new_value): void
+        {
+        }
+        /**
+         * Reconciles each onboarded mode's URL and license with the Connect API.
+         *
+         * Daily cron worker and deferred one-off handler. For each onboarded mode it
+         * compares the Connect API's stored site URL with home_url() and either re-registers
+         * (URL drifted, refreshing URL + license + credentials) or refreshes the
+         * license only. Each mode is isolated so one failure does not skip the other.
+         *
+         * @since 3.7.0
+         *
+         * @return void
+         */
+        public function reconcile(): void
+        {
+        }
+        /**
+         * Reconciles a single mode with the Connect API.
+         *
+         * Skips the re-register when home_url() looks like a staging/local host,
+         * even if the URL has drifted from the Connect API's stored value. This
+         * guards against a production site cloned to staging (without switching
+         * to Sandbox mode) from hijacking the production store's Connect API
+         * registration.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode 'sandbox' or 'live'.
+         * @return void
+         */
+        private function reconcile_mode(string $mode): void
+        {
+        }
+        /**
+         * Sends the store's current Pro license to the Connect API for a single mode.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode 'sandbox' or 'live'.
+         * @return array|null The Connect API response on success, null on failure.
+         */
+        private function refresh_license(string $mode): ?array
+        {
+        }
+        /**
+         * Determines whether the Connect API's stored site URL no longer matches home_url().
+         *
+         * Prefers the live Connect API status response (which returns site_url); falls back
+         * to the locally-persisted baseline when the status GET is unavailable. With
+         * no baseline and no status, treats the URL as drifted so a re-register
+         * backfills the Connect API.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode     'sandbox' or 'live'.
+         * @param string $home_url The current home URL.
+         * @return bool True when the proxy URL is stale (or unknown).
+         */
+        private function has_url_drifted(string $mode, string $home_url): bool
+        {
+        }
+        /**
+         * Re-registers the store with the proxy to push the new URL and license.
+         *
+         * Persists any re-issued credentials (store_id + hmac_key) so local state
+         * stays in sync, mirroring KeyRotation::ensure(). Records the new URL as the
+         * drift baseline on success.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode     'sandbox' or 'live'.
+         * @param string $home_url The current home URL to register.
+         * @return void
+         */
+        private function register_store(string $mode, string $home_url): void
+        {
+        }
+        /**
+         * Returns the last registered URL for a mode, or empty string when none.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode 'sandbox' or 'live'.
+         * @return string
+         */
+        public static function get_registered_url(string $mode): string
+        {
+        }
+        /**
+         * Persists the registered URL baseline for a mode.
+         *
+         * Public so Onboarding::register_store() can record the baseline
+         * immediately on a fresh registration, and can read it back (via
+         * get_registered_url()) to guard against re-registering over an
+         * established production URL from a staging/local host.
+         *
+         * @since 3.7.0
+         *
+         * @param string $mode 'sandbox' or 'live'.
+         * @param string $url  The URL to persist.
+         * @return void
+         */
+        public static function set_registered_url(string $mode, string $url): void
+        {
+        }
+    }
+    /**
      * Credentials class.
      *
      * Handles HMAC key and store ID persistence. All methods are static so any
@@ -56684,6 +60968,11 @@ namespace EDD\Gateways\PayPal\V3 {
          * keep validating. Returns true when a usable key is present after the call.
          *
          * @since 3.6.9
+         * @since 3.7.0 Skips the recovery re-register when home_url() looks
+         *        like a staging/local host, to avoid hijacking the production
+         *        store's Connect API registration (e.g. a production site cloned
+         *        to staging with different WP salts, which breaks HMAC decryption
+         *        and would otherwise trigger recovery here).
          *
          * @param string $mode Optional. 'sandbox' or 'live'. Defaults to current mode.
          * @return bool True when a usable key is present (already valid or recovered).
@@ -56908,6 +61197,11 @@ namespace EDD\Gateways\PayPal\V3 {
          * Step 1 of v3 onboarding: POST /v3/stores/register, then POST /v3/paypal/signup-link.
          *
          * @since 3.6.9
+         * @since 3.7.0 Blocks re-registration when home_url() looks like a
+         *        staging/local host and doesn't match a previously registered
+         *        production URL for this mode, closing the gap where disconnecting
+         *        and reconnecting from a staging clone could otherwise hijack an
+         *        established production store's Connect API registration.
          *
          * @return array{signup_link: string, tracking_id: string}|\WP_Error
          */
@@ -56933,6 +61227,10 @@ namespace EDD\Gateways\PayPal\V3 {
          * Reconnects by clearing v2 credentials and resetting for v3.
          *
          * @since 3.6.9
+         * @since 3.7.0 No longer clears the URL-sync baseline: keeping it
+         *        lets register_store()'s guard recognize a subsequent registration
+         *        attempt from a staging/local host as a takeover of this mode's
+         *        established production registration, rather than a fresh connection.
          *
          * @param string $mode Optional. 'sandbox' or 'live'. Defaults to current mode.
          */
@@ -57027,6 +61325,7 @@ namespace EDD\Gateways\PayPal\V3 {
          * Forwards the store's current Pro license whenever it's saved or removed, keeping the connection in sync.
          *
          * @since 3.6.9
+         * @deprecated 3.7.0 Use ConnectSync::sync_license() instead.
          *
          * @return void
          */
@@ -59993,6 +64292,41 @@ namespace EDD\Gateways\Stripe\Admin {
         {
         }
         /**
+         * Gets the "Connect with Stripe" button markup.
+         *
+         * This is the canonical way to output the Stripe Connect button anywhere
+         * in the admin. It enqueues the required stylesheet and returns single-line
+         * markup so the button survives `wpautop()` in notice/AJAX contexts.
+         *
+         * @since 3.7.0
+         * @param array $args {
+         *     Optional. Button arguments.
+         *
+         *     @type string $text            Button text. Default 'Connect with Stripe'.
+         *     @type array  $classes         Additional CSS classes added to the base `edd-stripe-connect` class.
+         *     @type string $redirect_screen Identifier appended to the OAuth return URL so the completion
+         *                                   handler can route the user back. Must be registered via the
+         *                                   `edds_stripe_connect_redirect_screens` filter. Default empty.
+         * }
+         * @return string Button HTML, or an empty string if the user lacks permission.
+         */
+        public static function get_connect_button(array $args = array()): string
+        {
+        }
+        /**
+         * Gets the registered redirect screens for the Stripe Connect OAuth flow.
+         *
+         * After the OAuth round-trip, the completion handler only redirects to
+         * screens registered here — the `redirect_screen` request value is a label
+         * looked up in this allowlist, never a URL.
+         *
+         * @since 3.7.0
+         * @return array
+         */
+        public static function get_redirect_screens(): array
+        {
+        }
+        /**
          * Render the connect field.
          *
          * @since 3.3.8
@@ -62062,12 +66396,16 @@ namespace EDD\Gateways\Stripe {
         {
         }
         /**
-         * Checks if the Affirm payment method is supported.
+         * Checks whether any available payment method requires a billing address.
          *
-         * @since 3.3.5
-         * @return bool True if the Affirm payment method is supported, false otherwise.
+         * Any payment method that declares $requires_billing_address forces the billing
+         * address fields on checkout when it reports itself as available for the current
+         * checkout (see Method::is_available()).
+         *
+         * @since 3.7.0
+         * @return bool True if an available, eligible payment method requires a billing address.
          */
-        public static function affirm_requires_support()
+        public static function requires_billing_address()
         {
         }
         /**
@@ -62119,6 +66457,16 @@ namespace EDD\Gateways\Stripe {
         private static function get_pmc()
         {
         }
+        /**
+         * Checks if the Affirm payment method is supported.
+         *
+         * @since 3.3.5
+         * @deprecated 3.7.0 Use PaymentMethods::requires_billing_address() instead.
+         * @return bool True if the Affirm payment method is supported, false otherwise.
+         */
+        public static function affirm_requires_support()
+        {
+        }
     }
 }
 namespace EDD\Gateways\Stripe\PaymentMethods {
@@ -62164,6 +66512,13 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          */
         public static $trials = false;
         /**
+         * Whether the payment method requires a billing address at checkout.
+         *
+         * @since 3.7.0
+         * @var bool
+         */
+        public static $requires_billing_address = false;
+        /**
          * The scope of the payment method.
          *
          * @since 3.3.5
@@ -62184,6 +66539,19 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          * @return string
          */
         public static function get_icon(): string
+        {
+        }
+        /**
+         * Whether the payment method is available for the current checkout context.
+         *
+         * Defaults to checking that the store currency is supported and the method is
+         * enabled in the Stripe payment method configuration. Override in a child class
+         * to add method-specific eligibility rules (for example a minimum cart total).
+         *
+         * @since 3.7.0
+         * @return bool True if the payment method is available for the current checkout.
+         */
+        public static function is_available(): bool
         {
         }
     }
@@ -62300,12 +66668,31 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          */
         public static $countries = array('us', 'ca');
         /**
+         * Whether the payment method requires a billing address at checkout.
+         *
+         * @since 3.7.0
+         * @var bool
+         */
+        public static $requires_billing_address = true;
+        /**
          * Gets the label for the payment method.
          *
          * @since 3.3.5
          * @return string
          */
         public static function get_label()
+        {
+        }
+        /**
+         * Whether Affirm is available for the current checkout context.
+         *
+         * In addition to the base currency and configuration checks, Affirm requires a
+         * minimum cart total and is not available for recurring purchases.
+         *
+         * @since 3.7.0
+         * @return bool True if Affirm is available for the current checkout.
+         */
+        public static function is_available(): bool
         {
         }
         /**
@@ -63355,6 +67742,66 @@ namespace EDD\Gateways\Stripe\PaymentMethods {
          * Gets the icon for the payment method.
          *
          * @since 3.3.6
+         * @return string
+         */
+        public static function get_icon(): string
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * UPI class.
+     */
+    class Upi extends \EDD\Gateways\Stripe\PaymentMethods\Method
+    {
+        /**
+         * The ID of the payment method.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        protected static $id = 'upi';
+        /**
+         * The supported currencies for the payment method.
+         *
+         * @since 3.7.0
+         * @var array
+         */
+        public static $currencies = array('INR');
+        /**
+         * Whether the payment method supports subscriptions.
+         *
+         * @since 3.7.0
+         * @var bool
+         */
+        public static $subscriptions = true;
+        /**
+         * Whether the payment method requires a billing address at checkout.
+         *
+         * @since 3.7.0
+         * @var bool
+         */
+        public static $requires_billing_address = true;
+        /**
+         * The supported countries for the payment method.
+         *
+         * @since 3.7.0
+         * @var array
+         */
+        public static $countries = array('au', 'at', 'be', 'bg', 'ca', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu', 'ie', 'it', 'lv', 'li', 'lt', 'lu', 'mt', 'nl', 'no', 'pl', 'pt', 'ro', 'sg', 'sk', 'si', 'es', 'se', 'ch', 'gb', 'us');
+        /**
+         * Gets the label for the payment method.
+         *
+         * @since 3.7.0
+         * @return string
+         */
+        public static function get_label()
+        {
+        }
+        /**
+         * Gets the icon for the payment method.
+         *
+         * @since 3.7.0
          * @return string
          */
         public static function get_icon(): string
@@ -64795,6 +69242,19 @@ namespace EDD\HTML {
         {
         }
         /**
+         * Neutralize theme button styling on the country selector.
+         *
+         * The country selector is a <button> that intl-tel-input does not reset, so a theme that styles
+         * buttons draws a box around the flag. Scoped to two classes to outrank a bare `button` theme
+         * rule without `!important`.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        private static function add_country_button_reset(): void
+        {
+        }
+        /**
          * Gets the base CSS classes for the phone input.
          *
          * @since 3.3.8
@@ -65362,6 +69822,37 @@ namespace EDD\Integrations {
          * @param array $integration_classes The integration classes to register.
          */
         private function register_integration_classes(array $integration_classes)
+        {
+        }
+    }
+    /**
+     * Software Licensing integration class.
+     *
+     * @since 3.7.0
+     */
+    class SoftwareLicensing
+    {
+        /**
+         * Whether the checkout needs to reposition the renewal form itself.
+         *
+         * Software Licensing 3.9.7 places the renewal form correctly on its own, so the
+         * checkout only intervenes for older versions.
+         *
+         * @since 3.7.0
+         */
+        public static function should_move_renewal_form(): bool
+        {
+        }
+        /**
+         * Moves the renewal form from the pre-form and in-cart positions to after the
+         * purchase form, so it does not nest inside (or duplicate within) the checkout.
+         *
+         * Must be called before `edd_before_purchase_form` fires and before the cart
+         * renders.
+         *
+         * @since 3.7.0
+         */
+        public static function remove_renewal_form()
         {
         }
     }
@@ -69750,6 +74241,63 @@ namespace EDD\REST\Controllers {
         }
     }
     /**
+     * CheckoutTemplates Controller class
+     *
+     * Handles REST API request processing for browsing checkout templates.
+     *
+     * @since 3.7.0
+     */
+    class CheckoutTemplates
+    {
+        /**
+         * RemoteAPI instance.
+         *
+         * @since 3.7.0
+         * @var RemoteAPI|null
+         */
+        private $remote_api = null;
+        /**
+         * Get all templates.
+         *
+         * @since 3.7.0
+         * @param \WP_REST_Request $request The request object.
+         * @return \WP_REST_Response Response with templates list.
+         */
+        public function get_templates(\WP_REST_Request $_request)
+        {
+        }
+        /**
+         * Get translated labels for known template tags.
+         *
+         * @since 3.7.0
+         * @return array<string, string> Map of tag slug to translated label.
+         */
+        private function get_tag_labels(): array
+        {
+        }
+        /**
+         * Normalize tag names with translated labels.
+         *
+         * @since 3.7.0
+         * @param array $tags Raw available_tags from the API.
+         * @return array Normalized tags with translated names.
+         */
+        private function normalize_tags(array $tags): array
+        {
+        }
+        /**
+         * Get the RemoteAPI instance.
+         *
+         * Lazily instantiates the RemoteAPI to avoid creating it multiple times.
+         *
+         * @since 3.7.0
+         * @return RemoteAPI The RemoteAPI instance.
+         */
+        private function get_remote_api(): \EDD\Checkout\Templates\RemoteAPI
+        {
+        }
+    }
+    /**
      * Fastlane controller class.
      *
      * Handles Fastlane card payment processing via REST API.
@@ -69963,7 +74511,7 @@ namespace EDD\REST {
          * @since 3.6.2
          * @return array
          */
-        private function get_routes()
+        protected function get_routes()
         {
         }
     }
@@ -70070,6 +74618,68 @@ namespace EDD\REST\Routes {
          * @return void
          */
         public function register()
+        {
+        }
+    }
+    /**
+     * CheckoutTemplates Route class
+     *
+     * Handles REST API route registration for checkout template browsing.
+     *
+     * @since 3.7.0
+     */
+    class CheckoutTemplates extends \EDD\REST\Routes\Route
+    {
+        /**
+         * REST API base.
+         *
+         * @since 3.7.0
+         * @var string
+         */
+        const BASE = 'checkout-templates';
+        /**
+         * Constructor.
+         *
+         * @since 3.7.0
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Register routes.
+         *
+         * @since 3.7.0
+         * @return void
+         */
+        public function register()
+        {
+        }
+        /**
+         * Check permission for checkout template operations.
+         *
+         * @since 3.7.0
+         * @param \WP_REST_Request $request Request object.
+         * @return bool|\WP_Error
+         */
+        public function check_permission(\WP_REST_Request $request)
+        {
+        }
+        /**
+         * Callback for the Lite import stub.
+         *
+         * @since 3.7.0
+         * @return \WP_Error Upgrade-required error.
+         */
+        public function import_requires_pro()
+        {
+        }
+        /**
+         * Callback for the Lite restore stub.
+         *
+         * @since 3.7.0
+         * @return \WP_Error Upgrade-required error.
+         */
+        public function restore_requires_pro()
         {
         }
     }
@@ -77456,9 +82066,9 @@ namespace EDD {
          */
         private $requirements = array(
             // PHP.
-            'php' => array('minimum' => '7.4', 'name' => 'PHP', 'exists' => true, 'current' => false, 'checked' => false, 'met' => false),
+            'php' => array('minimum' => '8.0', 'name' => 'PHP', 'exists' => true, 'current' => false, 'checked' => false, 'met' => false),
             // WordPress.
-            'wp' => array('minimum' => '6.2', 'name' => 'WordPress', 'exists' => true, 'current' => false, 'checked' => false, 'met' => false),
+            'wp' => array('minimum' => '6.7', 'name' => 'WordPress', 'exists' => true, 'current' => false, 'checked' => false, 'met' => false),
         );
         /**
          * Setup plugin requirements
@@ -77567,6 +82177,9 @@ namespace EDD {
         /** Agnostic Methods ******************************************************/
         /**
          * Plugin agnostic method to output the additional plugin row
+         *
+         * The checkbox cell is a `td` to match the plugins list table, which moved the row
+         * header from the checkbox column to the primary column in WordPress 7.1.
          *
          * @since 3.0
          */
@@ -80575,6 +85188,33 @@ namespace EDD\Telemetry {
         {
         }
         /**
+         * Gets the total number of customers.
+         *
+         * @since 3.7.0
+         * @return int
+         */
+        private function get_customer_count()
+        {
+        }
+        /**
+         * Gets the median number of orders per customer.
+         *
+         * "Orders" here is the customer's purchase_count, which counts only completed
+         * sale orders (net statuses, type "sale") -- consistent with EDD's sales
+         * reporting. Pending, abandoned, failed, refunded and refund-type orders are
+         * not included.
+         *
+         * We report the median rather than the mean because a small number of
+         * high-volume customers can heavily skew the average, making it a poor
+         * representation of a typical customer.
+         *
+         * @since 3.7.0
+         * @return float
+         */
+        private function get_median_orders_per_customer()
+        {
+        }
+        /**
          * Gets the date of the first completed order.
          *
          * @since 3.1.1
@@ -82422,6 +87062,29 @@ namespace EDD\Utils {
     }
     // @codeCoverageIgnore
     /**
+     * Browser utility.
+     *
+     * @since 3.7.0
+     */
+    class Browser
+    {
+        /**
+         * Gets the sanitized user agent string for the current request.
+         *
+         * Reads, unslashes, and sanitizes the raw user agent from the request
+         * headers, optionally truncating it to a maximum length.
+         *
+         * @since 3.7.0
+         *
+         * @param int $max_length Optional. Maximum length to truncate the user agent to. Default 0 (no truncation).
+         * @return string The sanitized user agent string, or an empty string if it is not set.
+         */
+        public static function get_user_agent($max_length = 0)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
      * Colors utility class.
      *
      * @since 3.5.3
@@ -83092,6 +87755,19 @@ namespace EDD\Utils {
          * @return WP_Filesystem_Base
          */
         public static function get_fs()
+        {
+        }
+        /**
+         * Gets the file permission mode for files created by EDD.
+         *
+         * Defers to WordPress's `FS_CHMOD_FILE` so permissions follow the site's own
+         * conventions, falling back to 0644 if the constant is not defined.
+         *
+         * @since 3.7.0
+         *
+         * @return int Octal permission mode for files.
+         */
+        public static function get_chmod_file()
         {
         }
         /**
@@ -83987,7 +88663,7 @@ namespace EDD\Utils {
          * What type of request is this?
          *
          * @since 3.3.0
-         * @param  string|array $type admin, ajax, cron, frontend, json, API, rest.
+         * @param  string|array $type admin, ajax, cron, cli, frontend, json, API, rest.
          * @return bool
          */
         public static function is_request($type)
@@ -83997,7 +88673,7 @@ namespace EDD\Utils {
          * Check if the request is of a certain type.
          *
          * @since 3.3.0
-         * @param  string $type admin, ajax, cron, frontend, json, API, rest.
+         * @param  string $type admin, ajax, cron, cli, frontend, json, API, rest.
          * @return bool
          */
         private static function is_type(string $type)
@@ -84023,11 +88699,21 @@ namespace EDD\Utils {
         }
         /**
          * Returns true if the request is a cron request.
+         * Abstraction for cron context checking, covering both WP-Cron and Action Scheduler.
          *
          * @since 3.3.0
          * @return bool
          */
         private static function is_cron_request()
+        {
+        }
+        /**
+         * Returns true if the request is a WP-CLI request.
+         *
+         * @since 3.7.0
+         * @return bool
+         */
+        private static function is_cli_request()
         {
         }
         /**
@@ -84249,9 +88935,11 @@ namespace EDD\Utils {
          * Gets the option value.
          *
          * @since 3.3.5
+         * @since 3.7.0 Added the $return_stale parameter.
+         * @param bool $return_stale When true, return the stored value even if expired (last-known-good).
          * @return mixed
          */
-        public function get()
+        public function get(bool $return_stale = false)
         {
         }
         /**
@@ -84281,6 +88969,143 @@ namespace EDD\Utils {
          * @return bool
          */
         private function is_expired($option)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * URL utility class.
+     *
+     * @since 3.7.0
+     */
+    class URL
+    {
+        /**
+         * Local TLDs and known host-provider domains that indicate a non-production
+         * (staging or local) environment, matched as a suffix of the host.
+         *
+         * @since 3.7.0
+         * @var string[]
+         */
+        const NON_PRODUCTION_HOST_SUFFIXES = array('.local', '.test', '.localhost', '.wpengine.com', '.wpenginepowered.com', '.instawp.xyz', '.cloudwaysapps.com', '.flywheelsites.com', '.flywheelstaging.com', '.myftpupload.com', '.kinsta.cloud', '.pantheonsite.io', '.stage.site', '.dreamhosters.com', '.dream.press', '.mystagingwebsite.com', '.wpcomstaging.com', '.bigscoots-staging.com');
+        /**
+         * Host prefixes that indicate a non-production (staging or local) environment.
+         *
+         * @since 3.7.0
+         * @var string[]
+         */
+        const NON_PRODUCTION_HOST_PREFIXES = array('dev.', 'staging.', 'staging-', 'test.');
+        /**
+         * Host-anchored regex patterns that indicate a non-production (staging or
+         * local) environment.
+         *
+         * @since 3.7.0
+         * @var string[]
+         */
+        const NON_PRODUCTION_HOST_PATTERNS = array('/^staging\d+\.[^.]+\.[^.]+$/');
+        /**
+         * URL regex patterns that indicate a non-production (staging or local)
+         * environment.
+         *
+         * @since 3.7.0
+         * @var string[]
+         */
+        const NON_PRODUCTION_URL_PATTERNS = array('/\/staging\/\d{3,}/');
+        /**
+         * Normalizes a URL for comparison.
+         *
+         * Strips a trailing slash, lowercases the scheme and host, and converts
+         * IDN (internationalized) hostnames to their ASCII/Punycode form so that
+         * Unicode and Punycode representations of the same host compare as equal.
+         *
+         * @since 3.7.0
+         *
+         * @param string $url The URL to normalize.
+         * @return string The normalized URL.
+         */
+        public static function normalize(string $url): string
+        {
+        }
+        /**
+         * Returns the bare, display-friendly host of a URL.
+         *
+         * Lowercases the host, converts IDN (internationalized) hostnames to their
+         * ASCII/Punycode form, and strips a leading "www." so the result is a
+         * compact identifier suitable for display (e.g. a fallback brand name).
+         * Returns an empty string when the URL has no host.
+         *
+         * @since 3.7.0
+         *
+         * @param string $url The URL to extract the host from.
+         * @return string The normalized host without a leading "www.", or '' if none.
+         */
+        public static function host(string $url): string
+        {
+        }
+        /**
+         * Determines whether a URL is likely a real production host.
+         *
+         * Use this for guard clauses ("only proceed if this is production") rather
+         * than inverting a "looks like staging" check.
+         *
+         * @since 3.7.0
+         *
+         * @param string $url The URL to check.
+         * @return bool True if the URL is likely a real production host.
+         */
+        public static function is_production_url(string $url): bool
+        {
+        }
+        /**
+         * Determines whether a URL looks like a non-production (staging or local) host.
+         *
+         * Checks the current site's configured environment first (independent of
+         * the $url argument, since callers always pass home_url()), then prefers
+         * Software Licensing's own domain-pattern detector when the plugin is
+         * active, since it stays current via the EDD Services API. Falls back to
+         * a static list of common staging/local host patterns otherwise (e.g. on
+         * Lite, which can't call third-party services).
+         *
+         * @since 3.7.0
+         *
+         * @param string $url The URL to check.
+         * @return bool True if the URL looks like a non-production host.
+         */
+        private static function is_non_production(string $url): bool
+        {
+        }
+        /**
+         * Checks a host and URL against the static fallback non-production
+         * (staging/local) patterns.
+         *
+         * TLDs and host-provider domains are matched as a suffix, and "staging"
+         * as its own path segment (dot-delimited label) anywhere in the host, to
+         * avoid false positives on hosts that merely contain one of these as a
+         * substring (e.g. "mystore.testing.com").
+         *
+         * @since 3.7.0
+         *
+         * @param string $host The (already lowercased) hostname.
+         * @param string $url  The URL the host was extracted from.
+         * @return bool
+         */
+        private static function matches_non_production_pattern(string $host, string $url): bool
+        {
+        }
+        /**
+         * Converts an IDN (internationalized) hostname to its ASCII/Punycode form.
+         *
+         * A Unicode form (e.g. münchen.de) and its Punycode equivalent
+         * (xn--mnchen-3ya.de) both reduce to the same canonical ASCII string.
+         * Returns the host unchanged when the intl extension is unavailable or the
+         * conversion fails.
+         *
+         * @since 3.7.0
+         *
+         * @param string $host The (already lowercased) hostname.
+         * @return string The ASCII/Punycode hostname.
+         */
+        private static function to_ascii(string $host): string
         {
         }
     }
@@ -84334,11 +89159,13 @@ namespace EDD\Utils\Validators\FileType {
          * "shell-php.csv". Use after is_valid() has confirmed the extension.
          *
          * @since 3.6.9.1
+         * @since 3.7.0 Made static; it uses no instance state and callers outside a
+         *                       specific format need it.
          *
          * @param string $filename The client-supplied filename.
          * @return string The sanitized filename.
          */
-        public function sanitize_filename(string $filename): string
+        public static function sanitize_filename(string $filename): string
         {
         }
         /**
@@ -84705,17 +89532,16 @@ namespace EDD\Blocks\Admin\Scripts {
     {
     }
     /**
-     * If the EDD styles are registered, load them for the block editor.
-     *
-     * WordPress 7.0 moved to a fully iframed editor (Block API v3), so
-     * enqueue_block_editor_assets no longer fires inside the iframe.
-     * enqueue_block_assets fires inside the iframe, on the frontend, and
-     * in the editor shell, so the style is always available where blocks render.
+     * If the EDD styles are registered, load them into the block editor iframe.
      *
      * @since 2.0
-     * @return void
+     * @since 3.7.0 Switched from enqueue_block_assets (which also loads in the
+     *                        editor's admin chrome, overriding metabox styles) to inlining
+     *                        the stylesheet into the iframe via block_editor_settings_all.
+     * @param array $editor_settings Block editor settings.
+     * @return array
      */
-    function add_edd_styles_block_editor()
+    function add_edd_styles_block_editor($editor_settings)
     {
     }
 }
@@ -84821,30 +89647,35 @@ namespace EDD\Blocks\Checkout {
      * Renders the cart.
      *
      * @since 2.0
-     * @param array $block_attributes The block attributes.
+     * @param array          $block_attributes The block attributes.
+     * @param string         $content          The block content.
+     * @param \WP_Block|null $block            The block object.
      * @return string Cart HTML.
      */
-    function cart($block_attributes = array())
+    function cart($block_attributes = array(), $content = '', $block = null)
     {
     }
     /**
      * Generates the cart form depending on contents and options.
      *
      * @since 2.0
-     * @param array $block_attributes The block attributes.
+     * @param array          $block_attributes The block attributes.
+     * @param \WP_Block|null $block            The block object.
      * @return void
      */
-    function do_cart_form($block_attributes)
+    function do_cart_form($block_attributes, $block = null)
     {
     }
     /**
      * Renders the entire EDD checkout block.
      *
      * @since 2.0
-     * @param array $block_attributes The block attributes.
+     * @param array     $block_attributes The block attributes.
+     * @param string    $content          The block inner content.
+     * @param \WP_Block $block            The block object.
      * @return string Checkout HTML.
      */
-    function checkout($block_attributes = array())
+    function checkout($block_attributes = array(), $content = '', $block = null)
     {
     }
     /**
@@ -84852,9 +89683,10 @@ namespace EDD\Blocks\Checkout {
      * In the block editor, generates a sample cart.
      *
      * @since 2.0
+     * @param \WP_Block|null $block The block object.
      * @return false|array
      */
-    function get_cart_contents()
+    function get_cart_contents($block = null)
     {
     }
     /**
@@ -85835,6 +90667,10 @@ namespace EDD\Gateways\PayPal\Admin {
      * If they are connected, their account details are shown instead.
      *
      * @since 2.11
+     * @since 3.7.0 Limits the "disconnect and reconnect" notice to genuine
+     *        production key-rotation failures. A staging/local host intentionally
+     *        skips recovery and needs no admin action, so no notice is shown there.
+     *
      * @return void
      */
     function connect_settings_field()
@@ -85858,8 +90694,10 @@ namespace EDD\Gateways\PayPal\Admin {
      * opens for merchant onboarding.
      *
      * @since 3.6.9
+     * @since 3.7.0 The button markup is built by ConnectButton::get().
      *
-     * @param string $mode Translated mode label.
+     * @param string $mode Translated mode label. Unused — kept for back-compat; the
+     *                     button renderer derives the mode itself.
      */
     function connect_settings_field_v3($mode)
     {
@@ -91880,6 +96718,22 @@ namespace {
     {
     }
     /**
+     * Query args stripped from the URL after an add-to-cart request.
+     *
+     * Deliberately excludes `discount`: a preset discount from a `?discount=CODE`
+     * buy link is applied on `init`, before the delayed add-to-cart runs. If a
+     * cart-mutation hook (e.g. `edd_pre_add_to_cart`) drops that discount during
+     * the add, keeping `discount` in the redirect lets it be re-applied on the
+     * resulting page load. See https://github.com/awesomemotive/easy-digital-downloads-pro/issues/2609.
+     *
+     * @since 3.7.0
+     *
+     * @return string[] Query args to remove from the post-add redirect.
+     */
+    function edd_cart_removable_query_args()
+    {
+    }
+    /**
      * Removes a Download from the Cart
      *
      * @since 1.0
@@ -92720,6 +97574,7 @@ namespace {
      * via the hooks provided.
      *
      * @since 1.3.3
+     * @since 3.7.0 Updated to use `EDD\Forms\Handler::render_fields()`.
      * @return void
      */
     function edd_user_info_fields()
@@ -92759,8 +97614,7 @@ namespace {
      * create an account.
      *
      * @since 1.0
-     *
-     * @return string
+     * @since 3.7.0 Updated to use `EDD\Forms\Handler::render_fields()`.
      */
     function edd_get_register_fields()
     {
@@ -92771,7 +97625,7 @@ namespace {
      * had an account.
      *
      * @since 1.0
-     * @return string
+     * @since 3.7.0 Updated to use `EDD\Forms\Handler::render_fields()`.
      */
     function edd_get_login_fields()
     {
@@ -92793,7 +97647,7 @@ namespace {
      *
      * @since 1.0
      * @return void
-    */
+     */
     function edd_show_payment_icons()
     {
     }
@@ -98415,10 +103269,14 @@ namespace {
      * Retrieves a URL to allow Stripe Connect via oAuth.
      *
      * @since 2.8.0
+     * @since 3.7.0 Added the `$redirect_screen` parameter.
      *
+     * @param string $redirect_screen Optional. Identifier appended to the return URL so the completion
+     *                                handler can route the user back to the originating screen. Must be
+     *                                registered via the `edds_stripe_connect_redirect_screens` filter.
      * @return string
      */
-    function edds_stripe_connect_url()
+    function edds_stripe_connect_url($redirect_screen = '')
     {
     }
     /**
@@ -99165,7 +104023,7 @@ namespace {
     {
     }
     /**
-     * Require the billing address when Affirm is enabled.
+     * Require the billing address when a payment method that needs it is available.
      *
      * @since 3.3.5
      * @param bool $is_required Whether the billing address is required.
@@ -100514,7 +105372,7 @@ namespace {
      * pages.
      *
      * @since 1.0
-     * @param  bool $network_wide If the plugin is being network-activated
+     * @param  bool $network_wide If the plugin is being network-activated.
      * @return void
      */
     function edd_install($network_wide = \false)
@@ -100539,6 +105397,7 @@ namespace {
     }
     /**
      * Maybe set upgrades as complete during a fresh
+     *
      * @since 3.0
      */
     function edd_set_all_upgrades_complete()
@@ -101826,7 +106685,7 @@ namespace {
     {
     }
     /**
-     * Abstraction for cron context checking, covering both WP-Cron and Action Scheduler.
+     * Checks if the current request is a cron request, covering both WP-Cron and Action Scheduler.
      *
      * @since 2.8.16
      * @return bool
@@ -101835,14 +106694,10 @@ namespace {
     {
     }
     /**
-     * Abstraction for WordPress AJAX checking, to avoid code duplication.
-     *
-     * In future versions of EDD, this function will be changed to only refer to
-     * EDD specific AJAX related requests. You probably won't want to use it until then.
+     * Checks if the current request is an AJAX request.
      *
      * @since 3.0
-     *
-     * @return boolean
+     * @return bool
      */
     function edd_doing_ajax()
     {
@@ -102055,9 +106910,9 @@ namespace {
      *
      * @param string $base_url    The base URL for the generation.
      * @param array  $query_args  The arguments to add to the $base_url.
-     * @param bool   $run_esc_url If true, esc_url will be run
+     * @param bool   $run_esc_url If true, esc_url will be run.
      *
-     * @return string.
+     * @return string
      */
     function edd_link_helper($base_url = 'https://easydigitaldownloads.com/', $query_args = array(), $run_esc_url = \true)
     {
