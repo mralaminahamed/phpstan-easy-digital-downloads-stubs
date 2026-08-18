@@ -8,8 +8,8 @@ ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 HEADER=$'/**\n * Generated stub declarations for Easy Digital Downloads.\n * @see https://easydigitaldownloads.com\n * @see https://github.com/mralaminahamed/phpstan-easy-digital-downloads-stubs\n */'
 
-FILE="$ROOT_DIR/easy-digital-downloads-stubs.php"
-FILE_CONSTANTS="$ROOT_DIR/easy-digital-downloads-constants-stubs.php"
+FILE="$ROOT_DIR/easy-digital-downloads-stubs.stub"
+FILE_CONSTANTS="$ROOT_DIR/easy-digital-downloads-constants-stubs.stub"
 GENERATOR_BIN="$ROOT_DIR/vendor/bin/generate-stubs"
 FINDER_FILE="$ROOT_DIR/configs/finder.php"
 FINDER_CONSTANTS_FILE="$ROOT_DIR/configs/finder-constants.php"

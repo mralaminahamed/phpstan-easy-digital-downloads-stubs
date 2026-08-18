@@ -1,8 +1,8 @@
 parameters:
     paths:
-        - easy-digital-downloads-stubs.php
+        - easy-digital-downloads-stubs.stub
     scanFiles:
-        - easy-digital-downloads-constants-stubs.php
+        - easy-digital-downloads-constants-stubs.stub
     bootstrapFiles:
         - configs/bootstrap.php
     level: 5

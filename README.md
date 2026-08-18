@@ -33,8 +33,8 @@ composer require --dev mralaminahamed/easy-digital-downloads-stubs
 ```neon
 parameters:
     scanFiles:
-        - vendor/mralaminahamed/easy-digital-downloads-stubs/easy-digital-downloads-stubs.php
-        - vendor/mralaminahamed/easy-digital-downloads-stubs/easy-digital-downloads-constants-stubs.php
+        - vendor/mralaminahamed/easy-digital-downloads-stubs/easy-digital-downloads-stubs.stub
+        - vendor/mralaminahamed/easy-digital-downloads-stubs/easy-digital-downloads-constants-stubs.stub
 ```
 
 Or use the bundled extension:
