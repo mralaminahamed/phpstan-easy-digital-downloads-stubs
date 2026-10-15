@@ -9679,13 +9679,15 @@ namespace {
          * @since 2.7
          * @since 3.0 Refactored to use new query methods.
          * @since 3.2 Refactored to use the order adjustments table, and always run the filter.
+         * @since 3.7.2 Also counts the customer's other orders that hold a use of the discount.
          *
          * @param string $user      User info.
          * @param bool   $set_error Whether an error message be set in session.
+         * @param int    $order_id  The order being checked, which does not count against itself.
          *
          * @return bool Whether the discount has been used or not.
          */
-        public function is_used($user = '', $set_error = \true)
+        public function is_used($user = '', $set_error = \true, $order_id = 0)
         {
         }
         /**
@@ -9709,6 +9711,18 @@ namespace {
          * @return bool If the discount is archived or not.
          */
         public function is_archived($set_error = \true)
+        {
+        }
+        /**
+         * Whether the discount can be applied to an order, counting the use that order already holds.
+         *
+         * @since 3.7.2
+         *
+         * @param int  $order_id  The order ID, or 0 for a new order.
+         * @param bool $set_error Whether an error message be set in session.
+         * @return bool
+         */
+        public function is_available_to_order($order_id, $set_error = \true)
         {
         }
         /**
@@ -9753,6 +9767,7 @@ namespace {
          *
          * @since 2.7
          * @since 3.7.1 Returns false when the discount had no use left to claim.
+         * @since 3.7.2 Deactivates the code at its cap without rewriting the rest of the row.
          *
          * @return int|false New usage, or false if the code is used up.
          */
@@ -9760,9 +9775,22 @@ namespace {
         {
         }
         /**
+         * Increments the usage of the discount even when it has no use left.
+         *
+         * Only for a use the buyer has already paid for, which can't be refused.
+         *
+         * @since 3.7.2
+         *
+         * @return int|false New usage, or false if the count could not be updated.
+         */
+        public function increase_usage_past_limit()
+        {
+        }
+        /**
          * Decrement the usage of the discount.
          *
          * @since 2.7
+         * @since 3.7.2 Reactivates only a code that was deactivated by reaching its cap.
          *
          * @return int New discount usage.
          */
@@ -9777,6 +9805,26 @@ namespace {
          * @return string Link to the `Edit Discount` page.
          */
         public function edit_url()
+        {
+        }
+        /**
+         * Gives back one use held by an abandoned checkout when a full code is all that refuses this shopper.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        private function release_stale_use()
+        {
+        }
+        /**
+         * Reloads the use count, cap and status from the table.
+         *
+         * Uses can be given back through another instance of the same discount, which leaves this one stale.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        private function refresh_usage()
         {
         }
         /**
@@ -9822,6 +9870,16 @@ namespace {
         {
         }
         /**
+         * Reloads the usage after it was increased in the database, and deactivates the code at its cap.
+         *
+         * @since 3.7.2
+         *
+         * @return int New usage.
+         */
+        private function record_increased_usage()
+        {
+        }
+        /**
          * Checks if the discount is valid for the conditions.
          *
          * @since 3.3.6
@@ -9830,6 +9888,20 @@ namespace {
          * @return bool
          */
         private function is_valid_for_conditions($user, $set_error = \true)
+        {
+        }
+        /**
+         * Whether another of the customer's orders holds a use of the discount.
+         *
+         * Between two orders holding a use, only the earlier one counts against the later.
+         *
+         * @since 3.7.2
+         *
+         * @param EDD_Customer $customer The customer.
+         * @param int          $order_id The order being checked.
+         * @return bool
+         */
+        private function is_held_by_another_order($customer, $order_id)
         {
         }
     }
@@ -12242,6 +12314,7 @@ namespace PayWithAmazon {
          * Process the purchase and create the charge in Amazon
          *
          * @since  2.4
+         * @since  3.7.2 Builds the order before the charge, so an order whose discount can't be claimed is refused unpaid.
          * @param  $purchase_data array Cart details
          * @return void
          */
@@ -15196,15 +15269,6 @@ namespace {
          * @access private
          */
         private function process_refund()
-        {
-        }
-        /**
-         * Process when a payment is set to failed, decrement discount usages and other stats.
-         *
-         * @since 2.5.7
-         * @access private
-         */
-        private function process_failure()
         {
         }
         /**
@@ -19603,6 +19667,18 @@ namespace EDD\Actions {
          * @return array
          */
         private static function get_additional_blocked_hooks(): array
+        {
+        }
+        /**
+         * Gets the lifecycle and transition hooks Berlin fires for each registered component.
+         *
+         * Read from the component registry so that query classes registered by extensions are covered too.
+         *
+         * @since 3.7.2
+         *
+         * @return array
+         */
+        private static function get_database_hooks(): array
         {
         }
     }
@@ -24548,6 +24624,17 @@ namespace EDD\Admin\Exports\Exporters {
          * @param array $request Form data passed into the batch processing.
          */
         public function set_properties($request)
+        {
+        }
+        /**
+         * Build one export row, keyed in the same order as the CSV columns.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD_Customer $customer The customer to export.
+         * @return array
+         */
+        private function get_customer_row(\EDD_Customer $customer)
         {
         }
     }
@@ -34423,6 +34510,9 @@ namespace EDD\Admin\Tools {
         /**
          * Gets the active tab.
          *
+         * Falls back to `DEFAULT_TAB` when the requested tab is not registered, so an
+         * unknown `tab` value can never reach `do_action()` in `render()`.
+         *
          * @since 3.3.0
          * @return string
          */
@@ -40650,6 +40740,16 @@ namespace EDD\Cron\Components {
         public function mark_abandoned_orders()
         {
         }
+        /**
+         * Gives back discount uses held by unpaid PayPal orders left pending for over an hour.
+         *
+         * @since 3.7.2
+         *
+         * @return void
+         */
+        public function release_expired_discount_claims()
+        {
+        }
     }
     // @codeCoverageIgnore
     /**
@@ -40956,7 +41056,8 @@ namespace EDD\Cron {
      * Cron EventManager Class
      *
      * A callback wired through here is registered as a closure, so it cannot be removed by the
-     * original callable: remove_subscriber() and has_filter() will not find it.
+     * original callable: remove_subscriber() and has_filter() will not find it. To stop a component
+     * running, remove it with the edd_cron_components filter instead.
      *
      * @since 3.7.1
      */
@@ -41222,6 +41323,36 @@ namespace EDD\Cron\Events {
          * @var string
          */
         protected $schedule = 'daily';
+    }
+    // @codeCoverageIgnore
+    /**
+     * Schedules the hourly release of discount uses held by stale pending orders.
+     *
+     * @since 3.7.2
+     */
+    class DiscountClaimsCleanup extends \EDD\Cron\Events\Event
+    {
+        /**
+         * Hook name.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        protected $hook = 'edd/discounts/release_expired_claims';
+        /**
+         * First Run Time.
+         *
+         * @since 3.7.2
+         * @var int
+         */
+        protected $first_run = 0;
+        /**
+         * Schedule.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        protected $schedule = 'hourly';
     }
     // @codeCoverageIgnore
     /**
@@ -49820,6 +49951,480 @@ namespace EDD\Deprecated {
     }
 }
 namespace EDD\Discounts {
+    /**
+     * Tracks the discount uses each order holds.
+     *
+     * An order holds a use from the moment it is built until it fails, is abandoned, canceled, deleted, trashed
+     * while pending, or sits pending past the release window. Each held use is one order meta row, written after
+     * its increment and removed before its decrement.
+     *
+     * @since 3.7.2
+     */
+    class Claims implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Order meta key prefix; the discount ID is appended.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const META_PREFIX = '_edd_discount_claim_';
+        /**
+         * Order meta key marking that an order completed before claims were tracked no longer holds its uses as legacy ones.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const LEGACY_RELEASED_KEY = '_edd_discount_legacy_released';
+        /**
+         * Option holding the time claims started being tracked.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const STARTED_OPTION = 'edd_discount_claims_started';
+        /**
+         * Order statuses that give back the uses an order holds.
+         *
+         * @since 3.7.2
+         * @var string[]
+         */
+        const RELEASE_STATUSES = array('failed', 'abandoned', 'cancelled');
+        /**
+         * Order statuses in which an order completed before claims were tracked had its uses counted.
+         *
+         * @since 3.7.2
+         * @var string[]
+         */
+        const COUNTED_STATUSES = array('complete', 'publish', 'completed', 'partially_refunded', 'revoked', 'refunded', 'on_hold');
+        /**
+         * How long, in seconds, an unpaid PayPal Commerce order holds its discount uses before they may be given back.
+         *
+         * @since 3.7.2
+         * @var int
+         */
+        const STALE_AGE = HOUR_IN_SECONDS;
+        /**
+         * Discount IDs held by each order, read once per request and cleared on every write.
+         *
+         * @since 3.7.2
+         * @var array
+         */
+        private static $held = array();
+        /**
+         * Gets the subscribed events.
+         *
+         * @since 3.7.2
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Records when claims started being tracked, before any order can complete under them.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        public function record_start()
+        {
+        }
+        /**
+         * Releases an order's uses when it moves to a status that gives them back.
+         *
+         * A move between counted statuses turns uses counted before claims were tracked into claims, since the
+         * legacy judgment only holds for the status the order was counted in.
+         *
+         * @since 3.7.2
+         *
+         * @param string $old_status The previous status.
+         * @param string $new_status The new status.
+         * @param int    $order_id   The order ID.
+         * @return void
+         */
+        public function maybe_release($old_status, $new_status, $order_id)
+        {
+        }
+        /**
+         * Claims a use of each discount on an order that it does not already hold.
+         *
+         * Uses held for discounts no longer on the order are given back.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving, when claiming on a status change.
+         * @return bool Whether the order now holds a use of every discount on it.
+         */
+        public static function claim($order, $from_status = ''): bool
+        {
+        }
+        /**
+         * Claims the uses a sale needs before it moves to complete.
+         *
+         * Unlike `claim()`, an order still in a status that gives uses back can claim, since it is about to complete.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving.
+         * @return bool Whether the order can complete holding a use of every discount on it.
+         */
+        public static function claim_for_completion($order, $from_status): bool
+        {
+        }
+        /**
+         * Claims a use of each discount on a paid order that it could not claim, even past the discount's limit.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving, when claiming on a status change.
+         * @return \EDD_Discount[] The discounts counted past their limit.
+         */
+        public static function claim_past_limit($order, $from_status = ''): array
+        {
+        }
+        /**
+         * Gives back every use an order holds.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id       The order ID.
+         * @param string $only_if_status Only release while the order has this status.
+         * @param string $from_status    The status the order is leaving, when releasing on a status change.
+         * @return int The number of uses given back.
+         */
+        public static function release($order_id, $only_if_status = '', $from_status = ''): int
+        {
+        }
+        /**
+         * Gives back one use of a full discount held by an unpaid order left pending past the stale age.
+         *
+         * Nothing is given back unless reaching the cap is all that refuses the discount.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD_Discount $discount The discount.
+         * @return bool Whether a use was given back.
+         */
+        public static function release_stale($discount): bool
+        {
+        }
+        /**
+         * Gets unpaid pending orders, oldest first, whose discount uses may be given back.
+         *
+         * Only PayPal Commerce orders created at PayPal qualify, because their capture claims the use again or
+         * refuses the payment. Other gateways can still complete a pending order, and an order with a recorded
+         * transaction has been paid, so both keep their uses.
+         *
+         * @since 3.7.2
+         *
+         * @param string $before      Only orders created before this GMT date.
+         * @param int    $discount_id Only orders holding a use of this discount; 0 for any discount.
+         * @param int    $limit       The most orders to return.
+         * @return int[] The order IDs.
+         */
+        public static function get_releasable_orders($before, $discount_id = 0, $limit = 100): array
+        {
+        }
+        /**
+         * Whether an order holds a use of a discount.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id    The order ID.
+         * @param int $discount_id The discount ID.
+         * @return bool
+         */
+        public static function holds($order_id, $discount_id): bool
+        {
+        }
+        /**
+         * Whether an order holds a use of any discount.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return bool
+         */
+        public static function holds_any($order_id): bool
+        {
+        }
+        /**
+         * Gets the discounts on an order that it does not hold a use of.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving, when checking on a status change.
+         * @return \EDD_Discount[]
+         */
+        public static function get_unclaimed($order, $from_status = ''): array
+        {
+        }
+        /**
+         * Gets the orders, among those given, that hold a use of a discount.
+         *
+         * @since 3.7.2
+         *
+         * @param int   $discount_id The discount ID.
+         * @param int[] $order_ids   The orders to look in.
+         * @return int[]
+         */
+        public static function get_holders($discount_id, $order_ids): array
+        {
+        }
+        /**
+         * Gets the order the current session would resume at checkout.
+         *
+         * @since 3.7.2
+         * @return int The order ID, or 0.
+         */
+        public static function get_resumable_order_id(): int
+        {
+        }
+        /**
+         * Whether reaching its cap is all that refuses a discount.
+         *
+         * A code over its cap stays refused after one release, and a code set inactive on purpose stays off.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD_Discount $discount The discount.
+         * @return bool
+         */
+        private static function is_refused_only_by_cap($discount): bool
+        {
+        }
+        /**
+         * Gives back one discount use an order holds.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id       The order ID.
+         * @param int    $discount_id    The discount ID.
+         * @param string $only_if_status Only release while the order has this status.
+         * @return int The number of uses given back.
+         */
+        private static function release_one($order_id, $discount_id, $only_if_status = ''): int
+        {
+        }
+        /**
+         * Gives back the uses an order completed before claims were tracked was counted for.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order  The order.
+         * @param string            $status The status the order is being released from.
+         * @return int The number of uses given back.
+         */
+        private static function release_legacy($order, $status): int
+        {
+        }
+        /**
+         * Records the uses an order completed before claims were tracked was counted for as claims, without counting them again.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id The order ID.
+         * @param string $status   The status the order is leaving.
+         * @return void
+         */
+        private static function adopt_legacy($order_id, $status)
+        {
+        }
+        /**
+         * Claims the uses an order does not hold yet, without checking that its status can hold them.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving, when claiming on a status change.
+         * @return bool Whether the order now holds a use of every discount on it.
+         */
+        private static function claim_unheld($order, $from_status): bool
+        {
+        }
+        /**
+         * Whether an order is one that can hold discount uses.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order|false $order The order.
+         * @return bool
+         */
+        private static function can_hold($order): bool
+        {
+        }
+        /**
+         * Records a claimed use, undoing the claim if another request recorded it first.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id    The order ID.
+         * @param int $discount_id The discount ID.
+         * @return void
+         */
+        private static function add_marker($order_id, $discount_id)
+        {
+        }
+        /**
+         * Gives back uses of a discount, if it still exists.
+         *
+         * @since 3.7.2
+         *
+         * @param int $discount_id The discount ID.
+         * @param int $uses        The number of uses.
+         * @return void
+         */
+        private static function decrease($discount_id, $uses)
+        {
+        }
+        /**
+         * Gets the IDs of the discounts an order holds a use of, including uses counted before claims were tracked.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order  The order.
+         * @param string            $status The status to judge uses counted before claims were tracked by; defaults to its current one.
+         * @return int[]
+         */
+        private static function get_held_by($order, $status = ''): array
+        {
+        }
+        /**
+         * Gets the discounts an order completed before claims were tracked was counted for, if not yet given back.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order  The order.
+         * @param string            $status The status to judge the order by; defaults to its current one.
+         * @return int[]
+         */
+        private static function get_legacy_held($order, $status = ''): array
+        {
+        }
+        /**
+         * Gets the time claims started being tracked on this site.
+         *
+         * @since 3.7.2
+         * @return int
+         */
+        private static function get_started(): int
+        {
+        }
+        /**
+         * Gets the IDs of the discounts an order holds a claim marker for.
+         *
+         * Read from the table so a cached copy of the meta can't report a use already given back.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return int[]
+         */
+        private static function get_held($order_id): array
+        {
+        }
+        /**
+         * Clears what is known about an order's claims after a write.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return void
+         */
+        private static function forget($order_id)
+        {
+        }
+        /**
+         * Gets the IDs of the discounts on an order.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order The order.
+         * @return int[]
+         */
+        private static function get_discount_ids($order): array
+        {
+        }
+    }
+    /**
+     * Puts a paid order on hold instead of completing it when one of its discounts has no use left.
+     *
+     * The store decides: completing the held order from the admin counts the use past the discount's limit.
+     *
+     * @since 3.7.2
+     */
+    class CompletionHold implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Order meta key marking an order held because a discount had no use left.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const META_KEY = '_edd_discount_completion_held';
+        /**
+         * Gets the subscribed events.
+         *
+         * @since 3.7.2
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Holds an order moving to complete when it can't claim a use of every discount on it.
+         *
+         * Both `edd_update_order_status()` and `EDD_Payment::update_status()` apply this filter, so it covers every way an
+         * order is completed; `edd_should_update_order_status` runs only in the first.
+         *
+         * @since 3.7.2
+         *
+         * @param bool        $do_change  Whether the status should change.
+         * @param int         $order_id   The order ID.
+         * @param string      $new_status The new status.
+         * @param string|bool $old_status The previous status.
+         * @return bool
+         */
+        public function maybe_hold($do_change, $order_id, $new_status, $old_status)
+        {
+        }
+        /**
+         * Whether an order is on hold because a discount had no use left.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return bool
+         */
+        public static function holds($order_id): bool
+        {
+        }
+        /**
+         * Moves an order to on hold and tells the store why.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order       The order.
+         * @param string            $from_status The status the order is leaving.
+         * @return void
+         */
+        private function hold($order, $from_status)
+        {
+        }
+        /**
+         * Whether a store admin is completing the order on purpose, rather than a gateway or webhook.
+         *
+         * @since 3.7.2
+         * @return bool
+         */
+        private function is_admin_decision(): bool
+        {
+        }
+    }
     // @codeCoverageIgnore
     /**
      * Class ItemAmount.
@@ -50000,6 +50605,247 @@ namespace EDD\Discounts {
          * @return bool
          */
         private function is_item_eligible($item, $eligible_items): bool
+        {
+        }
+    }
+    /**
+     * Records which discounts were set inactive on purpose rather than by reaching their cap.
+     *
+     * Reaching the cap deactivates a code without a status transition. A transition to inactive at the cap is
+     * ambiguous, so only the admin deactivation actions mark a code that is already full.
+     *
+     * @since 3.7.2
+     */
+    class ManualDeactivation implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Adjustment meta key marking a discount set inactive on purpose.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const META_KEY = 'deactivated_manually';
+        /**
+         * Gets the subscribed events.
+         *
+         * @since 3.7.2
+         * @return array
+         */
+        public static function get_subscribed_events(): array
+        {
+        }
+        /**
+         * Marks a discount set inactive on purpose, and clears the mark when it leaves inactive.
+         *
+         * A discount created inactive, or set inactive at its cap, is not marked: imports, migrations and older code
+         * deactivate a code that reached its cap that way.
+         *
+         * @since 3.7.2
+         *
+         * @param string $old_status    The previous status.
+         * @param string $new_status    The new status.
+         * @param int    $adjustment_id The adjustment ID.
+         * @return void
+         */
+        public function record($old_status, $new_status, $adjustment_id)
+        {
+        }
+        /**
+         * Marks a discount as set inactive on purpose.
+         *
+         * @since 3.7.2
+         *
+         * @param int $discount_id The discount ID.
+         * @return void
+         */
+        public static function mark($discount_id)
+        {
+        }
+        /**
+         * Whether a discount was set inactive on purpose.
+         *
+         * @since 3.7.2
+         *
+         * @param int $discount_id The discount ID.
+         * @return bool
+         */
+        public static function is_manual($discount_id): bool
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Validates the discounts stored on an order.
+     *
+     * @since 3.7.2
+     */
+    class OrderValidation
+    {
+        /**
+         * Gets the codes of the discounts on an order that can no longer be applied to it.
+         *
+         * Checks the discount itself rather than the cart, so it holds for an order built in an earlier request.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order The order.
+         * @return string[]
+         */
+        public static function get_unavailable_codes($order): array
+        {
+        }
+        /**
+         * Redeems every discount on an order, claiming any use the order doesn't hold.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order The order.
+         * @return string[] The codes that could not be redeemed; empty when all were.
+         */
+        public static function redeem_discounts($order): array
+        {
+        }
+        /**
+         * Refuses a newly built order whose discounts can't all be redeemed.
+         *
+         * Rechecks the per-customer limit, which the claim made while building the order does not.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return string The message to show the buyer, or an empty string when the order can proceed.
+         */
+        public static function refuse_unclaimed($order_id): string
+        {
+        }
+        /**
+         * Fails an order whose discounts can't be redeemed, removes them from the cart, and records the buyer's error.
+         *
+         * @since 3.7.2
+         *
+         * @param int      $order_id The order ID.
+         * @param string[] $codes    The codes that could not be redeemed.
+         * @return string The message to show the buyer.
+         */
+        public static function refuse($order_id, array $codes): string
+        {
+        }
+        /**
+         * Whether the failed transaction page may fail an order and give back its uses.
+         *
+         * An order holding a use keeps it, and stays pending, unless its gateway rechecks discounts before taking payment.
+         * A PayPal Commerce order counts only once it was created at PayPal; one built elsewhere, such as a Recurring
+         * subscription's parent order, never reaches the capture that rechecks it.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order The order.
+         * @return bool
+         */
+        public static function releases_on_failed_page($order): bool
+        {
+        }
+        /**
+         * Moves a pending order to processing while its payment is taken, so its uses stay claimed.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return bool Whether this request moved the order; false when it was no longer pending.
+         * @throws \Throwable An error from a status transition listener, after the order is put back to pending.
+         */
+        public static function start_capture($order_id): bool
+        {
+        }
+        /**
+         * Moves a failed order back to pending for another payment attempt.
+         *
+         * @since 3.7.2
+         *
+         * @param int $order_id The order ID.
+         * @return bool Whether this request moved the order; false when it was no longer failed.
+         * @throws \Throwable An error from a status transition listener, after the order is put back to failed.
+         */
+        public static function reopen_failed($order_id): bool
+        {
+        }
+        /**
+         * Moves an order still processing to a status, when its payment was not taken.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id The order ID.
+         * @param string $status   The status to move it to.
+         * @return void
+         * @throws \Throwable An error from a status transition listener, after the order is put back to processing.
+         */
+        public static function end_capture($order_id, $status)
+        {
+        }
+        /**
+         * Takes payment for a pending order while it is held in processing.
+         *
+         * Record the payment after this returns, so an error while recording leaves a paid order processing.
+         *
+         * @since 3.7.2
+         *
+         * @param int      $order_id The order ID.
+         * @param callable $pay      Takes the payment and returns PayPal's response.
+         * @return mixed The result of `$pay`, or a REST error when the order is no longer pending.
+         * @throws \Throwable An unexpected error from `$pay`, after the order is put back to pending.
+         */
+        public static function hold_capture($order_id, callable $pay)
+        {
+        }
+        /**
+         * Gets the REST error returned when an order is refused for its discounts.
+         *
+         * @since 3.7.2
+         *
+         * @param string $message The message to show the buyer.
+         * @return \WP_Error
+         */
+        public static function get_refusal_error($message): \WP_Error
+        {
+        }
+        /**
+         * Gives back a stale use of each full discount an order needs but doesn't hold, when the customer may still use it.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order $order The order.
+         * @return void
+         */
+        private static function release_stale_uses($order)
+        {
+        }
+        /**
+         * Moves an order from one status to another, only while it still has the first.
+         *
+         * Puts the order back when a listener on the transition throws, so it is not stranded.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id The order ID.
+         * @param string $from     The status the order must have.
+         * @param string $to       The status to move it to.
+         * @return bool Whether this request moved the order.
+         * @throws \Throwable An error from a transition listener, after the order is put back.
+         */
+        private static function move_status($order_id, $from, $to): bool
+        {
+        }
+        /**
+         * Writes an order's status only while it still has the expected one, and its items' statuses with it.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id The order ID.
+         * @param string $from     The status the order must have.
+         * @param string $to       The status to write.
+         * @return bool Whether the row changed.
+         */
+        private static function write_status($order_id, $from, $to): bool
         {
         }
     }
@@ -59430,7 +60276,7 @@ namespace EDD\Emails {
          *
          * @return void
          */
-        public function send_new_user_email($user_id, $user_data)
+        public function send_new_user_email($user_id, $user_data = array())
         {
         }
         /**
@@ -68285,6 +69131,7 @@ namespace EDD\Gateways\PayPal\V3 {
          *
          * @since 3.6.9
          * @since 3.7.1 Fires edd_checkout_user_error_checks and refuses when it raises an error.
+         * @since 3.7.2 Takes the discounts from the cart and refuses one that does not validate.
          *
          * @param array  $form_data  Raw form data from the REST request body.
          * @param string $email      Already-sanitized buyer email.
@@ -68340,6 +69187,21 @@ namespace EDD\Gateways\PayPal\V3 {
          * @return void
          */
         public static function record($order_id, $transaction_id)
+        {
+        }
+        /**
+         * Notes a declined capture on an order without recording it as a transaction.
+         *
+         * The order's first transaction is the capture that webhooks and refunds act on, so a declined
+         * capture must never become it.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id       EDD order ID.
+         * @param string $transaction_id PayPal capture ID.
+         * @return void
+         */
+        public static function record_declined($order_id, $transaction_id)
         {
         }
     }
@@ -69491,8 +70353,10 @@ namespace EDD\Gateways\Square\Checkout {
          * Process the single payment.
          *
          * @since 3.4.0
+         * @since 3.7.2 Builds the order and claims its discount uses before Square is asked to take payment.
          *
          * @throws \Exception If there is an error processing the single payment.
+         * @throws \Throwable An unexpected error, after failing an order Square did not charge.
          */
         private static function process_single()
         {
@@ -69505,6 +70369,20 @@ namespace EDD\Gateways\Square\Checkout {
          * @throws \Exception If there is an error processing the recurring payment.
          */
         private static function process_recurring()
+        {
+        }
+        /**
+         * Records the payment Square took for an order, so Square's webhook can find the order.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id        The EDD order ID.
+         * @param string $square_order_id The Square order ID.
+         * @param string $payment_id      The Square payment ID.
+         * @param string $status          The transaction status.
+         * @return void
+         */
+        private static function record_payment($order_id, $square_order_id, $payment_id, $status)
         {
         }
     }
@@ -69618,6 +70496,42 @@ namespace EDD\Gateways\Square\Checkout\Transactions {
          * @return void
          */
         abstract public function process();
+        /**
+         * Whether Square created a payment for the transaction.
+         *
+         * @since 3.7.2
+         * @return bool
+         */
+        public function has_payment(): bool
+        {
+        }
+        /**
+         * Whether a payment request was built and sent to Square for the transaction.
+         *
+         * @since 3.7.2
+         * @return bool
+         */
+        public function sent_payment_request(): bool
+        {
+        }
+        /**
+         * Gets the ID of the Square order created for the transaction.
+         *
+         * @since 3.7.2
+         * @return string The Square order ID, or an empty string when none was created.
+         */
+        public function get_square_order_id(): string
+        {
+        }
+        /**
+         * Gets the ID of the Square payment created for the transaction.
+         *
+         * @since 3.7.2
+         * @return string The Square payment ID, or an empty string when none was created.
+         */
+        public function get_payment_id(): string
+        {
+        }
         /**
          * Get any errors.
          *
@@ -69863,6 +70777,19 @@ namespace EDD\Gateways\Square {
         {
         }
     }
+}
+namespace EDD\Gateways\Square\Exceptions {
+    // @codeCoverageIgnore
+    /**
+     * Thrown when Square answers a payment request with an error, so no payment was taken.
+     *
+     * @since 3.7.2
+     */
+    class PaymentDeclined extends \Exception
+    {
+    }
+}
+namespace EDD\Gateways\Square {
     /**
      * Square Gateway Class
      *
@@ -70563,11 +71490,12 @@ namespace EDD\Gateways\Square\Helpers {
          * Create a payment.
          *
          * @since 3.4.0
+         * @since 3.7.2 Throws PaymentDeclined when Square answers with an error.
          * @param CreatePaymentRequest $request The request.
          * @param SquareOrder          $order The order.
          *
          * @return SquarePayment
-         * @throws \Exception Throws an exception if there is an error.
+         * @throws PaymentDeclined When Square answers with an error, so no payment was taken.
          */
         public static function create_payment($request, $order)
         {
@@ -71886,6 +72814,18 @@ namespace EDD\Gateways\Stripe\Checkout {
         {
         }
         /**
+         * Records the Stripe charge on an order.
+         *
+         * @since 3.7.2
+         *
+         * @param \EDD\Orders\Order                         $order  The EDD Order object.
+         * @param \Stripe\PaymentIntent|\Stripe\SetupIntent $intent The Stripe Intent object.
+         * @return void
+         */
+        private static function record_charge($order, $intent)
+        {
+        }
+        /**
          * Performs the legacy complete hook for the Stripe checkout.
          *
          * @param object $order The order object.
@@ -72067,6 +73007,7 @@ namespace EDD\Gateways\Stripe\Checkout {
          * Maybe creates an order for the Stripe checkout form.
          *
          * @since 3.3.5
+         * @since 3.7.2 Fails the order when its discount uses could not be claimed.
          * @param string $payment_method_type The payment method type.
          * @return int|false The order ID, or false if not created.
          * @throws \EDD_Stripe_Gateway_Exception If an error occurs.
@@ -79762,6 +80703,16 @@ namespace EDD\Orders {
         {
         }
         /**
+         * Retrieves the order's first transaction.
+         *
+         * @since 3.7.2
+         *
+         * @return Order_Transaction|false The transaction, or false if the order has none.
+         */
+        public function get_transaction()
+        {
+        }
+        /**
          * Retrieves the tax rate Adjustment object associated with the order.
          *
          * @since 3.0
@@ -80529,6 +81480,59 @@ namespace EDD\Orders {
          * @return bool True if the transaction is complete, false otherwise.
          */
         public function is_complete()
+        {
+        }
+    }
+    /**
+     * Recalculations class.
+     *
+     * @since 3.7.2
+     */
+    class Recalculations implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The cron hook that rebuilds the store earnings cache.
+         *
+         * @since 3.7.2
+         * @var string
+         */
+        const STORE_EARNINGS_HOOK = 'edd/orders/recalculate_store_earnings';
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.2
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Invalidates the store earnings cache and schedules it to be rebuilt.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        public static function schedule_store_earnings()
+        {
+        }
+        /**
+         * Rebuilds both store earnings caches.
+         *
+         * The forced read also refreshes the legacy `edd_earnings_total` options, which otherwise refresh only through the API or the recount tool.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        public function recalculate_store_earnings()
+        {
+        }
+        /**
+         * Queues one store earnings rebuild, unless one is already pending.
+         *
+         * @since 3.7.2
+         * @return void
+         */
+        private static function queue_rebuild()
         {
         }
     }
@@ -81536,11 +82540,37 @@ namespace EDD\REST\Controllers {
          * and completes the EDD order.
          *
          * @since 3.6.9
+         * @since 3.7.2 Fails the order before contacting PayPal when its discount uses could not be claimed.
          *
          * @param \WP_REST_Request $request Request object.
          * @return \WP_REST_Response|\WP_Error
+         * @throws \Throwable An unexpected error; the order is put back to pending unless PayPal took payment.
          */
         public function process_payment($request)
+        {
+        }
+        /**
+         * Sends an order already moved to processing to PayPal.
+         *
+         * @since 3.7.2
+         *
+         * @param int   $order_id   The EDD order ID.
+         * @param array $order_data The PayPal order arguments.
+         * @return array|\WP_Error The PayPal order response, or an error when PayPal did not create the order.
+         */
+        private function pay_held_order($order_id, $order_data)
+        {
+        }
+        /**
+         * Records the payment PayPal took for an order and settles its status.
+         *
+         * @since 3.7.2
+         *
+         * @param int   $order_id The EDD order ID.
+         * @param array $response The PayPal order response.
+         * @return \WP_REST_Response|\WP_Error
+         */
+        private function record_payment($order_id, $response)
         {
         }
     }
@@ -81622,6 +82652,7 @@ namespace EDD\REST\Controllers {
          * runs the 3DS challenge after this returns the order ID.
          *
          * @since 3.6.9
+         * @since 3.7.2 Fails the order before contacting PayPal when its discount uses could not be claimed.
          *
          * @param \WP_REST_Request $request Request object.
          * @return \WP_REST_Response|\WP_Error
@@ -81635,11 +82666,25 @@ namespace EDD\REST\Controllers {
          * Returns true only when a required 3-D Secure challenge was attempted and failed; every other result proceeds.
          *
          * @since 3.6.9
+         * @since 3.7.2 Redeems the order's discounts before capture.
          *
          * @param \WP_REST_Request $request Request object.
          * @return \WP_REST_Response|\WP_Error
+         * @throws \Throwable An unexpected error; the order is put back to pending unless PayPal captured it.
          */
         public function capture($request)
+        {
+        }
+        /**
+         * Checks 3-D Secure and captures an order already moved to processing.
+         *
+         * @since 3.7.2
+         *
+         * @param int    $order_id        The EDD order ID.
+         * @param string $paypal_order_id The PayPal order ID.
+         * @return array|\WP_Error The PayPal capture response, or an error when nothing was captured.
+         */
+        private function capture_held_order($order_id, $paypal_order_id)
         {
         }
         /**
@@ -81672,6 +82717,7 @@ namespace EDD\REST\Controllers {
          * persists any vault token, and returns the redirect.
          *
          * @since 3.6.9
+         * @since 3.7.2 Fails a declined order before recording it, and leaves an unknown status with a capture pending.
          *
          * @param int   $order_id EDD order ID.
          * @param array $response PayPal capture response.
@@ -99084,6 +100130,7 @@ namespace EDD\Gateways\PayPal {
      * Creates a new order in PayPal and EDD.
      *
      * @since 2.11
+     * @since 3.7.2 Fails the order before contacting PayPal when its discount uses could not be claimed.
      * @param array $purchase_data Purchase data.
      * @throws Gateway_Exception If an error occurs.
      * @return void
@@ -99095,9 +100142,24 @@ namespace EDD\Gateways\PayPal {
      * Captures the order in PayPal
      *
      * @since 2.11
+     * @since 3.7.2 Redeems the order's discounts before capture and retries a declined order.
      * @throws Gateway_Exception If an error occurs.
+     * @throws \Throwable An unexpected error; the order is put back unless PayPal captured it.
      */
     function capture_order()
+    {
+    }
+    /**
+     * Finds the order a PayPal capture request is for.
+     *
+     * Checks the order this checkout session built first, so the meta lookup only runs without one.
+     *
+     * @since 3.7.2
+     *
+     * @param string $paypal_order_id The PayPal order ID.
+     * @return \EDD\Orders\Order|false
+     */
+    function get_order_for_capture($paypal_order_id)
     {
     }
     /**
@@ -105415,6 +106477,9 @@ namespace {
      * Mark payments as Failed when returning to the Failed Transaction page
      *
      * @since       1.9.9
+     * @since       3.7.2 Only fails the order the current session is checking out or just sent to the gateway,
+     *                             and keeps an order holding a discount use pending unless its gateway rechecks discounts
+     *                             before taking payment.
      * @return      void
      */
     function edd_listen_for_failed_payments()
@@ -110920,6 +111985,7 @@ namespace {
      * the transaction in the Purchase History
      *
      * @since 1.0
+     * @since 3.7.2 Fails the order when its discount uses could not be claimed.
      * @param array $purchase_data Purchase Data.
      * @return void
      */
@@ -110950,6 +112016,7 @@ namespace {
      * Process PayPal Purchase
      *
      * @since 1.0
+     * @since 3.7.2 Fails the order before redirecting when its discount uses could not be claimed.
      * @param array $purchase_data Purchase Data.
      * @return void
      */
@@ -114794,9 +115861,10 @@ namespace {
      *
      * @since 2.8.15
      * @since 3.0 Updated to use EDD\Orders\Order.
+     * @since 3.7.2 Guards against a non-existent order and an order without a stored IP.
      *
      * @param int $order_id Order ID.
-     * @return string A link to the IP details provider
+     * @return string A link to the IP details provider, or a translated 'N/A' when there is no order or no stored IP.
      */
     function edd_payment_get_ip_address_url($order_id)
     {
@@ -116197,6 +117265,7 @@ namespace {
      * Delete an order.
      *
      * @since 3.0
+     * @since 3.7.2 Gives back the discount uses the order holds.
      *
      * @param int $order_id Order ID.
      * @return int|false `1` if the order was deleted successfully, false on error.
@@ -116212,6 +117281,7 @@ namespace {
      * @todo switch to _destroy_ for items & adjustments
      *
      * @since 3.0
+     * @since 3.7.2 Discount uses are given back by edd_delete_order().
      *
      * @param int $order_id Order ID.
      * @return int|false `1` if the order was deleted successfully, false on error.
@@ -116380,6 +117450,7 @@ namespace {
      * based on the order details passed by the gateway.
      *
      * @since 3.0
+     * @since 3.7.2 Claims a use of each discount on the order.
      *
      * @param array $order_data Order data.
      * @return int|bool Order ID if successful, false otherwise.
@@ -116822,6 +117893,7 @@ namespace {
      *
      * @since 1.0.8.3
      * @since 3.0 Updated to use new order methods.
+     * @since 3.7.2 Claims discount uses through EDD\Discounts\Claims.
      *
      * @param int    $order_id   Order ID.
      * @param string $new_status New order status.
