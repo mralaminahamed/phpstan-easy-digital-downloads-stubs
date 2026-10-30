@@ -7413,9 +7413,20 @@ namespace EDD\Database {
         {
         }
         /**
+         * Builds the SQL request from the query vars and the query clauses filter.
+         *
+         * @since 3.7.3
+         */
+        protected function build_request()
+        {
+        }
+        /**
          * Used internally to get a list of item IDs matching the query vars.
          *
+         * Runs the request that build_request() set.
+         *
          * @since 1.0.0
+         * @since 3.7.3 No longer builds the request.
          *
          * @return int|array A single count of item IDs if a count query. An array of item IDs if a full query.
          */
@@ -7847,9 +7858,10 @@ namespace EDD\Database {
         }
         /** Cache *****************************************************************/
         /**
-         * Get cache key from query_vars and query_var_defaults.
+         * Get cache key from the SQL request.
          *
          * @since 1.0.0
+         * @since 3.7.3 Hashes the request instead of the query vars.
          *
          * @return string
          */
@@ -7954,6 +7966,48 @@ namespace EDD\Database {
         {
         }
         /**
+         * Get the current generation of a secondary cache group.
+         *
+         * A secondary lookup is trusted only while the generation it was stamped with is
+         * still current, so rotating this value retires every lookup in the group.
+         *
+         * @since 3.7.3
+         *
+         * @param string $group Secondary cache group for the column.
+         * @return string
+         */
+        private function get_item_by_last_changed($group)
+        {
+        }
+        /**
+         * Get the cache key for a secondary column lookup.
+         *
+         * The key depends on the value alone, so a stale pointer is overwritten in place.
+         *
+         * @since 3.7.3
+         *
+         * @param int|string $column_value Value being looked up.
+         * @return string
+         */
+        private function get_item_by_cache_key($column_value)
+        {
+        }
+        /**
+         * Rotate the last_changed value of secondary cache groups.
+         *
+         * Writes a fresh microtime() rather than the per-instance $this->last_changed,
+         * which update_last_changed_cache() reuses, so the rotation always retires the
+         * lookups this instance has already cached.
+         *
+         * @since 3.7.3
+         *
+         * @param array $columns Column names to rotate. Empty rotates every secondary group.
+         * @return void
+         */
+        private function rotate_item_by_last_changed($columns = array())
+        {
+        }
+        /**
          * Get the last_changed key for a cache group
          *
          * @since 1.0.0
@@ -7963,6 +8017,42 @@ namespace EDD\Database {
          * @return int The last time a cache group was changed
          */
         private function get_last_changed_cache($group = '')
+        {
+        }
+        /**
+         * Get the queries for tables the current query reads outside its own table.
+         *
+         * A cached result is only served while the last_changed value of each of
+         * these queries' cache groups is unchanged.
+         *
+         * @since 3.7.3
+         * @internal Interim hook until the BerlinDB relationship port (#321), which
+         *           will derive these from declared relationships.
+         *
+         * @return Query[] Default empty array.
+         */
+        protected function get_cache_dependency_queries()
+        {
+        }
+        /**
+         * Get the last_changed values of the cache groups the current query depends on.
+         *
+         * @since 3.7.3
+         *
+         * @return array Last changed values, keyed by query class and cache group.
+         */
+        private function get_relationship_cache_dependencies()
+        {
+        }
+        /**
+         * Add a query's cache group last_changed value to a list of dependencies.
+         *
+         * @since 3.7.3
+         *
+         * @param Query $query        Query whose cache group the current query depends on.
+         * @param array $dependencies Last changed values, keyed by query class and cache group.
+         */
+        private function add_query_cache_dependency(\EDD\Database\Query $query, array &$dependencies)
         {
         }
         /**
@@ -10019,6 +10109,61 @@ namespace EDD\Downloads\Traits {
         {
         }
     }
+    // @codeCoverageIgnore
+    trait Deprecated
+    {
+        /**
+         * Creates a download
+         *
+         * @since  2.3.6
+         * @deprecated 3.7.3 Use wp_insert_post() with 'post_type' => 'download' instead.
+         * @param  array  $data Array of attributes for a download
+         * @return mixed  false if data isn't passed and class not instantiated for creation, or New Download ID
+         */
+        public function create($data = array())
+        {
+        }
+        /**
+         * Increment the sale count by one
+         *
+         * @since 2.2
+         * @param int $quantity The quantity to increase the sales by
+         * @return int New number of total sales
+         */
+        public function increase_sales($quantity = 1)
+        {
+        }
+        /**
+         * Decrement the sale count by one
+         *
+         * @since 2.2
+         * @param int $quantity The quantity to decrease by
+         * @return int New number of total sales
+         */
+        public function decrease_sales($quantity = 1)
+        {
+        }
+        /**
+         * Increase the earnings by the given amount
+         *
+         * @since 2.2
+         * @param int|float $amount Amount to increase the earnings by
+         * @return float New number of total earnings
+         */
+        public function increase_earnings($amount = 0)
+        {
+        }
+        /**
+         * Decrease the earnings by the given amount
+         *
+         * @since 2.2
+         * @param int|float $amount Number to decrease earning with
+         * @return float New number of total earnings
+         */
+        public function decrease_earnings($amount)
+        {
+        }
+    }
 }
 namespace {
     /**
@@ -10029,6 +10174,7 @@ namespace {
     class EDD_Download
     {
         use \EDD\Downloads\Traits\Files;
+        use \EDD\Downloads\Traits\Deprecated;
         /**
          * The download ID
          *
@@ -10318,16 +10464,6 @@ namespace {
         {
         }
         /**
-         * Creates a download
-         *
-         * @since  2.3.6
-         * @param  array  $data Array of attributes for a download
-         * @return mixed  false if data isn't passed and class not instantiated for creation, or New Download ID
-         */
-        public function create($data = array())
-        {
-        }
-        /**
          * Retrieve the ID
          *
          * @since 2.2
@@ -10498,52 +10634,12 @@ namespace {
         {
         }
         /**
-         * Increment the sale count by one
-         *
-         * @since 2.2
-         * @param int $quantity The quantity to increase the sales by
-         * @return int New number of total sales
-         */
-        public function increase_sales($quantity = 1)
-        {
-        }
-        /**
-         * Decrement the sale count by one
-         *
-         * @since 2.2
-         * @param int $quantity The quantity to decrease by
-         * @return int New number of total sales
-         */
-        public function decrease_sales($quantity = 1)
-        {
-        }
-        /**
          * Retrieve the total earnings for the download
          *
          * @since 2.2
          * @return float Total download earnings
          */
         public function get_earnings()
-        {
-        }
-        /**
-         * Increase the earnings by the given amount
-         *
-         * @since 2.2
-         * @param int|float $amount Amount to increase the earnings by
-         * @return float New number of total earnings
-         */
-        public function increase_earnings($amount = 0)
-        {
-        }
-        /**
-         * Decrease the earnings by the given amount
-         *
-         * @since 2.2
-         * @param int|float $amount Number to decrease earning with
-         * @return float New number of total earnings
-         */
-        public function decrease_earnings($amount)
         {
         }
         /**
@@ -11075,6 +11171,30 @@ namespace {
          * @return void
          */
         public function reset_capabilities($data)
+        {
+        }
+        /**
+         * Grants or revokes every shop capability in one write to the roles option.
+         *
+         * Also rebuilds the role objects and the current user's capabilities, so the
+         * change is effective in the request that made it.
+         *
+         * @since 3.7.3
+         *
+         * @param string $method The WP_Roles method to apply: 'add_cap' or 'remove_cap'.
+         * @return void
+         */
+        private function update_shop_role_caps($method)
+        {
+        }
+        /**
+         * Gets the shop capabilities granted to each role.
+         *
+         * @since 3.7.3
+         *
+         * @return array Capability names, keyed by role.
+         */
+        private function get_shop_role_caps()
         {
         }
     }
@@ -14749,7 +14869,7 @@ namespace {
          */
         protected $status = 'pending';
         protected $post_status = 'pending';
-        // Same as $status but here for backwards compat
+        // Same as $status but here for backwards compat.
         /**
          * When updating, the old status prior to the change
          *
@@ -14878,6 +14998,20 @@ namespace {
          */
         private $pending;
         /**
+         * Properties which have not been loaded yet, keyed by the method which loads them.
+         *
+         * @since 3.7.3
+         * @var array
+         */
+        private $deferred = array();
+        /**
+         * Properties currently being loaded, used to break dependency cycles.
+         *
+         * @since 3.7.3
+         * @var array
+         */
+        private $loading = array();
+        /**
          * The parent payment (if applicable)
          *
          * @since  2.5
@@ -14916,7 +15050,7 @@ namespace {
          *
          * @since  2.5
          *
-         * @param  string $key The property
+         * @param  string $key The property.
          *
          * @return mixed        The value
          */
@@ -14930,8 +15064,8 @@ namespace {
          *
          * @since  2.5
          *
-         * @param string $key   The property name
-         * @param mixed  $value The value of the property
+         * @param string $key   The property name.
+         * @param mixed  $value The value of the property.
          */
         public function __set($key, $value)
         {
@@ -14949,6 +15083,17 @@ namespace {
         {
         }
         /**
+         * Report which properties have not been loaded yet, so debug output does not
+         * misrepresent an unloaded property as an empty one.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public function __debugInfo()
+        {
+        }
+        /**
          * Setup payment properties
          *
          * @since  2.5
@@ -14958,6 +15103,44 @@ namespace {
          * @return bool            If the setup was successful or not
          */
         private function setup_payment($payment_id)
+        {
+        }
+        /**
+         * Load a deferred property.
+         *
+         * Does nothing for properties which are already loaded, were never deferred, or
+         * are mid-load further up the call stack.
+         *
+         * @since 3.7.3
+         *
+         * @param string $key The property name.
+         * @return void
+         */
+        private function hydrate($key)
+        {
+        }
+        /**
+         * Load every deferred property.
+         *
+         * Called by the methods which write, since they read most of the object regardless
+         * of which property changed.
+         *
+         * @since 3.7.3
+         *
+         * @return void
+         */
+        private function hydrate_all()
+        {
+        }
+        /**
+         * Whether a property is loading bookkeeping, which the magic methods must not expose.
+         *
+         * @since 3.7.3
+         *
+         * @param string $key The property name.
+         * @return bool
+         */
+        private function is_internal_property($key)
         {
         }
         /**
@@ -15431,6 +15614,40 @@ namespace {
         {
         }
         /**
+         * Setup the payee's first name.
+         *
+         * @since 3.7.3
+         *
+         * @return string
+         */
+        private function setup_first_name()
+        {
+        }
+        /**
+         * Setup the payee's last name.
+         *
+         * @since 3.7.3
+         *
+         * @return string
+         */
+        private function setup_last_name()
+        {
+        }
+        /**
+         * Read a name out of the user info.
+         *
+         * Callers are allowed to assign a serialized string to user_info, so this cannot
+         * assume an array.
+         *
+         * @since 3.7.3
+         *
+         * @param string $key Either first_name or last_name.
+         * @return string
+         */
+        private function get_user_info_name($key)
+        {
+        }
+        /**
          * Setup the address for the payment.
          *
          * @since 2.5
@@ -15472,6 +15689,18 @@ namespace {
          * @return array Downloads associated with this payment.
          */
         private function setup_downloads()
+        {
+        }
+        /**
+         * Setup the legacy payment meta array.
+         *
+         * Only exists for backwards compatibility purposes.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        private function setup_payment_meta()
         {
         }
         /**
@@ -19209,12 +19438,12 @@ namespace EDD\Abilities\Reports {
         /**
          * Gets the valid preset reporting periods.
          *
-         * These mirror the range keys from \EDD\Reports\get_dates_filter_options(),
+         * These mirror the range keys from \EDD\Reports\Dates\Range::options(),
          * excluding the "other" (custom) option, which is covered by the explicit
          * date_start and date_end inputs. Kept as a literal rather than read from
-         * that function: it is only defined once EDD\Stats has bootstrapped the
-         * reports API, so an ability registering before that would either fatal or
-         * publish a different enum depending on load order.
+         * there: that list is filterable, and a key added through the filter has
+         * no preset in \EDD\Reports\parse_dates_for_range(), so it would be
+         * published in the enum without dates that can be computed for it.
          *
          * @since 3.7.1
          *
@@ -27955,16 +28184,6 @@ namespace EDD\Admin\Onboarding {
         public function ajax_onboarding_skipped()
         {
         }
-        /**
-         * Filters the Stripe disconnect URL.
-         * This has to be hooked into the ajax action before the main ajax work is run.
-         *
-         * @since 3.1.1
-         * @return void
-         */
-        public function disconnect_url()
-        {
-        }
         public function save_email()
         {
         }
@@ -27974,6 +28193,18 @@ namespace EDD\Admin\Onboarding {
          * @since 3.1.1
          */
         private function clean_onboarding_options()
+        {
+        }
+        /**
+         * Filtered the Stripe disconnect URL for the onboarding wizard.
+         *
+         * The wizard no longer offers a Disconnect link, so this does nothing and is no longer hooked.
+         *
+         * @since 3.1.1
+         * @deprecated 3.7.3
+         * @return void
+         */
+        public function disconnect_url()
         {
         }
     }
@@ -28433,6 +28664,62 @@ namespace EDD\Admin {
          * @since 3.0
          */
         public function display()
+        {
+        }
+    }
+}
+namespace EDD\Admin\Orders {
+    /**
+     * Data localized for the order overview components.
+     *
+     * @since 3.7.3
+     */
+    class Overview
+    {
+        /**
+         * Gets the admin URLs the order overview components link to.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public static function get_urls()
+        {
+        }
+        /**
+         * Gets the strings the order overview components render.
+         *
+         * React escapes on render, so these are not escaped here.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public static function get_i18n()
+        {
+        }
+        /**
+         * Gets the discounts listed in the Add Discount dialog before the admin searches.
+         *
+         * Only discounts that can be applied now are listed, matching the dialog's search.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public static function get_initial_discounts()
+        {
+        }
+        /**
+         * Gets the newest downloads listed in the Add Download dialog before the admin searches.
+         *
+         * A variable-priced download is listed once per price.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public static function get_initial_downloads()
         {
         }
     }
@@ -35670,6 +35957,20 @@ namespace EDD\Assets {
         {
         }
         /**
+         * Adds a stylesheet to the block editor canvas through the editor settings.
+         *
+         * Bails when the file is missing, so a caller never inlines an empty stylesheet.
+         *
+         * @since 3.7.3
+         * @param array  $editor_settings Block editor settings.
+         * @param string $path            File system path to the stylesheet.
+         * @param string $url             URL the stylesheet is served from.
+         * @return array
+         */
+        public static function add_to_editor_settings(array $editor_settings, string $path, string $url): array
+        {
+        }
+        /**
          * Enqueues an inline style if a custom stylesheet is being used.
          *
          * @since 3.3.0
@@ -36296,10 +36597,18 @@ namespace EDD\Blocks {
     class Utility
     {
         /**
+         * Whether the block checkout form top has already fired during the current checkout render.
+         *
+         * @since 3.7.3
+         * @var bool
+         */
+        private static bool $did_checkout_form_top = false;
+        /**
          * Checks whether we are viewing content in the block editor.
          *
          * @since 3.6.0
          * @since 3.7.1 Default capability changed to `edit_posts`.
+         * @since 3.7.3 Returns false for a request or block-context value that is neither a boolean nor a string.
          * @param string    $current_user_can Whether the current user needs to have a specific capability.
          * @param \WP_Block $block The block object.
          * @return bool
@@ -36327,10 +36636,20 @@ namespace EDD\Blocks {
         {
         }
         /**
+         * Resets the checkout form top flag so the next checkout render fires the hook again.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function reset_checkout_form_top(): void
+        {
+        }
+        /**
          * Triggers the `edd_checkout_form_top` hook. The hook is invoked from multiple blocks
          * to ensure that whichever is first triggers it.
          *
          * @since 3.7.0
+         * @since 3.7.3 Dedupes per checkout render instead of per request.
          * @param array $block_attributes The array of block attributes.
          * @return void
          */
@@ -37572,6 +37891,13 @@ namespace EDD\Checkout {
          */
         private $customer = array('address' => array('line1' => '', 'line2' => '', 'city' => '', 'zip' => '', 'state' => '', 'country' => '', 'company' => '', 'phone' => ''));
         /**
+         * Whether the billing fields have already rendered during the current checkout render.
+         *
+         * @since 3.7.3
+         * @var bool
+         */
+        private static bool $did_billing_top = false;
+        /**
          * Get the fields to display.
          *
          * @since 3.3.8
@@ -37586,6 +37912,15 @@ namespace EDD\Checkout {
          * @since 3.3.8
          */
         public function render()
+        {
+        }
+        /**
+         * Resets the billing fields flag so the next checkout render outputs them again.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function reset_billing_top(): void
         {
         }
         /**
@@ -37649,6 +37984,7 @@ namespace EDD\Checkout {
          * Get the fields to render.
          *
          * @since 3.3.8
+         * @since 3.7.3 Dedupes per checkout render instead of per request.
          * @return array|false
          */
         private function get_fields_to_render()
@@ -42993,6 +43329,130 @@ namespace EDD\Customers {
         protected $date_modified;
     }
     /**
+     * Stores the last login time and IP address for the customer linked to a user.
+     *
+     * @since 3.7.3
+     */
+    class LastLogin implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * The customer meta key the last login time is stored under, in UTC as 'Y-m-d H:i:s'.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const DATE_META_KEY = 'last_login_date';
+        /**
+         * The customer meta key the IP address of the last login is stored under.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const IP_META_KEY = 'last_login_ip';
+        /**
+         * Returns an array of events that this subscriber wants to listen to.
+         *
+         * @since 3.7.3
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Gets the stored last login for a customer.
+         *
+         * Recorded on `wp_login`, and on `two_factor_user_authenticated` once a Two Factor user passes
+         * the second step. Logins at purchase time are recorded too: registering at checkout, and
+         * PayPal's login after capture. A remember-me cookie, an application password, REST
+         * authentication, or a login through another network site's `wp-login.php` records nothing.
+         *
+         * @since 3.7.3
+         *
+         * @param int $customer_id The customer ID.
+         * @return array{date: string, ip: string} The login time in UTC as 'Y-m-d H:i:s' and the IP address. Each is an empty string if none is stored.
+         */
+        public static function get($customer_id)
+        {
+        }
+        /**
+         * Formats a stored UTC login time in the site timezone.
+         *
+         * The offset is the one in force at that moment, not today's, so a login either side of a
+         * daylight saving change reads correctly.
+         *
+         * @since 3.7.3
+         *
+         * @param string $last_login The stored login time in UTC, as 'Y-m-d H:i:s'.
+         * @param string $format     The date format shorthand or format string, as `edd_get_date_format()` accepts. Default 'datetime'.
+         * @return string The formatted time, or an empty string if the value cannot be read.
+         */
+        public static function format($last_login, $format = 'datetime')
+        {
+        }
+        /**
+         * Gets the timezone abbreviation in force in the site timezone at a stored UTC login time.
+         *
+         * Not today's abbreviation: a winter login reads EST when viewed in July.
+         *
+         * @since 3.7.3
+         *
+         * @param string $last_login The stored login time in UTC, as 'Y-m-d H:i:s'.
+         * @return string The abbreviation, or an empty string if the value cannot be read.
+         */
+        public static function get_timezone_abbr($last_login)
+        {
+        }
+        /**
+         * Converts a stored UTC login time to a date object in the site timezone.
+         *
+         * @since 3.7.3
+         *
+         * @param string $last_login The stored login time in UTC, as 'Y-m-d H:i:s'.
+         * @return \EDD\Utils\Date
+         */
+        private static function to_site_date($last_login)
+        {
+        }
+        /**
+         * Records the login time and IP address for the customer linked to the user who logged in.
+         *
+         * Never creates a customer: a user without one is ignored.
+         *
+         * @since 3.7.3
+         *
+         * @param string   $user_login The user's login name.
+         * @param \WP_User $user       The user who logged in.
+         * @return void
+         */
+        public function record($user_login, $user = null)
+        {
+        }
+        /**
+         * Records the login of a user who has passed the second step of Two Factor authentication.
+         *
+         * The hook passes the user first, and a provider second that is not needed here.
+         *
+         * @since 3.7.3
+         *
+         * @param \WP_User $user The user who authenticated.
+         * @return void
+         */
+        public function record_two_factor($user = null)
+        {
+        }
+        /**
+         * Writes the login time and IP address for the customer linked to a user.
+         *
+         * @since 3.7.3
+         *
+         * @param \WP_User $user The user who logged in.
+         * @return void
+         */
+        private function write($user)
+        {
+        }
+    }
+    /**
      * Recalculations class.
      */
     class Recalculations implements \EDD\EventManagement\SubscriberInterface
@@ -45219,6 +45679,18 @@ namespace EDD\Database\Queries {
          * @return array Modified query clauses.
          */
         public function query_by_customer($clauses)
+        {
+        }
+        /**
+         * Get the queries for tables the current query reads outside the notes table.
+         *
+         * A customer_id query reads the orders table to find the customer's orders.
+         *
+         * @since 3.7.3
+         *
+         * @return Query[]
+         */
+        protected function get_cache_dependency_queries()
         {
         }
     }
@@ -65640,6 +66112,39 @@ namespace EDD\Gateways\PayPal\Traits {
         {
         }
     }
+    // @codeCoverageIgnore
+    /**
+     * Refunds Trait
+     *
+     * Records refunds issued in PayPal against EDD orders.
+     *
+     * @since 3.7.3
+     */
+    trait Refunds
+    {
+        /**
+         * Records a PayPal refund as a full or partial refund of the order.
+         *
+         * A refund of at least the order total is a full refund.
+         *
+         * @since 3.7.3
+         *
+         * @param \EDD\Orders\Order $order                 The order being refunded.
+         * @param float             $refunded_amount       The positive amount refunded in PayPal.
+         * @param string            $currency              The refund currency.
+         * @param string            $refund_transaction_id The PayPal refund transaction ID.
+         * @param array             $note_prefixes         {
+         *     Translated order note prefixes.
+         *
+         *     @type string $full    Prefix for a full refund note.
+         *     @type string $partial Prefix for a partial refund note.
+         * }
+         * @return void
+         */
+        private function process_refund($order, $refunded_amount, $currency, $refund_transaction_id, $note_prefixes)
+        {
+        }
+    }
 }
 namespace EDD\Gateways\PayPal {
     /**
@@ -65651,6 +66156,7 @@ namespace EDD\Gateways\PayPal {
     {
         use \EDD\Gateways\PayPal\Traits\Data;
         use \EDD\Gateways\PayPal\Traits\Validate;
+        use \EDD\Gateways\PayPal\Traits\Refunds;
         /**
          * The posted data from PayPal.
          *
@@ -69123,6 +69629,14 @@ namespace EDD\Gateways\PayPal\V3 {
     class PurchaseUser
     {
         /**
+         * Session key naming the user this request authenticated at order creation.
+         *
+         * @since 3.7.3
+         *
+         * @var string
+         */
+        private const AUTHENTICATED_USER_KEY = 'checkout_authenticated_user';
+        /**
          * Resolves the buyer's user data from a REST request's form_data.
          *
          * Runs the standard EDD user-validation pipeline the same way
@@ -69144,8 +69658,22 @@ namespace EDD\Gateways\PayPal\V3 {
         {
         }
         /**
-         * Issues an auth cookie after capture if the order's buyer just registered
-         * or logged in during this request.
+         * Records the user this request authenticated, for the capture-side re-issue.
+         *
+         * Call after the order is built and claimed, so it reflects who is signed in
+         * at that point. A guest clears the key, so an earlier attempt cannot carry
+         * its value into a later one.
+         *
+         * @since 3.7.3
+         *
+         * @return void
+         */
+        public static function remember_authenticated_user()
+        {
+        }
+        /**
+         * Re-issues the auth cookie for the user recorded at order creation, when that
+         * user owns the order.
          *
          * The cookie set during the /create response may be stripped by proxy
          * layers (e.g. Cloudflare APO); repeating it on the capture response —
@@ -69158,6 +69686,7 @@ namespace EDD\Gateways\PayPal\V3 {
          * are the trade-off for reliable session delivery in that scenario.
          *
          * @since 3.6.9
+         * @since 3.7.3 Re-issues only for the user recorded at order creation, not the order's user_id.
          *
          * @param int $order_id EDD order ID.
          * @return void
@@ -69569,6 +70098,7 @@ namespace EDD\Gateways\PayPal\Webhooks\Events {
     }
     class Payment_Capture_Refunded extends \EDD\Gateways\PayPal\Webhooks\Events\Webhook_Event
     {
+        use \EDD\Gateways\PayPal\Traits\Refunds;
         /**
          * Processes the event.
          *
@@ -71092,10 +71622,12 @@ namespace EDD\Gateways\Square\Helpers {
         /**
          * Get the environment.
          *
+         * Public so the webhook listener can compare Square's environment header against it.
+         *
          * @since 3.4.0
          * @return string The environment.
          */
-        private static function get_environment()
+        public static function get_environment()
         {
         }
         /**
@@ -72331,6 +72863,452 @@ namespace EDD\Gateways\Stripe\Admin {
         {
         }
     }
+}
+namespace EDD\Gateways\Stripe\Admin\Disconnect {
+    // @codeCoverageIgnore
+    /**
+     * Confirmation class.
+     *
+     * @since 3.7.3
+     */
+    class Confirmation
+    {
+        /**
+         * The ID of the confirmation dialog.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const DIALOG_ID = 'edds-stripe-disconnect-dialog';
+        /**
+         * Prints the dialog asking the merchant how to disconnect.
+         *
+         * Disconnecting removes this site's keys only. Revoking turns the authorization off for every site
+         * using the Stripe account, so it is its own, clearly labeled choice, offered only when the store holds
+         * an authorization to revoke and is the production site.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function render()
+        {
+        }
+        /**
+         * Gets the URL that disconnects and revokes the authorization for every site using the account.
+         *
+         * Carries its own nonce, so the link that only removes this site's keys cannot trigger a revocation.
+         *
+         * @since 3.7.3
+         * @return string
+         */
+        private static function get_revoke_url()
+        {
+        }
+    }
+    /**
+     * Deauthorize class.
+     *
+     * @since 3.7.3
+     */
+    class Deauthorize
+    {
+        /**
+         * The EDD Connect endpoint which performs the revocation.
+         *
+         * Deliberately not filterable: the request body carries the store's live Stripe secret key.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const ENDPOINT = 'https://connect.easydigitaldownloads.com/v2/stripe/deauthorize';
+        /**
+         * Where a merchant removes Easy Digital Downloads from their Stripe account, which revokes it for every site.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const INSTALLED_APPS_URL = 'https://dashboard.stripe.com/settings/apps';
+        /**
+         * Option holding a failed revocation until the merchant resolves it.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const ERROR_OPTION = 'edd_stripe_deauthorize_error';
+        /**
+         * Setting recording the modes EDD Connect issued credentials for, as mode => account ID.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const MODES_SETTING = 'stripe_connect_modes';
+        /**
+         * Transient recording that keys were removed without EDD Connect confirming the revocation.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        const UNCONFIRMED_TRANSIENT = 'edd_stripe_deauthorize_unconfirmed';
+        /**
+         * The time limit for a revocation request, in seconds.
+         *
+         * A store connected in both modes spends at most about 90s (30s on the request and 15s asking
+         * Stripe directly, per mode). The ceiling is well above that because a request killed partway
+         * leaves a key Stripe has revoked still stored on the site.
+         *
+         * @since 3.7.3
+         * @var int
+         */
+        const TIME_LIMIT = 300;
+        /**
+         * The connected Stripe account ID.
+         *
+         * @since 3.7.3
+         * @var string
+         */
+        private $account_id;
+        /**
+         * The modes whose credential Stripe rejected although EDD Connect did not confirm the revocation.
+         *
+         * @since 3.7.3
+         * @var string[]
+         */
+        private $unconfirmed_modes = array();
+        /**
+         * The modes whose keys were removed from the store.
+         *
+         * @since 3.7.3
+         * @var string[]
+         */
+        private $removed_modes = array();
+        /**
+         * The modes whose revocation failed, leaving their keys in place.
+         *
+         * @since 3.7.3
+         * @var string[]
+         */
+        private $failed_modes = array();
+        /**
+         * Constructor.
+         *
+         * @since 3.7.3
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Whether this store holds a Connect authorization that can be revoked.
+         *
+         * Only a connection EDD Connect brokered records an account ID, and once a mode is recorded a
+         * key the merchant enters for the other mode is not sent. A store connected before modes were
+         * recorded has no record, so every key it holds is sent until it reconnects.
+         *
+         * @since 3.7.3
+         * @return bool
+         */
+        public function is_revocable()
+        {
+        }
+        /**
+         * Whether this site may offer to revoke the authorization.
+         *
+         * A revoke from a staging copy would turn off the live site's keys, so only the production site that holds
+         * an authorization to revoke offers one.
+         *
+         * @since 3.7.3
+         * @return bool
+         */
+        public function can_offer_revoke()
+        {
+        }
+        /**
+         * Revokes the authorization for every mode this store holds Connect credentials for.
+         *
+         * Each mode is a separate authorization at Stripe, with its own platform key and client ID, so
+         * a store connected in both has to revoke both.
+         *
+         * @since 3.7.3
+         * @return true|WP_Error True once Stripe no longer accepts the stored credentials.
+         */
+        public function revoke()
+        {
+        }
+        /**
+         * Gets the modes deleted on Stripe's word alone, with no confirmation from EDD Connect.
+         *
+         * @since 3.7.3
+         * @return string[]
+         */
+        public function get_unconfirmed_modes()
+        {
+        }
+        /**
+         * Gets the modes whose keys were removed from the store, confirmed or not.
+         *
+         * @since 3.7.3
+         * @return string[]
+         */
+        public function get_removed_modes()
+        {
+        }
+        /**
+         * Gets the modes whose revocation failed, whose keys are still in place.
+         *
+         * @since 3.7.3
+         * @return string[]
+         */
+        public function get_failed_modes()
+        {
+        }
+        /**
+         * Records a failed revocation so admin screens report it until it is resolved.
+         *
+         * @since 3.7.3
+         *
+         * @param WP_Error $error   The failure to report.
+         * @param array    $outcome Optional. The modes `removed` from the store, those that `failed`, and
+         *                          those removed `unconfirmed`, as lists of modes.
+         * @return void
+         */
+        public static function record_error(\WP_Error $error, $outcome = array())
+        {
+        }
+        /**
+         * Gets a recorded revocation failure, if there is one.
+         *
+         * @since 3.7.3
+         * @return array|false
+         */
+        public static function get_error()
+        {
+        }
+        /**
+         * Clears a recorded revocation failure.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function clear_error()
+        {
+        }
+        /**
+         * Records that EDD Connect issued credentials for a mode, and for which account.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode       Either 'live' or 'test'.
+         * @param string $account_id The Stripe account the credentials were issued for.
+         * @return void
+         */
+        public static function record_connected_mode($mode, $account_id)
+        {
+        }
+        /**
+         * Records that keys were removed without EDD Connect confirming the revocation.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function record_unconfirmed()
+        {
+        }
+        /**
+         * Whether keys were removed without EDD Connect confirming the revocation.
+         *
+         * @since 3.7.3
+         * @return bool
+         */
+        public static function has_unconfirmed()
+        {
+        }
+        /**
+         * Clears the record of an unconfirmed revocation.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public static function clear_unconfirmed()
+        {
+        }
+        /**
+         * Gets the translated label for a Stripe mode, for use in merchant-facing text.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode Either 'live' or 'test'.
+         * @return string
+         */
+        public static function get_mode_label($mode)
+        {
+        }
+        /**
+         * Gets a transient key for the current user.
+         *
+         * The record is per user so that another administrator loading an admin page cannot consume the
+         * message before the person who clicked Disconnect has seen it.
+         *
+         * @since 3.7.3
+         *
+         * @param string $base The transient name the key is built from.
+         * @return string
+         */
+        private static function get_transient_key($base)
+        {
+        }
+        /**
+         * Writes a failed revocation to the debug log.
+         *
+         * Support needs to see this on a store where the merchant has moved on.
+         *
+         * @since 3.7.3
+         *
+         * @param string   $mode  Either 'live' or 'test'.
+         * @param WP_Error $error The failure.
+         * @return void
+         */
+        private function log_failure($mode, \WP_Error $error)
+        {
+        }
+        /**
+         * Deletes the stored secret and publishable keys for a mode.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode Either 'live' or 'test'.
+         * @return void
+         */
+        private function forget_credentials($mode)
+        {
+        }
+        /**
+         * Whether Stripe has stopped accepting a credential.
+         *
+         * Asked directly rather than through EDD Connect, so that it stays answerable when EDD Connect
+         * is the thing that could not be reached. A credential Stripe rejects is dead whatever killed
+         * it, which is the only property the disconnect depends on.
+         *
+         * @since 3.7.3
+         *
+         * @param string $secret_key The credential to test.
+         * @return bool False whenever Stripe's answer is anything other than a rejection.
+         */
+        private function is_credential_rejected($secret_key)
+        {
+        }
+        /**
+         * Revokes the authorization for a single mode.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode       Either 'live' or 'test'.
+         * @param string $secret_key The credential this store holds for that mode.
+         * @return true|WP_Error
+         */
+        private function revoke_mode($mode, $secret_key)
+        {
+        }
+        /**
+         * Answers a throttled revocation.
+         *
+         * EDD Connect allows five attempts an hour per account and mode, so a throttle means the merchant
+         * has been retrying and the wait is theirs to make. It is always reported with the wait.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode        Either 'live' or 'test'.
+         * @param int    $retry_after Seconds until the next attempt is allowed.
+         * @return WP_Error
+         */
+        private function handle_throttled($mode, $retry_after)
+        {
+        }
+        /**
+         * Gets the Stripe account a mode's credentials were issued for.
+         *
+         * A store with no per-mode record has the single stored account ID.
+         *
+         * @since 3.7.3
+         *
+         * @param string $mode Either 'live' or 'test'.
+         * @return string
+         */
+        private function get_account_id($mode)
+        {
+        }
+        /**
+         * Gets the stored Connect credentials, keyed by mode.
+         *
+         * Once modes are recorded only those are returned, so a key the merchant entered by hand for
+         * the other mode is not sent. A store connected before the modes were recorded has no record,
+         * and every stored key is returned for it.
+         *
+         * @since 3.7.3
+         * @return array
+         */
+        private function get_credentials()
+        {
+        }
+    }
+    /**
+     * Notices class.
+     *
+     * @since 3.7.3
+     */
+    class Notices implements \EDD\EventManagement\SubscriberInterface
+    {
+        /**
+         * Gets the subscribed events.
+         *
+         * Runs after `EDD_Notices::add_notices()` (priority 20) so the notice registry is ready.
+         *
+         * @since 3.7.3
+         * @return array
+         */
+        public static function get_subscribed_events()
+        {
+        }
+        /**
+         * Adds the disconnect notices.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        public function add_notices()
+        {
+        }
+        /**
+         * Checks whether the current request is one where a disconnect notice may appear.
+         *
+         * @since 3.7.3
+         * @return bool
+         */
+        private function can_show_notice()
+        {
+        }
+        /**
+         * Reports a revocation that failed for at least one mode.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        private function add_failed_notice()
+        {
+        }
+        /**
+         * Reports a Stripe disconnect that removed the keys without Stripe confirming the revocation.
+         *
+         * Reached when EDD Connect did not confirm but Stripe rejected the stored key, so the keys are
+         * gone and the merchant still has to check that the authorization is too.
+         *
+         * @since 3.7.3
+         * @return void
+         */
+        private function add_unconfirmed_notice()
+        {
+        }
+    }
+}
+namespace EDD\Gateways\Stripe\Admin {
     // @codeCoverageIgnore
     /**
      * Class to handle the admin notifications.
@@ -86546,6 +87524,39 @@ namespace EDD\Reports\Data {
         }
     }
 }
+namespace EDD\Reports\Dates {
+    // @codeCoverageIgnore
+    /**
+     * The report date range options.
+     *
+     * Autoloaded, so it can be used before the reports API has bootstrapped.
+     *
+     * @since 3.7.3
+     */
+    class Range
+    {
+        /**
+         * Unfiltered key/label pairs, built on first use.
+         *
+         * @since 3.7.3
+         * @var array|null
+         */
+        private static $options = null;
+        /**
+         * Retrieves key/label pairs of date range options for use in a drop-down.
+         *
+         * Call no earlier than `init`. Labels are translated once and cached for the rest of the request.
+         * The edd_report_date_options filter runs on every call.
+         *
+         * @since 3.7.3
+         *
+         * @return array Key/label pairs of date range options.
+         */
+        public static function options(): array
+        {
+        }
+    }
+}
 namespace EDD\Reports\Endpoints {
     /**
      * Base class for all report endpoints.
@@ -90378,6 +91389,37 @@ namespace EDD\Reports {
          * @param Data\Report_Registry $reports Reports registry instance.
          */
         private function register_core_endpoint_views($reports)
+        {
+        }
+    }
+    // @codeCoverageIgnore
+    /**
+     * Defines the dashboard sales summary ranges and the stats arguments for each.
+     *
+     * @since 3.7.3
+     */
+    class SalesSummaryRanges
+    {
+        /**
+         * Gets the sales summary range keys, in display order.
+         *
+         * @since 3.7.3
+         *
+         * @return array
+         */
+        public static function get_ranges(): array
+        {
+        }
+        /**
+         * Gets the EDD\Stats arguments for one sales summary range.
+         *
+         * @since 3.7.3
+         *
+         * @param string $range  The range key, one of get_ranges().
+         * @param string $output The EDD\Stats output format, such as 'raw' or 'formatted'.
+         * @return array
+         */
+        public static function get_stats_args(string $range, string $output): array
         {
         }
     }
@@ -95759,12 +96801,46 @@ namespace EDD\Users {
         {
         }
         /**
+         * Resolve the WordPress account a customer record belongs to.
+         *
+         * Returns the customer's own user ID when it is already set. Otherwise, falls back to the
+         * account that owns the customer's email addresses, since a guest customer's record is only
+         * claimed once that account verifies. An account that is already linked to another customer is
+         * never returned.
+         *
+         * @since 3.7.3
+         *
+         * @param \EDD_Customer $customer     The customer record.
+         * @param bool          $pending_only Whether to resolve only an account pending verification.
+         * @return int The resolved user ID, or 0 if none is found.
+         */
+        public static function resolve_customer_user_id($customer, $pending_only = false)
+        {
+        }
+        /**
          * Process admin verification resend.
          *
          * @since 3.5.3
+         * @since 3.7.3 Resolves the account through the customer's email when the record
+         *                       is not yet claimed, rather than refusing a pending customer outright.
          * @return void
          */
         public function process_admin_verification_resend()
+        {
+        }
+        /**
+         * Gets the WordPress user that owns the customer's email addresses.
+         *
+         * Every address on the customer is checked, secondary ones included. Only members of the current
+         * site count on multisite, and when the addresses belong to more than one user there is no single
+         * owner, so nothing is returned.
+         *
+         * @since 3.7.3
+         *
+         * @param \EDD_Customer $customer The customer record.
+         * @return int The user ID, or 0 if none is found or more than one user owns the addresses.
+         */
+        private static function get_user_id_by_customer_emails($customer)
         {
         }
         /**
@@ -96063,7 +97139,7 @@ namespace EDD\Utils {
          * @since 3.7.1
          * @var string[]
          */
-        private const CSS_VALUE_FUNCTIONS = array('rgb', 'rgba', 'hsl', 'hsla', 'hwb', 'lab', 'lch', 'oklab', 'oklch', 'color', 'color-mix', 'light-dark', 'env', 'var', 'calc', 'clamp', 'min', 'max');
+        public const CSS_VALUE_FUNCTIONS = array('rgb', 'rgba', 'hsl', 'hsla', 'hwb', 'lab', 'lch', 'oklab', 'oklch', 'color', 'color-mix', 'light-dark', 'env', 'var', 'calc', 'clamp', 'min', 'max');
         /**
          * Gets the stored button colors, each one a hex color or an empty string.
          *
@@ -96130,9 +97206,11 @@ namespace EDD\Utils {
         /**
          * A value safe to interpolate into a declaration.
          *
-         * Returns an empty string for anything that could end the declaration or the rule, and for any
-         * function other than those a color or length is written with. Everything else is left intact,
-         * so hex and named colors, lengths, keywords, rgb(), hsl(), var() and calc() all survive.
+         * Returns an empty string for anything that could end the declaration or the rule, for a quote
+         * or comment opener, for a bracket left open, and for any function other than those a color or
+         * length is written with.
+         * Everything else is left intact, so hex and named colors, lengths, keywords, rgb(), hsl(),
+         * var() and calc() all survive.
          *
          * @since 3.7.1
          *
@@ -96145,7 +97223,7 @@ namespace EDD\Utils {
         /**
          * A value safe to interpolate inside a double-quoted CSS string.
          *
-         * Escapes what would end the string and drops newlines, which a CSS string cannot carry.
+         * Escapes what would end the string or the rule and drops newlines, which a CSS string cannot carry.
          * Everything else survives, so ordinary punctuation in a label is preserved.
          *
          * @since 3.7.1
@@ -96188,6 +97266,19 @@ namespace EDD\Utils {
         private static function get_stored_hex_color($colors, $key)
         {
         }
+        /**
+         * Whether a `(` or `[` in the value is never closed.
+         *
+         * An open bracket in a custom property value takes in every token after it, so the declarations
+         * that follow in the same rule are lost. A stray closer only spoils its own declaration.
+         *
+         * @since 3.7.3
+         * @param string $value The value.
+         * @return bool
+         */
+        private static function has_unclosed_bracket(string $value): bool
+        {
+        }
     }
     // @codeCoverageIgnore
     /**
@@ -96209,6 +97300,20 @@ namespace EDD\Utils {
          * @return string
          */
         public static function snake_to_camel($input)
+        {
+        }
+        /**
+         * Decode HTML entities in stored text bound for a JavaScript view.
+         *
+         * The view escapes on render, so references left in place are displayed literally.
+         *
+         * @since 3.7.3
+         *
+         * @param string $text The stored text.
+         *
+         * @return string
+         */
+        public static function decode_entities($text)
         {
         }
     }
@@ -102591,6 +103696,8 @@ namespace {
      * Process manual verification of customer account by admin
      *
      * @since  2.4.8
+     * @since  3.7.3 Resolves the pending account through the customer's email when the
+     *                        record is not yet claimed, so verifying it also claims the record.
      * @return bool|void
      */
     function edd_process_admin_user_verification()
@@ -102829,6 +103936,7 @@ namespace {
      * Display a notice on customer account if they are pending verification
      *
      * @since  2.4.8
+     * @since  3.7.3 Resolves the pending account through the customer's email addresses when the record is not yet claimed.
      * @return void
      */
     function edd_verify_customer_notice($customer)
@@ -112470,12 +113578,14 @@ namespace {
     {
     }
     /**
-     * Removes the associated Stripe Connect Account ID and keys.
+     * Removes the associated Account ID and keys, and revokes the authorization when asked to.
      *
-     * This does not revoke application permissions from the Stripe Dashboard,
-     * it simply allows the "Connect with Stripe" flow to run again for a different account.
+     * Disconnecting removes this site's keys only. Revoking is account-wide, so it is a separate action
+     * (`edds-revoke-disconnect`) with its own nonce, and its local keys are only deleted once Stripe has
+     * confirmed the revocation.
      *
      * @since 2.8.0
+     * @since 3.7.3 Removes this site's keys only; revoking the authorization is a separate action.
      */
     function edds_stripe_connect_process_disconnect()
     {
